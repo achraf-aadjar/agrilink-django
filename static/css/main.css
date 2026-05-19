@@ -567,6 +567,14 @@ select.field { cursor: pointer; }
 .search-input  { flex: 1; min-width: 160px; position: relative; }
 .search-select { width: 180px; flex-shrink: 0; }
 
+/* Chat panel — always a flex column with defined height */
+.chat-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 400px;
+}
+
 /* ── Tablet ≤ 900px ──────────────────────────────────── */
 @media (max-width: 900px) {
   .topnav        { padding: 0 24px; }
@@ -579,7 +587,8 @@ select.field { cursor: pointer; }
   .detail-layout { grid-template-columns: 1fr; }
   .detail-sticky { position: static !important; top: auto !important; }
   .chat-layout   { grid-template-columns: 1fr; height: auto; }
-  .chat-area     { height: 50vh !important; min-height: 300px !important; }
+  .chat-panel    { height: calc(100vh - 220px); min-height: 420px; }
+  .chat-area     { height: auto !important; min-height: 0 !important; }
 }
 
 /* ── Mobile ≤ 768px ──────────────────────────────────── */
@@ -627,8 +636,41 @@ select.field { cursor: pointer; }
   .search-select { width: 100%; }
   .search-form > .btn { width: 100%; justify-content: center; }
 
-  /* Chat */
-  .chat-sidebar { display: none; }
+  /* Chat — suggestions as horizontal strip, input always visible */
+  .chat-sidebar       { display: flex !important; flex-direction: column; overflow: hidden; }
+  .chat-advisor-card  { display: none !important; }
+  .chat-suggestions-card {
+    flex: none !important;
+    padding: 10px 12px !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+  .suggestions-label  { display: none; }
+  .chat-sidebar > button { display: none !important; }
+  #suggestions {
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    gap: 8px !important;
+    padding-bottom: 2px;
+    flex-wrap: nowrap !important;
+  }
+  #suggestions::-webkit-scrollbar { display: none; }
+  .suggestion-btn {
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    border-radius: 20px !important;
+    font-size: 12px !important;
+    padding: 7px 14px !important;
+    border: 1.5px solid var(--border) !important;
+  }
+  .chat-panel {
+    height: calc(100vh - 300px);
+    min-height: 360px;
+  }
   .chat-bubble-user,
   .chat-bubble-ai { max-width: 90%; font-size: 13px; }
 }
