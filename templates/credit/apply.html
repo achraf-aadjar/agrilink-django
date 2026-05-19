@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% load agrilink_tags %}
+
+{% block title %}Demande de crédit{% endblock %}
+{% block nav_credit %}active{% endblock %}
+
+{% block content %}
+
+<div style="max-width:680px;margin:0 auto;">
+
+  <div style="margin-bottom:24px;">
+    <a href="/credit/" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);text-decoration:none;font-weight:600;">← Retour au crédit</a>
+  </div>
+
+  {% if submitted %}
+  <!-- Success -->
+  <div style="text-align:center;padding:80px 0;">
+    <div style="width:80px;height:80px;border-radius:50%;background:var(--forest-bg);display:flex;align-items:center;justify-content:center;font-size:40px;margin:0 auto 24px;">✅</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--ink);margin-bottom:12px;">Demande envoyée !</h1>
+    <p style="color:var(--muted);font-size:15px;margin-bottom:32px;">Votre demande de crédit a été transmise à l'institution financière. Réponse sous 24-48h par SMS.</p>
+    <div style="display:flex;gap:12px;justify-content:center;">
+      <a href="/credit/" class="btn btn-outline">← Mes crédits</a>
+      <a href="/dashboard/" class="btn btn-forest">Tableau de bord</a>
+    </div>
+  </div>
+
+  {% else %}
+
+  <div style="margin-bottom:28px;">
+    <h1 style="font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--ink);">Demande de crédit</h1>
+    <p style="font-size:14px;color:var(--muted);margin-top:4px;">Remplissez les informations pour votre demande</p>
+  </div>
+
+  <div class="card-lg" style="padding:36px;">
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="step" value="submit">
+      <input type="hidden" name="purpose_emoji" id="purpose-emoji" value="🌱">
+      <input type="hidden" name="purpose" id="purpose-val" value="Semences &amp; engrais">
+
+      <!-- Purpose -->
+      <div style="margin-bottom:28px;">
+        <label style="display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px;">Objet du crédit *</label>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+
+          <div class="purpose-btn" onclick="setPurpose('🌱','Semences &amp; engrais',this)" style="border:2px solid var(--border);border-radius:12px;padding:14px;text-align:center;cursor:pointer;transition:all 0.15s;">
+            <div style="font-size:26px;margin-bottom:6px;">🌱</div>
+            <div style="font-size:12px;font-weight:600;color:var(--ink);">Semences &amp; engrais</div>
+          </div>
+
+          <div class="purpose-btn" onclick="setPurpose('👷','Main d\'œuvre',this)" style="border:2px solid var(--border);border-radius:12px;padding:14px;text-align:center;cursor:pointer;transition:all 0.15s;">
+            <div style="font-size:26px;margin-bottom:6px;">👷</div>
+            <div style="font-size:12px;font-weight:600;color:var(--ink);">Main d'œuvre</div>
+          </div>
+
+          <div class="purpose-btn" onclick="setPurpose('🚜','Équipement agricole',this)" style="border:2px solid var(--border);border-radius:12px;padding:14px;text-align:center;cursor:pointer;transition:all 0.15s;">
+            <div style="font-size:26px;margin-bottom:6px;">🚜</div>
+            <div style="font-size:12px;font-weight:600;color:var(--ink);">Équipement agricole</div>
+          </div>
+
+          <div class="purpose-btn" onclick="setPurpose('💧','Irrigation',this)" style="border:2px solid var(--border);border-radius:12px;padding:14px;text-align:center;cursor:pointer;transition:all 0.15s;">
+            <div style="font-size:26px;margin-bottom:6px;">💧</div>
+            <div style="font-size:12px;font-weight:600;color:var(--ink);">Irrigation</div>
+          </div>
+
+          <div class="purpose-btn" onclick="setPurpose('🏪','Stockage',this)" style="border:2px solid var(--border);border-radius:12px;padding:14px;text-align:center;cursor:pointer;transition:all 0.15s;">
+            <div style="font-size:26px;margin-bottom:6px;">🏪</div>
+            <div style="font-size:12px;font-weight:600;color:var(--ink);">Stockage</div>
+          </div>
+
+          <div class="purpose-btn" onclick="setPurpose('🌾','Autre',this)" style="border:2px solid var(--border);border-radius:12px;padding:14px;text-align:center;cursor:pointer;transition:all 0.15s;">
+            <div style="font-size:26px;margin-bottom:6px;">🌾</div>
+            <div style="font-size:12px;font-weight:600;color:var(--ink);">Autre</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Amount + Duration -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+        <div>
+          <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Montant souhaité (FCFA) *</label>
+          <input type="number" name="amount" class="field" placeholder="100 000" min="10000" max="500000" step="5000" required oninput="updateSummary()">
+        </div>
+        <div>
+          <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Durée *</label>
+          <select name="duration" class="field" onchange="updateSummary()">
+            <option value="3">3 mois</option>
+            <option value="6" selected>6 mois</option>
+            <option value="9">9 mois</option>
+            <option value="12">12 mois</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- IMF choice -->
+      <div style="margin-bottom:24px;">
+        <label style="display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px;">Institution financière *</label>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          {% for imf in imf_partners %}
+          <label style="cursor:pointer;">
+            <input type="radio" name="imf" value="{{ imf.id }}" style="display:none;" onchange="highlightIMF(this.closest('label'))">
+            <div style="display:flex;align-items:center;justify-content:space-between;border:2px solid var(--border);border-radius:12px;padding:14px 18px;cursor:pointer;transition:all 0.15s;" onclick="this.style.borderColor='var(--forest)';document.querySelectorAll('.imf-opt').forEach(e=>e.style.borderColor='var(--border)');this.style.borderColor='var(--forest)';" class="imf-opt">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <span style="font-size:22px;">{{ imf.logo }}</span>
+                <div>
+                  <p style="font-weight:700;font-size:14px;color:var(--ink);">{{ imf.name }}</p>
+                  <p style="font-size:12px;color:var(--muted);">{{ imf.coverage }}</p>
+                </div>
+              </div>
+              <div style="text-align:right;">
+                <p style="font-family:'JetBrains Mono',monospace;font-weight:800;font-size:15px;color:var(--forest);">{{ imf.rate }}%</p>
+                <p style="font-size:11px;color:var(--muted);">taux annuel</p>
+              </div>
+            </div>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Loan summary -->
+      <div style="background:var(--forest-bg);border-radius:12px;padding:20px;margin-bottom:24px;">
+        <h3 style="font-size:13px;font-weight:700;color:var(--forest);margin-bottom:12px;">Récapitulatif estimé</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div>
+            <p style="font-size:11px;color:var(--forest);font-weight:600;">Montant demandé</p>
+            <p id="summary-amount" style="font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:800;color:var(--ink);">—</p>
+          </div>
+          <div>
+            <p style="font-size:11px;color:var(--forest);font-weight:600;">Durée</p>
+            <p id="summary-duration" style="font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:800;color:var(--ink);">6 mois</p>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-forest" style="width:100%;justify-content:center;font-size:15px;padding:14px;">
+        Soumettre la demande →
+      </button>
+    </form>
+  </div>
+
+  {% endif %}
+
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function setPurpose(emoji, label, el) {
+  document.querySelectorAll('.purpose-btn').forEach(b => {
+    b.style.borderColor = 'var(--border)';
+    b.style.background = 'white';
+  });
+  el.style.borderColor = 'var(--forest)';
+  el.style.background = 'var(--forest-bg)';
+  document.getElementById('purpose-emoji').value = emoji;
+  document.getElementById('purpose-val').value = label;
+}
+
+function updateSummary() {
+  const amount = parseInt(document.querySelector('[name=amount]').value) || 0;
+  const duration = parseInt(document.querySelector('[name=duration]').value) || 6;
+  if (amount) {
+    document.getElementById('summary-amount').textContent = amount.toLocaleString('fr-FR') + ' FCFA';
+  }
+  document.getElementById('summary-duration').textContent = duration + ' mois';
+}
+</script>
+{% endblock %}

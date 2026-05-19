@@ -1,0 +1,6 @@
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+startCommand = "python manage.py migrate && python manage.py seed && gunicorn agrilink.wsgi --bind 0.0.0.0:$PORT"
+healthcheckPath = "/"

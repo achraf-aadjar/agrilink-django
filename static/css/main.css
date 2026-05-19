@@ -1,0 +1,203 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@600;700;800&display=swap');
+
+:root {
+  --ink: #1A0E08;
+  --ink-2: #2d1a0e;
+  --clay: #C4622A;
+  --clay-2: #a0491f;
+  --clay-bg: #fdf0e8;
+  --forest: #1B5E38;
+  --forest-bg: #eaf4ee;
+  --gold: #C48A0A;
+  --gold-2: #f5c842;
+  --gold-bg: #fef9e7;
+  --blue: #1a3a7a;
+  --blue-bg: #eef2ff;
+  --red: #c0392b;
+  --red-bg: #fdf0ee;
+  --cream: #FAF5EB;
+  --cream-2: #f3ede0;
+  --cream-3: #e8dfd0;
+  --border: #e8dfd0;
+  --muted: #8a7060;
+  --muted-2: #b8a898;
+  --sand: #EDE8DE;
+  --white: #ffffff;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #f5f7f5;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.font-display { font-family: 'Fraunces', Georgia, serif; }
+.font-mono { font-family: 'JetBrains Mono', monospace; }
+
+/* TopNav */
+.topnav {
+  background: white;
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 8px rgba(26,14,8,0.06);
+}
+.topnav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.topnav-logo-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--forest); display: flex; align-items: center; justify-content: center;
+}
+.topnav-logo-text { font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 900; color: var(--ink); }
+.topnav-links { display: flex; align-items: center; gap: 4px; }
+.topnav-link {
+  padding: 7px 14px; border-radius: 8px; font-size: 13px; font-weight: 600;
+  color: var(--muted); text-decoration: none; transition: all 0.15s;
+}
+.topnav-link:hover, .topnav-link.active {
+  background: var(--forest-bg); color: var(--forest);
+}
+.topnav-right { display: flex; align-items: center; gap: 12px; }
+.score-badge {
+  background: var(--forest-bg); color: var(--forest);
+  border-radius: 20px; padding: 5px 12px;
+  font-size: 12px; font-weight: 700;
+}
+.avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--clay), var(--clay-2));
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: 800; font-size: 14px;
+}
+
+/* Layout */
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 32px 80px;
+}
+
+/* Cards */
+.card {
+  background: white;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 6px rgba(26,14,8,0.05);
+}
+.card-lg {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 8px rgba(26,14,8,0.06);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 22px; border-radius: 10px;
+  font-size: 14px; font-weight: 700; cursor: pointer;
+  border: none; text-decoration: none; transition: all 0.15s;
+}
+.btn-forest { background: var(--forest); color: white; }
+.btn-forest:hover { background: var(--forest); opacity: 0.9; }
+.btn-clay { background: var(--clay); color: white; }
+.btn-gold { background: var(--gold-2); color: var(--ink); }
+.btn-outline {
+  background: transparent; border: 1.5px solid var(--border);
+  color: var(--ink);
+}
+.btn-outline:hover { background: var(--cream); }
+
+/* Badges */
+.badge {
+  display: inline-block; border-radius: 20px; padding: 3px 10px;
+  font-size: 11px; font-weight: 700;
+}
+.badge-forest { background: var(--forest-bg); color: var(--forest); }
+.badge-gold { background: var(--gold-bg); color: var(--gold); }
+.badge-clay { background: var(--clay-bg); color: var(--clay); }
+.badge-blue { background: var(--blue-bg); color: var(--blue); }
+
+/* Forms */
+.field {
+  width: 100%; padding: 11px 14px; border-radius: 10px;
+  border: 1.5px solid var(--border); font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--ink); background: var(--cream); outline: none;
+  transition: border-color 0.15s;
+}
+.field:focus { border-color: var(--forest); }
+
+/* Marketplace card */
+.listing-card {
+  background: white; border-radius: 14px;
+  border: 1px solid var(--border);
+  overflow: hidden; transition: all 0.15s;
+}
+.listing-card:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(26,14,8,0.1); }
+.listing-photo {
+  width: 100%; height: 180px; object-fit: cover;
+  background: var(--cream-2);
+}
+.listing-photo-placeholder {
+  width: 100%; height: 180px;
+  background: var(--cream-2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 60px;
+}
+
+/* Chat */
+.chat-bubble-user {
+  background: var(--forest); color: white;
+  border-radius: 16px 16px 4px 16px;
+  padding: 12px 16px; max-width: 70%;
+  font-size: 13px; line-height: 1.65;
+}
+.chat-bubble-ai {
+  background: white; color: var(--ink);
+  border-radius: 4px 16px 16px 16px;
+  padding: 12px 16px; max-width: 70%;
+  font-size: 13px; line-height: 1.65;
+  border: 1px solid var(--border);
+}
+
+/* Progress bar */
+.progress-bar {
+  height: 4px; border-radius: 2px;
+  background: var(--cream-3); overflow: hidden;
+}
+.progress-fill {
+  height: 100%; border-radius: 2px;
+  background: var(--forest); transition: width 0.3s;
+}
+
+/* Verified badge */
+.verified { color: var(--forest); font-size: 11px; font-weight: 700; }
+
+/* Utilities */
+.text-muted { color: var(--muted); }
+.text-forest { color: var(--forest); }
+.text-clay { color: var(--clay); }
+.text-ink { color: var(--ink); }
+.text-gold { color: var(--gold); }
+.fw-800 { font-weight: 800; }
+.fw-700 { font-weight: 700; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.gap-4 { gap: 4px; }
+
+/* Dot loader */
+@keyframes pulse {
+  0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+  40% { opacity: 1; transform: scale(1); }
+}
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted-2); display: inline-block; animation: pulse 1.2s ease-in-out infinite; }
+.dot:nth-child(2) { animation-delay: 0.15s; }
+.dot:nth-child(3) { animation-delay: 0.3s; }

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load agrilink_tags %}
+
+{% block title %}Assurance agricole{% endblock %}
+{% block nav_insurance %}active{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:32px;">
+  <div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--ink);">Assurance agricole</h1>
+    <p style="font-size:14px;color:var(--muted);margin-top:4px;">Protection indicielle basée sur les données météo</p>
+  </div>
+  <a href="/assurance/new/" class="btn btn-forest">Souscrire une assurance</a>
+</div>
+
+{% if policy %}
+<!-- Active policy -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px;">
+
+  <div class="card-lg" style="padding:32px;background:linear-gradient(135deg,var(--forest),#0d3d22);color:white;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+      <span style="font-size:13px;opacity:0.75;font-weight:600;">POLICE ACTIVE</span>
+      <span style="background:rgba(255,255,255,0.15);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;">✓ Couverte</span>
+    </div>
+    <h2 style="font-family:'Fraunces',serif;font-size:1.8rem;font-weight:900;margin-bottom:4px;">{{ policy.crop_emoji }} {{ policy.crop }}</h2>
+    <p style="opacity:0.75;font-size:14px;margin-bottom:28px;">{{ policy.season }} · {{ policy.surface }} ha</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:14px;">
+        <p style="font-size:11px;opacity:0.75;font-weight:600;margin-bottom:4px;">COUVERTURE</p>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:800;">{{ policy.coverage|fcfa }}</p>
+      </div>
+      <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:14px;">
+        <p style="font-size:11px;opacity:0.75;font-weight:600;margin-bottom:4px;">PRIME ANNUELLE</p>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:800;">{{ policy.premium|fcfa }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Risk indicators -->
+  <div style="display:flex;flex-direction:column;gap:16px;">
+
+    <div class="card" style="padding:24px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <h3 style="font-size:14px;font-weight:700;color:var(--ink);">Indice de risque climatique</h3>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:800;color:{% if policy.risk_index < 40 %}var(--forest){% elif policy.risk_index < 70 %}var(--gold){% else %}var(--red){% endif %}">{{ policy.risk_index }}%</span>
+      </div>
+      <div class="progress-bar" style="height:8px;margin-bottom:8px;">
+        <div class="progress-fill" style="width:{{ policy.risk_index }}%;background:{% if policy.risk_index < 40 %}var(--forest){% elif policy.risk_index < 70 %}var(--gold){% else %}var(--red){% endif %};"></div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);">
+        {% if policy.risk_index < 40 %}Risque faible — Conditions favorables{% elif policy.risk_index < 70 %}Risque modéré — Surveillez la météo{% else %}Risque élevé — Alerte active{% endif %}
+      </p>
+    </div>
+
+    <div class="card" style="padding:24px;">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="width:48px;height:48px;border-radius:12px;background:var(--blue-bg);display:flex;align-items:center;justify-content:center;font-size:24px;">🌧️</div>
+        <div>
+          <p style="font-size:12px;color:var(--muted);font-weight:600;margin-bottom:4px;">PLUVIOMÉTRIE 30 JOURS</p>
+          <p style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:800;color:var(--ink);">{{ policy.rainfall_30d }} mm</p>
+        </div>
+      </div>
+      <div style="margin-top:14px;padding:12px;background:var(--blue-bg);border-radius:8px;">
+        <p style="font-size:12px;color:var(--blue);">⚡ Seuil de déclenchement : 30mm / 30 jours</p>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+{% else %}
+<!-- No policy -->
+<div style="max-width:540px;margin:0 auto;text-align:center;padding:60px 0;">
+  <div style="font-size:64px;margin-bottom:24px;">🛡️</div>
+  <h2 style="font-family:'Fraunces',serif;font-size:1.8rem;font-weight:900;color:var(--ink);margin-bottom:12px;">Protégez votre récolte</h2>
+  <p style="color:var(--muted);font-size:15px;line-height:1.7;margin-bottom:32px;">L'assurance indicielle AgriLink vous protège automatiquement contre les aléas climatiques. Aucune expertise terrain nécessaire.</p>
+  <a href="/assurance/new/" class="btn btn-forest" style="font-size:15px;padding:14px 32px;">Souscrire maintenant →</a>
+</div>
+{% endif %}
+
+<!-- How it works -->
+<div class="card" style="padding:32px;margin-top:{% if policy %}0{% else %}32px{% endif %};">
+  <h2 style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;color:var(--ink);margin-bottom:24px;">Comment fonctionne l'assurance indicielle ?</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+    <div style="text-align:center;">
+      <div style="width:52px;height:52px;border-radius:50%;background:var(--forest-bg);display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 12px;">🛰️</div>
+      <h3 style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:6px;">Données satellites</h3>
+      <p style="font-size:13px;color:var(--muted);line-height:1.6;">Suivi automatique de la pluviométrie et des conditions météo par satellite.</p>
+    </div>
+    <div style="text-align:center;">
+      <div style="width:52px;height:52px;border-radius:50%;background:var(--gold-bg);display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 12px;">📊</div>
+      <h3 style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:6px;">Déclenchement automatique</h3>
+      <p style="font-size:13px;color:var(--muted);line-height:1.6;">Si les indices passent sous le seuil, l'indemnisation se déclenche automatiquement.</p>
+    </div>
+    <div style="text-align:center;">
+      <div style="width:52px;height:52px;border-radius:50%;background:var(--clay-bg);display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 12px;">💸</div>
+      <h3 style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:6px;">Paiement rapide</h3>
+      <p style="font-size:13px;color:var(--muted);line-height:1.6;">Indemnisation versée en 48h sur mobile money. Sans paperasse ni expertise.</p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
