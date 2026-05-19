@@ -46,10 +46,8 @@
     <div class="card" style="padding:20px;flex:1;overflow:hidden;">
       <p style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;">Questions fréquentes</p>
       <div style="display:flex;flex-direction:column;gap:6px;" id="suggestions">
-        {% for q in "Comment traiter la rosette de l'arachide ?;Quand planter le mil à Kaolack ?;Quel engrais pour 1 ha de maïs ?;Techniques d'irrigation économique;Prix du marché pour la tomate;Maladies courantes du maraîchage" %}
-        <button onclick="sendSuggestion(this.textContent)" class="suggestion-btn" style="text-align:left;background:var(--cream);border:none;border-radius:7px;padding:9px 12px;font-size:12px;color:var(--ink);cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;transition:all 0.12s;line-height:1.4;">
-          {{ q }}
-        </button>
+        {% for q in suggestions %}
+        <button onclick="sendSuggestion(this.textContent)" class="suggestion-btn" style="text-align:left;background:var(--cream);border:none;border-radius:7px;padding:9px 12px;font-size:12px;color:var(--ink);cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;transition:all 0.12s;line-height:1.4;">{{ q }}</button>
         {% endfor %}
       </div>
     </div>

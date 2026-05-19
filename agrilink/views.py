@@ -377,7 +377,18 @@ def insurance_new(request):
 def conseiller(request):
     session_key = request.session.session_key or 'anon'
     history     = list(ChatMessage.objects.filter(session_key=session_key).values('role', 'content'))
-    return render(request, 'conseiller/chat.html', {'history_json': json.dumps(history)})
+    suggestions = [
+        "Comment traiter la rosette de l'arachide ?",
+        "Quand planter le mil à Kaolack ?",
+        "Quel engrais pour 1 ha de maïs ?",
+        "Techniques d'irrigation économique",
+        "Prix du marché pour la tomate",
+        "Maladies courantes du maraîchage",
+    ]
+    return render(request, 'conseiller/chat.html', {
+        'history_json': json.dumps(history),
+        'suggestions':  suggestions,
+    })
 
 
 @csrf_exempt
