@@ -34,7 +34,7 @@ html { scroll-behavior: smooth; }
 
 body {
   font-family: 'DM Sans', sans-serif;
-  background: var(--cream);
+  background: #F2EDE4;
   color: var(--ink);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
@@ -42,8 +42,8 @@ body {
 
 /* ── TOPNAV ─────────────────────────────────────────── */
 .topnav {
-  background: rgba(255,255,255,0.92);
-  border-bottom: 1px solid var(--border);
+  background: var(--forest);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
   padding: 0 40px;
   height: 64px;
   display: flex;
@@ -52,25 +52,24 @@ body {
   position: sticky;
   top: 0;
   z-index: 200;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 1px 0 var(--border), 0 4px 24px rgba(15,26,12,0.05);
+  box-shadow: 0 2px 20px rgba(15,26,12,0.25);
 }
 
 .topnav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
 .topnav-logo-icon {
   width: 34px; height: 34px;
   border-radius: 9px;
-  background: var(--forest);
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.2);
   display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 2px 8px rgba(27,94,56,0.3);
-  transition: transform 0.2s;
+  transition: background 0.2s, transform 0.2s;
 }
-.topnav-logo:hover .topnav-logo-icon { transform: scale(1.05); }
+.topnav-logo:hover .topnav-logo-icon { background: rgba(255,255,255,0.22); transform: scale(1.05); }
 .topnav-logo-text {
   font-family: 'Fraunces', serif;
   font-size: 1.1rem;
   font-weight: 900;
-  color: var(--ink);
+  color: white;
   letter-spacing: -0.01em;
 }
 
@@ -80,25 +79,25 @@ body {
   border-radius: 8px;
   font-size: 13.5px;
   font-weight: 600;
-  color: var(--muted);
+  color: rgba(255,255,255,0.65);
   text-decoration: none;
   transition: background 0.15s, color 0.15s;
   letter-spacing: -0.01em;
 }
-.topnav-link:hover { background: var(--cream); color: var(--ink); }
-.topnav-link.active { background: var(--forest-bg); color: var(--forest); }
+.topnav-link:hover { background: rgba(255,255,255,0.1); color: white; }
+.topnav-link.active { background: rgba(255,255,255,0.15); color: white; }
 
 .topnav-right { display: flex; align-items: center; gap: 10px; }
 
 .score-badge {
-  background: var(--forest-bg);
-  color: var(--forest);
+  background: rgba(168,240,198,0.15);
+  color: var(--forest-lt);
   border-radius: 20px;
   padding: 5px 14px;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.02em;
-  border: 1px solid rgba(27,94,56,0.15);
+  border: 1px solid rgba(168,240,198,0.25);
 }
 
 .avatar {
@@ -107,28 +106,29 @@ body {
   background: linear-gradient(135deg, var(--clay), var(--clay-2));
   display: flex; align-items: center; justify-content: center;
   color: white; font-weight: 800; font-size: 14px;
-  box-shadow: 0 2px 8px rgba(196,98,42,0.3);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
   transition: transform 0.2s, box-shadow 0.2s;
+  border: 2px solid rgba(255,255,255,0.2);
 }
-.avatar:hover { transform: scale(1.05); box-shadow: 0 4px 14px rgba(196,98,42,0.35); }
+.avatar:hover { transform: scale(1.05); box-shadow: 0 4px 14px rgba(0,0,0,0.3); }
 
 .btn-logout {
-  color: var(--muted);
+  color: rgba(255,255,255,0.6);
   font-size: 13px;
   text-decoration: none;
   padding: 7px 14px;
   border-radius: 8px;
-  border: 1.5px solid var(--border);
+  border: 1.5px solid rgba(255,255,255,0.18);
   font-weight: 600;
   transition: border-color 0.15s, color 0.15s, background 0.15s;
 }
-.btn-logout:hover { border-color: var(--ink); color: var(--ink); background: white; }
+.btn-logout:hover { border-color: rgba(255,255,255,0.4); color: white; background: rgba(255,255,255,0.08); }
 
 /* ── PAGE HEADER ────────────────────────────────────── */
 .page-header {
-  background: linear-gradient(135deg, var(--forest) 0%, var(--forest-mid) 100%);
-  margin: -32px -32px 36px;
-  padding: 40px 40px 36px;
+  background: linear-gradient(135deg, var(--forest) 0%, #1a5c36 60%, #1e6b3d 100%);
+  margin: -32px -40px 36px;
+  padding: 40px 40px 40px;
   position: relative;
   overflow: hidden;
 }
@@ -137,15 +137,17 @@ body {
   position: absolute;
   inset: 0;
   background: url('/static/img/hero.jpg') center 35% / cover no-repeat;
-  opacity: 0.08;
+  opacity: 0.1;
+  mix-blend-mode: luminosity;
 }
 .page-header::after {
   content: '';
   position: absolute;
-  top: -80px; right: -80px;
-  width: 320px; height: 320px;
+  top: -100px; right: -100px;
+  width: 400px; height: 400px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.04);
+  background: rgba(255,255,255,0.03);
+  pointer-events: none;
 }
 .page-header-content { position: relative; z-index: 1; }
 
