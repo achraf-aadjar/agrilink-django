@@ -5,12 +5,15 @@
 
 {% block content %}
 
-<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:36px;">
-  <div>
-    <h1 style="font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--ink);letter-spacing:-0.02em;">Assurance agricole</h1>
-    <p style="font-size:14px;color:var(--muted);margin-top:6px;">Protection indicielle basée sur les données satellitaires</p>
+<div class="page-header">
+  <div class="page-header-content" style="display:flex;align-items:flex-end;justify-content:space-between;">
+    <div>
+      <p class="page-header-tag">Protection de vos récoltes</p>
+      <h1 class="page-header-title">Assurance agricole</h1>
+      <p class="page-header-sub">Protection indicielle basée sur les données météo temps réel</p>
+    </div>
+    <a href="/assurance/new/" class="btn btn-clay" style="flex-shrink:0;">Souscrire une police</a>
   </div>
-  <a href="/assurance/new/" class="btn btn-forest">Souscrire une police</a>
 </div>
 
 {% if policy %}

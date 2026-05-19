@@ -5,37 +5,39 @@
 
 {% block content %}
 
-<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;">
-  <div>
-    <h1 style="font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--ink);letter-spacing:-0.02em;">Marché agricole</h1>
-    <p style="font-size:14px;color:var(--muted);margin-top:6px;">{{ listings|length }} produit{% if listings|length != 1 %}s{% endif %} disponible{% if listings|length != 1 %}s{% endif %}</p>
+<!-- Page header -->
+<div class="page-header">
+  <div class="page-header-content" style="display:flex;align-items:flex-end;justify-content:space-between;">
+    <div>
+      <p class="page-header-tag">Achat &amp; vente direct</p>
+      <h1 class="page-header-title">Marché agricole</h1>
+      <p class="page-header-sub">{{ listings|length }} produit{% if listings|length != 1 %}s{% endif %} disponible{% if listings|length != 1 %}s{% endif %} aujourd'hui</p>
+    </div>
+    <a href="/marketplace/new/" class="btn btn-clay" style="flex-shrink:0;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Publier une annonce
+    </a>
   </div>
-  <a href="/marketplace/new/" class="btn btn-forest" style="gap:6px;">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-    Publier une annonce
-  </a>
 </div>
 
 <!-- Market ticker -->
-<div style="background:white;border:1px solid var(--border);border-radius:10px;padding:14px 20px;margin-bottom:24px;">
-  <div style="display:flex;align-items:center;gap:32px;overflow-x:auto;">
-    {% for p in market_prices %}
-    <div style="display:flex;align-items:center;gap:10px;white-space:nowrap;flex-shrink:0;">
-      <span style="font-size:13px;font-weight:600;color:var(--ink);">{{ p.crop }}</span>
-      <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:800;color:var(--ink);">{{ p.price }}</span>
-      <span style="font-size:11px;font-weight:700;color:{% if p.change > 0 %}var(--forest){% else %}var(--red){% endif %};">
-        {% if p.change > 0 %}+{% endif %}{{ p.change }} %
-      </span>
-    </div>
-    {% endfor %}
+<div class="market-ticker" style="margin-bottom:20px;">
+  {% for p in market_prices %}
+  <div class="ticker-item">
+    <span class="ticker-crop">{{ p.crop }}</span>
+    <span class="ticker-price">{{ p.price }}</span>
+    <span class="ticker-change {% if p.change > 0 %}ticker-up{% else %}ticker-down{% endif %}">
+      {% if p.change > 0 %}▲{% else %}▼{% endif %} {% if p.change > 0 %}+{% endif %}{{ p.change }} %
+    </span>
   </div>
+  {% endfor %}
 </div>
 
 <!-- Search + filters -->
-<form method="get" style="display:flex;gap:10px;margin-bottom:32px;align-items:center;">
+<form method="get" style="display:flex;gap:10px;margin-bottom:28px;align-items:center;">
   <div style="flex:1;position:relative;">
-    <svg style="position:absolute;left:14px;top:50%;transform:translateY(-50%);" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input type="text" name="q" class="field" placeholder="Rechercher une culture..." value="{{ q }}" style="padding-left:42px;">
+    <svg style="position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none;" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" name="q" class="field" placeholder="Rechercher une culture, une région..." value="{{ q }}" style="padding-left:44px;">
   </div>
   <select name="crop" class="field" style="width:200px;" onchange="this.form.submit()">
     <option value="">Toutes les cultures</option>
@@ -43,44 +45,50 @@
     <option value="{{ crop }}" {% if crop == crop_filter %}selected{% endif %}>{{ crop }}</option>
     {% endfor %}
   </select>
-  <button type="submit" class="btn btn-forest" style="padding:11px 22px;">Filtrer</button>
+  <button type="submit" class="btn btn-forest">Filtrer</button>
   {% if q or crop_filter %}
-  <a href="/marketplace/" class="btn btn-outline" style="padding:11px 20px;">Réinitialiser</a>
+  <a href="/marketplace/" class="btn btn-outline">Réinitialiser</a>
   {% endif %}
 </form>
 
-<!-- Grid -->
+<!-- Listings grid -->
 {% if listings %}
-<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:20px;">
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;">
   {% for listing in listings %}
-  <a href="/marketplace/{{ listing.pk }}/" style="text-decoration:none;" class="listing-card">
+  <a href="/marketplace/{{ listing.pk }}/" class="listing-card" style="text-decoration:none;">
 
     {% if listing.photo_url %}
     <img src="{{ listing.photo_url }}" alt="{{ listing.crop }}" class="listing-photo">
     {% else %}
     <div class="listing-photo" style="display:flex;align-items:center;justify-content:center;background:var(--cream-2);">
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--muted-2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--muted-2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
     </div>
     {% endif %}
 
-    <div style="padding:18px 20px;">
+    <div style="padding:20px 22px;">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-        <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:{% if listing.quality == 'Grade A' %}var(--forest){% elif listing.quality == 'Grade B' %}var(--gold){% else %}var(--muted){% endif %};">{{ listing.quality }}</span>
-        <span style="font-size:12px;color:var(--muted);">{{ listing.views }} vues</span>
+        <span class="badge {% if listing.quality == 'Grade A' %}badge-forest{% elif listing.quality == 'Grade B' %}badge-gold{% else %}badge-blue{% endif %}">{{ listing.quality }}</span>
+        <span style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          {{ listing.views }}
+        </span>
       </div>
 
-      <h3 style="font-family:'Fraunces',serif;font-size:1.15rem;font-weight:700;color:var(--ink);margin-bottom:4px;">{{ listing.crop }}</h3>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">{{ listing.quantity }} kg &mdash; {{ listing.region }}</p>
+      <h3 style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;color:var(--ink);margin-bottom:4px;letter-spacing:-0.01em;">{{ listing.crop }}</h3>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:18px;">{{ listing.quantity }} kg &mdash; {{ listing.region }}</p>
 
-      <div style="display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--border);">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid var(--border);">
         <div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:800;color:var(--ink);">{{ listing.price_per_kg }} FCFA</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:1px;">par kilogramme</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:1.25rem;font-weight:800;color:var(--ink);">{{ listing.price_per_kg }} FCFA</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px;font-weight:500;">par kilogramme</div>
         </div>
         <div style="text-align:right;">
-          <div style="font-size:12px;color:var(--muted);">{{ listing.farmer.name }}</div>
+          <div style="font-size:13px;color:var(--ink);font-weight:600;">{{ listing.farmer.name }}</div>
           {% if listing.farmer.is_verified %}
-          <div style="font-size:11px;color:var(--forest);font-weight:700;margin-top:2px;">Agriculteur vérifié</div>
+          <div class="verified" style="margin-top:3px;">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:3px;"><polyline points="20 6 9 17 4 12"/></svg>
+            Vérifié
+          </div>
           {% endif %}
         </div>
       </div>
@@ -90,12 +98,12 @@
 </div>
 
 {% else %}
-<div style="text-align:center;padding:96px 0;">
-  <div style="width:56px;height:56px;border-radius:12px;background:var(--cream-2);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+<div class="empty-state">
+  <div class="empty-state-icon">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
   </div>
-  <h3 style="font-family:'Fraunces',serif;font-size:1.3rem;font-weight:700;color:var(--ink);margin-bottom:8px;">Aucun résultat</h3>
-  <p style="color:var(--muted);font-size:14px;margin-bottom:24px;">Essayez avec d'autres filtres ou publiez votre première annonce.</p>
+  <p class="empty-state-title">Aucun résultat</p>
+  <p class="empty-state-sub">Essayez avec d'autres filtres ou publiez votre première annonce.</p>
   <a href="/marketplace/new/" class="btn btn-forest">Publier une annonce</a>
 </div>
 {% endif %}

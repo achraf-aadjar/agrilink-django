@@ -6,49 +6,63 @@
   <title>{% block title %}AgriLink{% endblock %} — Plateforme agricole UEMOA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,700&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/main.css">
   {% block extra_head %}{% endblock %}
 </head>
 <body>
 
+<!-- ── TOPNAV ──────────────────────────────────────── -->
 <nav class="topnav">
   <a href="/" class="topnav-logo">
     <div class="topnav-logo-icon">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+        <path d="M12 2a9 9 0 0 0-9 9c0 4.17 2.84 7.67 6.69 8.69L12 22l2.31-2.31C18.16 18.67 21 15.17 21 11A9 9 0 0 0 12 2z"/>
+        <circle cx="12" cy="11" r="3"/>
       </svg>
     </div>
     <span class="topnav-logo-text">AgriLink</span>
   </a>
 
   <div class="topnav-links">
-    <a href="/dashboard/"  class="topnav-link {% block nav_dashboard %}{% endblock %}">Tableau de bord</a>
+    <a href="/dashboard/"   class="topnav-link {% block nav_dashboard %}{% endblock %}">Tableau de bord</a>
     <a href="/marketplace/" class="topnav-link {% block nav_marketplace %}{% endblock %}">Marché</a>
-    <a href="/credit/"     class="topnav-link {% block nav_credit %}{% endblock %}">Crédit</a>
-    <a href="/assurance/"  class="topnav-link {% block nav_insurance %}{% endblock %}">Assurance</a>
-    <a href="/conseiller/" class="topnav-link {% block nav_conseiller %}{% endblock %}">Conseiller</a>
+    <a href="/credit/"      class="topnav-link {% block nav_credit %}{% endblock %}">Crédit</a>
+    <a href="/assurance/"   class="topnav-link {% block nav_insurance %}{% endblock %}">Assurance</a>
+    <a href="/conseiller/"  class="topnav-link {% block nav_conseiller %}{% endblock %}">Conseiller IA</a>
   </div>
 
   <div class="topnav-right">
-    <div class="score-badge">Score 78</div>
+    <div class="score-badge">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:4px;"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+      Score {{ farmer.agri_score|default:"78" }}
+    </div>
     <a href="/profil/" style="text-decoration:none;">
-      <div class="avatar">M</div>
+      <div class="avatar">{{ farmer.name|first|upper|default:"M" }}</div>
     </a>
-    <a href="/logout/" style="color:var(--muted);font-size:13px;text-decoration:none;padding:7px 14px;border-radius:8px;border:1.5px solid var(--border);font-weight:600;">Déconnecter</a>
+    <a href="/logout/" class="btn-logout">Déconnecter</a>
   </div>
 </nav>
 
+<!-- ── FLASH MESSAGES ──────────────────────────────── -->
 {% if messages %}
-<div style="max-width:1200px;margin:12px auto;padding:0 32px;">
+<div style="max-width:1200px;margin:16px auto 0;padding:0 40px;">
   {% for message in messages %}
-  <div style="background:{% if message.tags == 'error' %}var(--red-bg){% else %}var(--forest-bg){% endif %};color:{% if message.tags == 'error' %}var(--red){% else %}var(--forest){% endif %};padding:12px 18px;border-radius:10px;font-size:13px;font-weight:600;margin-bottom:8px;">
+  <div class="message-bar {% if message.tags == 'error' %}message-bar-error{% else %}message-bar-success{% endif %}">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      {% if message.tags == 'error' %}
+      <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+      {% else %}
+      <polyline points="20 6 9 17 4 12"/>
+      {% endif %}
+    </svg>
     {{ message }}
   </div>
   {% endfor %}
 </div>
 {% endif %}
 
+<!-- ── MAIN ────────────────────────────────────────── -->
 <main class="main-content">
   {% block content %}{% endblock %}
 </main>
