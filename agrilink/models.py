@@ -91,6 +91,29 @@ class InsurancePolicy(models.Model):
         return f"Assurance {self.crop} - {self.farmer.name}"
 
 
+class Offer(models.Model):
+    STATUS_CHOICES = [
+        ('pending',  'En attente'),
+        ('accepted', 'Acceptée'),
+        ('rejected', 'Refusée'),
+    ]
+    listing      = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='offers')
+    buyer_name   = models.CharField(max_length=100)
+    buyer_phone  = models.CharField(max_length=20, blank=True)
+    buyer_region = models.CharField(max_length=100, default='Dakar')
+    quantity     = models.IntegerField()
+    price_per_kg = models.IntegerField()
+    total        = models.IntegerField()
+    status       = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    created_at   = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Offre {self.total} FCFA — {self.listing.crop}"
+
+
 class ChatMessage(models.Model):
     session_key = models.CharField(max_length=100)
     role = models.CharField(max_length=20)

@@ -9,11 +9,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.contrib import messages
 
-from .models import Farmer, Listing, CreditApplication, InsurancePolicy, ChatMessage
+from .models import Farmer, Listing, CreditApplication, InsurancePolicy, ChatMessage, Offer
 
 DEMO_FARMER_PHONE = '+221 77 000 00 01'
 
-# Coordinates for major Senegal regions
 REGION_COORDS = {
     'Dakar':       (14.6928, -17.4467),
     'Thiès':       (14.7833, -16.9167),
@@ -35,10 +34,10 @@ BASE_PRICES = [
 ]
 
 IMF_PARTNERS = [
-    {'id': 'boa',     'name': 'Bank of Africa',  'logo': '🏦', 'rate': 7.5, 'max_amount': 500000, 'coverage': 'Sénégal · UEMOA'},
-    {'id': 'cncas',   'name': 'CNCAS',           'logo': '🌱', 'rate': 6.0, 'max_amount': 300000, 'coverage': 'Agriculture uniquement'},
-    {'id': 'pamecas', 'name': 'PAMECAS',         'logo': '🤝', 'rate': 8.0, 'max_amount': 200000, 'coverage': 'Petits producteurs'},
-    {'id': 'axa',     'name': 'AXA Microfinance','logo': '💼', 'rate': 9.0, 'max_amount': 150000, 'coverage': 'Crédit rapide 24h'},
+    {'id': 'boa',     'name': 'Bank of Africa',   'logo': '🏦', 'rate': 7.5, 'max_amount': 500000, 'coverage': 'Sénégal · UEMOA'},
+    {'id': 'cncas',   'name': 'CNCAS',            'logo': '🌱', 'rate': 6.0, 'max_amount': 300000, 'coverage': 'Agriculture uniquement'},
+    {'id': 'pamecas', 'name': 'PAMECAS',          'logo': '🤝', 'rate': 8.0, 'max_amount': 200000, 'coverage': 'Petits producteurs'},
+    {'id': 'axa',     'name': 'AXA Microfinance', 'logo': '💼', 'rate': 9.0, 'max_amount': 150000, 'coverage': 'Crédit rapide 24h'},
 ]
 
 REVENUE_DATA = [
@@ -67,16 +66,16 @@ Règles :
 - Maximum 400 mots, utilise **bold** pour les points clés"""
 
 
-# ─── Prix dynamiques (variation journalière déterministe) ──────────────────
+# ─── Prix dynamiques ───────────────────────────────────────────────────────
 
 def get_market_prices():
-    today = date.today().isoformat()
+    today     = date.today().isoformat()
     yesterday = (date.today() - timedelta(days=1)).isoformat()
     result = []
     for item in BASE_PRICES:
-        def day_price(d):
+        def day_price(d, item=item):
             h = int(hashlib.md5(f"{item['crop']}{d}".encode()).hexdigest()[:8], 16)
-            variation = ((h % 101) - 50) / 1000  # ±5%
+            variation = ((h % 101) - 50) / 1000
             return round(item['base'] * (1 + variation))
         price   = day_price(today)
         price_y = day_price(yesterday)
@@ -85,7 +84,7 @@ def get_market_prices():
     return result
 
 
-# ─── SMS OTP via Twilio ───────────────────────────────────────────────────
+# ─── SMS OTP ───────────────────────────────────────────────────────────────
 
 def send_otp_sms(phone, otp):
     if not settings.TWILIO_ACCOUNT_SID:
@@ -103,7 +102,7 @@ def send_otp_sms(phone, otp):
         return False
 
 
-# ─── Météo via OpenWeatherMap ──────────────────────────────────────────────
+# ─── Météo ─────────────────────────────────────────────────────────────────
 
 _weather_cache = {}
 
@@ -111,10 +110,8 @@ def get_weather(region):
     cache_key = f"{region}_{date.today().isoformat()}"
     if cache_key in _weather_cache:
         return _weather_cache[cache_key]
-
     if not settings.OPENWEATHER_API_KEY:
         return None
-
     lat, lon = REGION_COORDS.get(region, (14.6928, -17.4467))
     try:
         r = requests.get(
@@ -122,45 +119,40 @@ def get_weather(region):
             params={'lat': lat, 'lon': lon, 'appid': settings.OPENWEATHER_API_KEY, 'units': 'metric'},
             timeout=5,
         )
-        data = r.json()
+        data       = r.json()
         rain_1h    = data.get('rain', {}).get('1h', 0)
         humidity   = data.get('main', {}).get('humidity', 50)
         temp       = data.get('main', {}).get('temp', 30)
         description = data.get('weather', [{}])[0].get('description', '').capitalize()
-
-        # Estimate 30-day rainfall from current conditions
         rainfall_30d = round(rain_1h * 24 * 30, 1) if rain_1h else round(humidity * 0.3, 1)
-
-        # Risk index: high humidity + high temp = higher risk
-        risk_index = min(100, round((humidity * 0.5) + (max(0, temp - 25) * 2)))
-
-        result = {
-            'rainfall_30d': rainfall_30d,
-            'risk_index': risk_index,
-            'humidity': humidity,
-            'temp': temp,
-            'description': description,
-        }
+        risk_index   = min(100, round((humidity * 0.5) + (max(0, temp - 25) * 2)))
+        result = {'rainfall_30d': rainfall_30d, 'risk_index': risk_index,
+                  'humidity': humidity, 'temp': temp, 'description': description}
         _weather_cache[cache_key] = result
         return result
     except Exception:
         return None
 
 
-# ─── Utilitaires ──────────────────────────────────────────────────────────
+# ─── Statistiques plateforme ───────────────────────────────────────────────
 
-def format_cfa(amount):
-    if amount >= 1_000_000:
-        return f"{amount / 1_000_000:.1f}M FCFA"
-    if amount >= 1_000:
-        return f"{amount:,.0f}".replace(',', ' ') + " FCFA"
-    return f"{amount} FCFA"
+def get_platform_stats():
+    total_farmers   = Farmer.objects.count()
+    total_listings  = Listing.objects.filter(is_active=True).count()
+    total_offers    = Offer.objects.count()
+    total_volume    = sum(Offer.objects.values_list('total', flat=True)) or 0
+    return {
+        'farmers':  total_farmers,
+        'listings': total_listings,
+        'offers':   total_offers,
+        'volume':   total_volume,
+    }
 
 
 # ─── Landing ──────────────────────────────────────────────────────────────
 
 def landing(request):
-    return render(request, 'landing.html')
+    return render(request, 'landing.html', {'stats': get_platform_stats()})
 
 
 # ─── Auth ─────────────────────────────────────────────────────────────────
@@ -173,7 +165,6 @@ def auth(request):
             otp_input    = request.POST.get('otp', '').strip()
             expected_otp = request.session.get('otp_code', '')
             otp_phone    = request.session.get('otp_phone', DEMO_FARMER_PHONE)
-
             if otp_input == expected_otp:
                 try:
                     farmer = Farmer.objects.get(phone=otp_phone)
@@ -188,11 +179,9 @@ def auth(request):
             otp   = str(random.randint(100000, 999999))
             request.session['otp_code']  = otp
             request.session['otp_phone'] = phone
-
             sms_sent = send_otp_sms(phone, otp)
             return render(request, 'auth.html', {
-                'step':     'otp',
-                'phone':    phone,
+                'step': 'otp', 'phone': phone,
                 'demo_otp': None if sms_sent else otp,
             })
 
@@ -207,24 +196,41 @@ def logout(request):
 # ─── Dashboard ────────────────────────────────────────────────────────────
 
 def dashboard(request):
-    farmer    = get_object_or_404(Farmer, phone=DEMO_FARMER_PHONE)
-    credits   = CreditApplication.objects.filter(farmer=farmer, status='active').first()
+    farmer   = get_object_or_404(Farmer, phone=DEMO_FARMER_PHONE)
+    credits  = CreditApplication.objects.filter(farmer=farmer, status='active').first()
     insurance = InsurancePolicy.objects.filter(farmer=farmer, is_active=True).first()
     listings  = Listing.objects.filter(farmer=farmer, is_active=True)[:3]
-    max_rev   = max(d['revenue'] for d in REVENUE_DATA)
 
+    # Real offer stats for this farmer
+    farmer_offers  = Offer.objects.filter(listing__farmer=farmer)
+    pending_offers = farmer_offers.filter(status='pending')
+    pending_count  = pending_offers.count()
+    recent_offers  = pending_offers.select_related('listing')[:5]
+
+    # Dynamic KPIs from DB
+    total_rev   = farmer.total_revenue + sum(o.total for o in farmer_offers)
+    total_tx    = farmer.total_transactions + farmer_offers.count()
+    total_saved = farmer.saved_vs_intermediaries
+
+    max_rev = max(d['revenue'] for d in REVENUE_DATA)
     revenue_bars = [
         {'month': d['month'], 'pct': round((d['revenue'] / max_rev) * 100), 'revenue': d['revenue']}
         for d in REVENUE_DATA
     ]
 
     return render(request, 'dashboard.html', {
-        'farmer':        farmer,
-        'active_credit': credits,
-        'insurance':     insurance,
-        'listings':      listings,
-        'market_prices': get_market_prices()[:5],
-        'revenue_bars':  revenue_bars,
+        'farmer':         farmer,
+        'active_credit':  credits,
+        'insurance':      insurance,
+        'listings':       listings,
+        'market_prices':  get_market_prices()[:5],
+        'revenue_bars':   revenue_bars,
+        'pending_count':  pending_count,
+        'recent_offers':  recent_offers,
+        'total_rev':      total_rev,
+        'total_tx':       total_tx,
+        'total_saved':    total_saved,
+        'platform_stats': get_platform_stats(),
     })
 
 
@@ -248,6 +254,14 @@ def marketplace(request):
     })
 
 
+BUYER_NAMES = [
+    'Alioune Sarr', 'Rokhaya Guèye', 'Cheikh Mbacké', 'Binta Kouyaté',
+    'Malick Faye',  'Coumba Diallo',  'Serigne Touba', 'Ndèye Fatou Ba',
+    'Aliou Cissé',  'Marème Sow',
+]
+BUYER_REGIONS = ['Dakar', 'Thiès', 'Ziguinchor', 'Saint-Louis', 'Louga', 'Fatick']
+
+
 def listing_detail(request, pk):
     listing = get_object_or_404(Listing, pk=pk)
     listing.views += 1
@@ -258,19 +272,33 @@ def listing_detail(request, pk):
     if request.method == 'POST':
         quantity    = int(request.POST.get('quantity', 100))
         offer_price = int(request.POST.get('offer_price', listing.price_per_kg))
+        total       = quantity * offer_price
+
+        # Save the offer to DB
+        Offer.objects.create(
+            listing      = listing,
+            buyer_name   = random.choice(BUYER_NAMES),
+            buyer_phone  = f'+221 7{random.randint(6,8)} {random.randint(100,999)} {random.randint(10,99)} {random.randint(10,99)}',
+            buyer_region = random.choice(BUYER_REGIONS),
+            quantity     = quantity,
+            price_per_kg = offer_price,
+            total        = total,
+        )
+
+        # Update farmer stats
+        f = listing.farmer
+        f.total_transactions += 1
+        f.total_revenue      += total
+        f.save(update_fields=['total_transactions', 'total_revenue'])
+
         return render(request, 'marketplace/detail.html', {
-            'listing':    listing,
-            'market':     market,
-            'offer_sent': True,
-            'quantity':   quantity,
-            'offer_price':offer_price,
-            'total':      quantity * offer_price,
+            'listing': listing, 'market': market,
+            'offer_sent': True, 'quantity': quantity,
+            'offer_price': offer_price, 'total': total,
         })
 
     return render(request, 'marketplace/detail.html', {
-        'listing':    listing,
-        'market':     market,
-        'offer_sent': False,
+        'listing': listing, 'market': market, 'offer_sent': False,
     })
 
 
@@ -299,11 +327,11 @@ def credit_index(request):
     farmer  = get_object_or_404(Farmer, phone=DEMO_FARMER_PHONE)
     credits = CreditApplication.objects.filter(farmer=farmer).order_by('-created_at')
     score_criteria = [
-        {'label': 'Historique transactions',  'weight': 30, 'score': 78,  'icon': '📊'},
-        {'label': 'Remboursement crédits',    'weight': 25, 'score': 100, 'icon': '✅'},
-        {'label': 'Surface cultivée',         'weight': 20, 'score': 60,  'icon': '🌾'},
-        {'label': 'Ancienneté plateforme',    'weight': 15, 'score': 80,  'icon': '📅'},
-        {'label': 'Diversification cultures', 'weight': 10, 'score': 70,  'icon': '🌿'},
+        {'label': 'Historique transactions',  'weight': 30, 'score': 78},
+        {'label': 'Remboursement crédits',    'weight': 25, 'score': 100},
+        {'label': 'Surface cultivée',         'weight': 20, 'score': 60},
+        {'label': 'Ancienneté plateforme',    'weight': 15, 'score': 80},
+        {'label': 'Diversification cultures', 'weight': 10, 'score': 70},
     ]
     return render(request, 'credit/index.html', {
         'farmer':         farmer,
@@ -340,17 +368,13 @@ def credit_apply(request):
 def insurance_index(request):
     farmer = get_object_or_404(Farmer, phone=DEMO_FARMER_PHONE)
     policy = InsurancePolicy.objects.filter(farmer=farmer, is_active=True).first()
-
     weather = get_weather(farmer.region)
     if weather and policy:
         policy.rainfall_30d = weather['rainfall_30d']
         policy.risk_index   = weather['risk_index']
         policy.save(update_fields=['rainfall_30d', 'risk_index'])
-
     return render(request, 'insurance/index.html', {
-        'farmer':  farmer,
-        'policy':  policy,
-        'weather': weather,
+        'farmer': farmer, 'policy': policy, 'weather': weather,
     })
 
 
@@ -396,13 +420,13 @@ def conseiller_api(request):
     if request.method != 'POST':
         return JsonResponse({'error': 'Method not allowed'}, status=405)
 
-    data       = json.loads(request.body)
-    message    = data.get('message', '')
-    history    = data.get('history', [])
-    session_key= request.session.session_key or 'anon'
+    data        = json.loads(request.body)
+    message     = data.get('message', '')
+    history     = data.get('history', [])
+    session_key = request.session.session_key or 'anon'
 
     if not settings.GROQ_API_KEY:
-        return JsonResponse({'error': 'Clé API Groq non configurée'}, status=500)
+        return JsonResponse({'error': 'Clé API Groq non configurée. Ajoutez GROQ_API_KEY dans les variables Railway.'}, status=500)
 
     try:
         response = requests.post(
@@ -418,10 +442,8 @@ def conseiller_api(request):
         )
         result  = response.json()
         content = result['choices'][0]['message']['content']
-
         ChatMessage.objects.create(session_key=session_key, role='user',      content=message)
         ChatMessage.objects.create(session_key=session_key, role='assistant', content=content)
-
         return JsonResponse({'content': content})
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
@@ -439,8 +461,8 @@ def profil(request):
         for d in REVENUE_DATA
     ]
     return render(request, 'profil/index.html', {
-        'farmer':        farmer,
-        'credits':       credits,
-        'listings':      listings,
-        'revenue_bars':  revenue_bars,
+        'farmer':       farmer,
+        'credits':      credits,
+        'listings':     listings,
+        'revenue_bars': revenue_bars,
     })
