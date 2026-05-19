@@ -10,6 +10,12 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-agrilink-hackathon-20
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',') + ['*.railway.app', '.railway.app']
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.railway.app',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
