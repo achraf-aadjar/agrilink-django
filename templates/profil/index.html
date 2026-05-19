@@ -15,7 +15,7 @@
   </div>
 </div>
 
-<div style="display:grid;grid-template-columns:300px 1fr;gap:24px;margin-bottom:24px;">
+<div class="resp-grid-profil">
 
   <!-- Profile card -->
   <div class="card-lg" style="padding:32px;text-align:center;">
@@ -48,7 +48,7 @@
       <p style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Cultures</p>
       <div style="display:flex;flex-wrap:wrap;gap:6px;">
         {% for crop in farmer.crops %}
-        <span style="background:var(--forest-bg);color:var(--forest);border-radius:4px;padding:3px 10px;font-size:12px;font-weight:600;">{{ crop }}</span>
+        <span class="crop-chip">{{ crop }}</span>
         {% endfor %}
       </div>
     </div>
@@ -62,7 +62,7 @@
   <!-- Stats -->
   <div style="display:flex;flex-direction:column;gap:16px;">
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;">
       <div class="card" style="padding:24px;">
         <p style="font-size:11px;color:var(--muted);font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:10px;">Revenu total</p>
         <p style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:800;color:var(--ink);">{{ farmer.total_revenue|fcfa }}</p>
