@@ -3,117 +3,482 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Connexion — AgriLink</title>
+  <title>{% if step == 'otp' %}Vérification{% else %}Connexion{% endif %} — AgriLink</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/css/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,700&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --forest:   #1B5E38;
+      --forest-lt:#a8f0c6;
+      --clay:     #C4622A;
+      --ink:      #0F1A0C;
+      --cream:    #F8F5EF;
+      --border:   #E8E2D9;
+      --muted:    #7A736A;
+      --red:      #c0392b;
+      --red-bg:   #fdf0ee;
+    }
+
+    html, body { height: 100%; font-family: 'DM Sans', sans-serif; -webkit-font-smoothing: antialiased; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 480px;
+      min-height: 100vh;
+    }
+
+    /* ── PHOTO SIDE ──────────────────────────────────── */
+    .photo-side {
+      position: relative;
+      overflow: hidden;
+    }
+    .photo-bg {
+      position: absolute;
+      inset: 0;
+      background: url('/static/img/hero.jpg') center 30% / cover no-repeat;
+      transform: scale(1.03);
+      animation: kenBurns 12s ease-out both;
+    }
+    @keyframes kenBurns {
+      from { transform: scale(1.07); }
+      to   { transform: scale(1.00); }
+    }
+    .photo-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to right,
+        rgba(10,22,12,0.55) 0%,
+        rgba(10,22,12,0.2)  60%,
+        rgba(27,94,56,0.85) 100%
+      );
+    }
+    .photo-content {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 48px 56px;
+    }
+    .photo-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .photo-logo-icon {
+      width: 36px; height: 36px;
+      border-radius: 9px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(8px);
+    }
+    .photo-logo-text {
+      font-family: 'Fraunces', serif;
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: white;
+    }
+    .photo-headline {
+      animation: fadeUp 0.8s 0.3s both;
+    }
+    .photo-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 16px;
+    }
+    .photo-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900;
+      color: white;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      margin-bottom: 20px;
+    }
+    .photo-title em { font-style: italic; color: var(--forest-lt); }
+    .photo-sub {
+      font-size: 15px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.75;
+      max-width: 380px;
+    }
+    .photo-stats {
+      display: flex;
+      gap: 32px;
+      animation: fadeUp 0.8s 0.5s both;
+    }
+    .stat-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: white;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-lbl { font-size: 12px; color: rgba(255,255,255,0.45); }
+
+    /* ── FORM SIDE ───────────────────────────────────── */
+    .form-side {
+      background: var(--forest);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 56px 52px;
+      position: relative;
+      overflow: hidden;
+    }
+    .form-side::before {
+      content: '';
+      position: absolute;
+      bottom: -120px; right: -120px;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.03);
+    }
+    .form-side::after {
+      content: '';
+      position: absolute;
+      top: -80px; left: -80px;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .form-inner {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 380px;
+      margin: 0 auto;
+      animation: fadeUp 0.6s 0.1s both;
+    }
+
+    .form-step-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 16px;
+    }
+    .form-step-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--forest-lt);
+    }
+
+    .form-title {
+      font-family: 'Fraunces', serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: white;
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+    .form-sub {
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.65;
+      margin-bottom: 36px;
+    }
+    .form-sub strong { color: rgba(255,255,255,0.85); font-weight: 700; }
+
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 8px;
+    }
+    .form-input {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08);
+      color: white;
+      font-size: 15px;
+      font-family: 'DM Sans', sans-serif;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+      backdrop-filter: blur(4px);
+    }
+    .form-input::placeholder { color: rgba(255,255,255,0.3); }
+    .form-input:focus {
+      border-color: var(--forest-lt);
+      background: rgba(255,255,255,0.12);
+      box-shadow: 0 0 0 3px rgba(168,240,198,0.12);
+    }
+    .form-input-otp {
+      font-size: 2rem;
+      text-align: center;
+      letter-spacing: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      padding: 18px 16px;
+    }
+
+    .form-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      background: var(--clay);
+      color: white;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.15s;
+      box-shadow: 0 4px 20px rgba(196,98,42,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .form-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(196,98,42,0.5); }
+    .form-btn:active { transform: translateY(0); }
+
+    .demo-box {
+      margin-top: 24px;
+      padding: 16px 18px;
+      background: rgba(168,240,198,0.08);
+      border: 1px solid rgba(168,240,198,0.2);
+      border-radius: 10px;
+      backdrop-filter: blur(4px);
+    }
+    .demo-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(168,240,198,0.6);
+      margin-bottom: 6px;
+    }
+    .demo-value {
+      font-size: 14px;
+      color: rgba(255,255,255,0.75);
+    }
+    .demo-value strong {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--forest-lt);
+      font-weight: 700;
+    }
+
+    .error-bar {
+      padding: 12px 16px;
+      border-radius: 10px;
+      background: rgba(192,57,43,0.15);
+      border: 1px solid rgba(192,57,43,0.25);
+      color: #ff8a7a;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .back-link a {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.15s;
+    }
+    .back-link a:hover { color: rgba(255,255,255,0.7); }
+
+    /* steps indicator */
+    .steps-dots {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 36px;
+    }
+    .step-dot {
+      height: 3px;
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+    .step-dot-active { background: var(--forest-lt); flex: 2; }
+    .step-dot-inactive { background: rgba(255,255,255,0.15); flex: 1; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
-<body style="min-height:100vh;display:grid;grid-template-columns:1fr 1fr;">
+<body>
 
-<!-- Left panel -->
-<div style="background:var(--forest);display:flex;flex-direction:column;justify-content:space-between;padding:48px;">
-  <a href="/" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;">
-    <div style="width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    </div>
-    <span style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:900;color:white;">AgriLink</span>
-  </a>
-  <div>
-    <p style="font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:16px;">Plateforme agricole UEMOA</p>
-    <h2 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:900;color:white;line-height:1.2;letter-spacing:-0.02em;margin-bottom:24px;">Votre marché agricole.<br><em style="color:#a8f0c6;">À portée de main.</em></h2>
-    <p style="color:rgba(255,255,255,0.6);font-size:15px;line-height:1.7;max-width:380px;">Vendez, financez et assurez votre récolte depuis une seule plateforme, pensée pour les producteurs sénégalais.</p>
-  </div>
-  <div style="display:flex;gap:28px;">
-    <div>
-      <div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:800;color:white;">2 847</div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:2px;">Agriculteurs</div>
-    </div>
-    <div>
-      <div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:800;color:white;">847M</div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:2px;">FCFA échangés</div>
-    </div>
-    <div>
-      <div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:800;color:white;">14</div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:2px;">Régions</div>
-    </div>
-  </div>
-</div>
+<div class="layout">
 
-<!-- Right panel -->
-<div style="background:var(--cream);display:flex;align-items:center;justify-content:center;padding:48px;">
-  <div style="width:100%;max-width:400px;">
+  <!-- ── PHOTO SIDE ───────────────────────────────────── -->
+  <div class="photo-side">
+    <div class="photo-bg"></div>
+    <div class="photo-overlay"></div>
+    <div class="photo-content">
 
-    {% if messages %}
-    {% for message in messages %}
-    <div style="background:var(--red-bg);color:var(--red);padding:12px 16px;border-radius:10px;font-size:13px;font-weight:600;margin-bottom:24px;border:1px solid rgba(192,57,43,0.15);">
-      {{ message }}
-    </div>
-    {% endfor %}
-    {% endif %}
+      <a href="/" class="photo-logo">
+        <div class="photo-logo-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a9 9 0 0 0-9 9c0 4.17 2.84 7.67 6.69 8.69L12 22l2.31-2.31C18.16 18.67 21 15.17 21 11A9 9 0 0 0 12 2z"/>
+            <circle cx="12" cy="11" r="3"/>
+          </svg>
+        </div>
+        <span class="photo-logo-text">AgriLink</span>
+      </a>
 
-    {% if step == 'phone' %}
-
-    <div style="margin-bottom:36px;">
-      <h1 style="font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--ink);letter-spacing:-0.02em;margin-bottom:8px;">Connexion</h1>
-      <p style="color:var(--muted);font-size:15px;">Entrez votre numéro pour recevoir un code de vérification.</p>
-    </div>
-
-    <form method="post">
-      {% csrf_token %}
-      <input type="hidden" name="step" value="phone">
-      <div style="margin-bottom:20px;">
-        <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Numéro de téléphone</label>
-        <input type="tel" name="phone" class="field" placeholder="+221 77 000 00 00" value="+221 77 000 00 01" style="font-size:15px;">
+      <div class="photo-headline">
+        <p class="photo-tag">Plateforme agricole — Sénégal &amp; UEMOA</p>
+        <h2 class="photo-title">
+          Votre récolte mérite<br>
+          <em>le meilleur prix.</em>
+        </h2>
+        <p class="photo-sub">Vendez, financez et assurez votre exploitation depuis une seule plateforme, pensée pour les producteurs sénégalais.</p>
       </div>
-      <button type="submit" class="btn btn-forest" style="width:100%;justify-content:center;font-size:15px;padding:13px;">
-        Recevoir le code
-      </button>
-    </form>
 
-    <div style="margin-top:24px;padding:16px;background:white;border:1px solid var(--border);border-radius:10px;">
-      <p style="font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Compte de démonstration</p>
-      <p style="font-size:13px;color:var(--ink);">Numéro : <strong>+221 77 000 00 01</strong></p>
-    </div>
-
-    {% else %}
-
-    <div style="margin-bottom:36px;">
-      <h1 style="font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--ink);letter-spacing:-0.02em;margin-bottom:8px;">Vérification</h1>
-      <p style="color:var(--muted);font-size:15px;">Code envoyé au <strong style="color:var(--ink);">{{ phone }}</strong>.</p>
-    </div>
-
-    <form method="post">
-      {% csrf_token %}
-      <input type="hidden" name="step" value="otp">
-      <input type="hidden" name="phone" value="{{ phone }}">
-      <div style="margin-bottom:20px;">
-        <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Code de vérification</label>
-        <input type="text" name="otp" class="field" placeholder="000000" maxlength="6" autofocus
-               style="font-size:28px;text-align:center;letter-spacing:12px;font-family:'JetBrains Mono',monospace;font-weight:700;padding:14px;">
+      <div class="photo-stats">
+        <div>
+          <div class="stat-val">2 847</div>
+          <div class="stat-lbl">Agriculteurs</div>
+        </div>
+        <div>
+          <div class="stat-val">847M</div>
+          <div class="stat-lbl">FCFA échangés</div>
+        </div>
+        <div>
+          <div class="stat-val">14</div>
+          <div class="stat-lbl">Régions</div>
+        </div>
       </div>
-      <button type="submit" class="btn btn-forest" style="width:100%;justify-content:center;font-size:15px;padding:13px;">
-        Valider
-      </button>
-    </form>
 
-    <div style="margin-top:24px;padding:16px;background:white;border:1px solid var(--border);border-radius:10px;">
-      <p style="font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Compte de démonstration</p>
-      {% if demo_otp %}
-      <p style="font-size:13px;color:var(--ink);">Code : <strong style="font-family:'JetBrains Mono',monospace;">{{ demo_otp }}</strong></p>
-      {% else %}
-      <p style="font-size:13px;color:var(--ink);">Code envoyé par SMS.</p>
+    </div>
+  </div>
+
+  <!-- ── FORM SIDE ────────────────────────────────────── -->
+  <div class="form-side">
+    <div class="form-inner">
+
+      {% if messages %}
+      {% for message in messages %}
+      <div class="error-bar">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        {{ message }}
+      </div>
+      {% endfor %}
       {% endif %}
+
+      {% if step == 'phone' %}
+
+      <div class="steps-dots">
+        <div class="step-dot step-dot-active"></div>
+        <div class="step-dot step-dot-inactive"></div>
+      </div>
+
+      <div class="form-step-label">
+        <div class="form-step-dot"></div>
+        Étape 1 sur 2
+      </div>
+      <h1 class="form-title">Connexion</h1>
+      <p class="form-sub">Entrez votre numéro pour recevoir un code par SMS.</p>
+
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="step" value="phone">
+        <div style="margin-bottom:20px;">
+          <label class="form-label">Numéro de téléphone</label>
+          <input type="tel" name="phone" class="form-input" placeholder="+221 77 000 00 00" value="+221 77 000 00 01">
+        </div>
+        <button type="submit" class="form-btn">
+          Recevoir le code
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </form>
+
+      <div class="demo-box">
+        <div class="demo-label">Compte de démonstration</div>
+        <div class="demo-value">Numéro : <strong>+221 77 000 00 01</strong></div>
+      </div>
+
+      {% else %}
+
+      <div class="steps-dots">
+        <div class="step-dot step-dot-active"></div>
+        <div class="step-dot step-dot-active"></div>
+      </div>
+
+      <div class="form-step-label">
+        <div class="form-step-dot"></div>
+        Étape 2 sur 2
+      </div>
+      <h1 class="form-title">Vérification</h1>
+      <p class="form-sub">Code envoyé au <strong>{{ phone }}</strong>. Entrez les 6 chiffres ci-dessous.</p>
+
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="step" value="otp">
+        <input type="hidden" name="phone" value="{{ phone }}">
+        <div style="margin-bottom:24px;">
+          <label class="form-label">Code de vérification</label>
+          <input type="text" name="otp" class="form-input form-input-otp" placeholder="——————" maxlength="6" autofocus inputmode="numeric">
+        </div>
+        <button type="submit" class="form-btn">
+          Valider et accéder
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </button>
+      </form>
+
+      <div class="demo-box">
+        <div class="demo-label">Compte de démonstration</div>
+        {% if demo_otp %}
+        <div class="demo-value">Code : <strong>{{ demo_otp }}</strong></div>
+        {% else %}
+        <div class="demo-value">Code envoyé par SMS.</div>
+        {% endif %}
+      </div>
+
+      <div class="back-link">
+        <a href="/auth/">← Changer de numéro</a>
+      </div>
+
+      {% endif %}
+
     </div>
-
-    <div style="text-align:center;margin-top:16px;">
-      <a href="/auth/" style="font-size:13px;color:var(--muted);text-decoration:none;font-weight:600;">Changer de numéro</a>
-    </div>
-
-    {% endif %}
-
   </div>
+
 </div>
+
+<script>
+  /* Auto-format OTP input: espacement visuel */
+  const otp = document.querySelector('[name="otp"]');
+  if (otp) {
+    otp.addEventListener('input', () => {
+      otp.value = otp.value.replace(/\D/g, '').slice(0, 6);
+    });
+  }
+</script>
 
 </body>
 </html>
