@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Créer votre profil{% endblock %}
+
+{% block content %}
+
+<div class="page-header" style="margin-bottom:32px;">
+  <div class="page-header-content">
+    <p class="page-header-tag">Bienvenue sur AgriLink</p>
+    <h1 class="page-header-title">Complétez votre profil</h1>
+    <p class="page-header-sub">Ces informations personnalisent vos recommandations et votre score AgriLink</p>
+  </div>
+</div>
+
+<div style="max-width:620px;margin:0 auto;">
+
+  {% if messages %}
+  {% for message in messages %}
+  <div style="background:var(--clay-bg);border-left:4px solid var(--clay);border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:14px;color:var(--clay);font-weight:600;">
+    {{ message }}
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  <form method="post" class="card-lg" style="padding:36px;">
+    {% csrf_token %}
+
+    <div style="margin-bottom:24px;">
+      <label class="field-label">Votre nom complet *</label>
+      <input type="text" name="name" class="field" placeholder="Ex : Mamadou Diallo" required autofocus>
+    </div>
+
+    <div style="margin-bottom:24px;">
+      <label class="field-label">Votre région *</label>
+      <select name="region" class="field" required>
+        <option value="">Choisir une région…</option>
+        {% for region in regions %}
+        <option value="{{ region }}">{{ region }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div style="margin-bottom:24px;">
+      <label class="field-label">Surface cultivée (hectares)</label>
+      <input type="number" name="surface" class="field" placeholder="Ex : 3.5" min="0.1" step="0.5" value="1">
+    </div>
+
+    <div style="margin-bottom:32px;">
+      <label class="field-label" style="margin-bottom:12px;">Vos cultures principales</label>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;">
+        {% for item in crops_catalog %}
+        <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid var(--border);border-radius:9px;cursor:pointer;font-size:13px;font-weight:600;color:var(--ink);transition:all 0.12s;" onclick="toggleCropChip(this)">
+          <input type="checkbox" name="crops" value="{{ item.crop }}" style="display:none;">
+          <span style="font-size:18px;">{{ item.emoji }}</span>
+          <span>{{ item.crop }}</span>
+        </label>
+        {% endfor %}
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-forest" style="width:100%;justify-content:center;font-size:15px;padding:15px;">
+      Accéder à mon tableau de bord
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
+  </form>
+
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function toggleCropChip(label) {
+  const cb = label.querySelector('input[type=checkbox]');
+  cb.checked = !cb.checked;
+  label.style.borderColor   = cb.checked ? 'var(--forest)' : 'var(--border)';
+  label.style.background    = cb.checked ? 'var(--forest-bg)' : 'white';
+  label.style.color         = cb.checked ? 'var(--forest)' : 'var(--ink)';
+}
+</script>
+{% endblock %}

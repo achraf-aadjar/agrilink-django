@@ -51,7 +51,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'agrilink.context_processors.demo_user',
+                'agrilink.context_processors.current_farmer',
             ],
         },
     },

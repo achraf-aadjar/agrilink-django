@@ -67,25 +67,11 @@
         <p style="font-size:12px;color:var(--muted);margin-top:7px;" id="price-tip">Cours actuel du marché : {{ market_prices.0.price }} FCFA / kg</p>
       </div>
 
-      <!-- Region + Date -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
-        <div>
-          <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Région *</label>
-          <select name="region" class="field">
-            <option>Dakar</option>
-            <option selected>Kaolack</option>
-            <option>Thiès</option>
-            <option>Ziguinchor</option>
-            <option>Saint-Louis</option>
-            <option>Tambacounda</option>
-            <option>Fatick</option>
-            <option>Louga</option>
-          </select>
-        </div>
-        <div>
-          <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Disponible dès le</label>
-          <input type="date" name="available" class="field" value="2026-06-01">
-        </div>
+      <!-- Date -->
+      <div style="margin-bottom:20px;">
+        <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Disponible dès le</label>
+        <input type="date" name="available" class="field" value="{{ today }}">
+        <p style="font-size:12px;color:var(--muted);margin-top:6px;">Votre annonce sera publiée dans votre région : <strong>{{ farmer.region }}</strong></p>
       </div>
 
       <!-- Description -->

@@ -103,7 +103,29 @@
 
       <form method="post">
         {% csrf_token %}
-        <div style="margin-bottom:16px;">
+
+        <p style="font-size:12px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;">Vos coordonnées</p>
+
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Votre nom *</label>
+          <input type="text" name="buyer_name" class="field" placeholder="Ex : Aliou Sarr" required>
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Téléphone</label>
+          <input type="tel" name="buyer_phone" class="field" placeholder="+221 77 …">
+        </div>
+        <div style="margin-bottom:20px;">
+          <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Votre région</label>
+          <select name="buyer_region" class="field">
+            {% for r in regions %}
+            <option value="{{ r }}">{{ r }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <p style="font-size:12px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;">Votre offre</p>
+
+        <div style="margin-bottom:14px;">
           <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Quantité souhaitée (kg)</label>
           <input type="number" name="quantity" class="field" value="100" min="10" max="{{ listing.quantity }}" id="qty-input" oninput="updateTotal()">
         </div>
@@ -115,7 +137,7 @@
         <div style="background:var(--cream);border-radius:10px;padding:16px;margin-bottom:20px;">
           <div style="display:flex;justify-content:space-between;align-items:center;">
             <span style="font-size:13px;color:var(--muted);">Total estimé</span>
-            <span id="total-display" style="font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:800;color:var(--ink);">100 FCFA</span>
+            <span id="total-display" style="font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:800;color:var(--ink);">—</span>
           </div>
           <p style="font-size:11px;color:var(--muted);margin-top:6px;">Règlement à la livraison</p>
         </div>

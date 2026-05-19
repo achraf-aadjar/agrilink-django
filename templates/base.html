@@ -25,22 +25,28 @@
   </a>
 
   <div class="topnav-links" id="nav-links">
-    <a href="/dashboard/"   class="topnav-link {% block nav_dashboard %}{% endblock %}">Tableau de bord</a>
+    {% if farmer %}<a href="/dashboard/"  class="topnav-link {% block nav_dashboard %}{% endblock %}">Tableau de bord</a>{% endif %}
     <a href="/marketplace/" class="topnav-link {% block nav_marketplace %}{% endblock %}">Marché</a>
-    <a href="/credit/"      class="topnav-link {% block nav_credit %}{% endblock %}">Crédit</a>
-    <a href="/assurance/"   class="topnav-link {% block nav_insurance %}{% endblock %}">Assurance</a>
+    {% if farmer %}<a href="/credit/"     class="topnav-link {% block nav_credit %}{% endblock %}">Crédit</a>{% endif %}
+    {% if farmer %}<a href="/assurance/"  class="topnav-link {% block nav_insurance %}{% endblock %}">Assurance</a>{% endif %}
     <a href="/conseiller/"  class="topnav-link {% block nav_conseiller %}{% endblock %}">Conseiller IA</a>
   </div>
 
   <div class="topnav-right">
+    {% if farmer %}
+    {% if farmer.agri_score %}
     <div class="score-badge">
       <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:4px;"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-      Score {{ farmer.agri_score|default:"78" }}
+      Score {{ farmer.agri_score }}
     </div>
+    {% endif %}
     <a href="/profil/" style="text-decoration:none;">
-      <div class="avatar">{{ farmer.name|first|upper|default:"M" }}</div>
+      <div class="avatar">{{ farmer.name|first|upper|default:"?" }}</div>
     </a>
     <a href="/logout/" class="btn-logout">Déconnecter</a>
+    {% else %}
+    <a href="/auth/" class="btn btn-forest" style="padding:8px 18px;font-size:13px;">Se connecter</a>
+    {% endif %}
     <button class="nav-toggle" id="nav-toggle" aria-label="Menu" onclick="this.classList.toggle('open');document.getElementById('nav-links').classList.toggle('open')">
       <span></span><span></span><span></span>
     </button>
