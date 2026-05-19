@@ -5,7 +5,7 @@
 
 {% block extra_head %}
 <style>
-  .chat-area { height: calc(100vh - 340px); min-height: 360px; overflow-y: auto; scroll-behavior: smooth; }
+  .chat-area { height: calc(100vh - 340px); min-height: 300px; overflow-y: auto; scroll-behavior: smooth; }
   .chat-area::-webkit-scrollbar { width: 4px; }
   .chat-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
   .suggestion-btn:hover { background: var(--forest-bg) !important; color: var(--forest) !important; border-color: var(--forest) !important; }
@@ -22,10 +22,10 @@
   </div>
 </div>
 
-<div style="display:grid;grid-template-columns:260px 1fr;gap:24px;height:calc(100vh - 280px);">
+<div class="chat-layout">
 
   <!-- Sidebar -->
-  <div style="display:flex;flex-direction:column;gap:14px;overflow:hidden;">
+  <div class="chat-sidebar" style="display:flex;flex-direction:column;gap:14px;overflow:hidden;">
 
     <div class="card" style="padding:22px;">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">

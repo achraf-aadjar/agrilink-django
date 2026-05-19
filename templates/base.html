@@ -24,7 +24,7 @@
     <span class="topnav-logo-text">AgriLink</span>
   </a>
 
-  <div class="topnav-links">
+  <div class="topnav-links" id="nav-links">
     <a href="/dashboard/"   class="topnav-link {% block nav_dashboard %}{% endblock %}">Tableau de bord</a>
     <a href="/marketplace/" class="topnav-link {% block nav_marketplace %}{% endblock %}">Marché</a>
     <a href="/credit/"      class="topnav-link {% block nav_credit %}{% endblock %}">Crédit</a>
@@ -41,6 +41,9 @@
       <div class="avatar">{{ farmer.name|first|upper|default:"M" }}</div>
     </a>
     <a href="/logout/" class="btn-logout">Déconnecter</a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu" onclick="this.classList.toggle('open');document.getElementById('nav-links').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
 
