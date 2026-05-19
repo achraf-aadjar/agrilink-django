@@ -5,7 +5,10 @@
 
 {% block extra_head %}
 <style>
-  .chat-area { height: calc(100vh - 340px); min-height: 300px; overflow-y: auto; scroll-behavior: smooth; }
+  /* chat-panel fills its grid cell; flex children share the space */
+  .chat-panel { height: 100%; }
+  /* chat-area takes all remaining height and scrolls — min-height:0 lets flex shrink it */
+  .chat-area { flex: 1; min-height: 0; overflow-y: auto; scroll-behavior: smooth; }
   .chat-area::-webkit-scrollbar { width: 4px; }
   .chat-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
   .suggestion-btn:hover { background: var(--forest-bg) !important; color: var(--forest) !important; border-color: var(--forest) !important; }
@@ -72,7 +75,7 @@
       </div>
     </div>
 
-    <div class="chat-area" style="flex:1;padding:24px;display:flex;flex-direction:column;gap:18px;" id="chat-messages">
+    <div class="chat-area" style="padding:24px;display:flex;flex-direction:column;gap:18px;" id="chat-messages">
       <div style="display:flex;gap:12px;align-items:flex-start;">
         <div style="width:30px;height:30px;border-radius:8px;background:var(--forest);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>

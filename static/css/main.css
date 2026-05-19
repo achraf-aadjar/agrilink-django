@@ -854,7 +854,7 @@ select.field { cursor: pointer; }
 .kpi-grid       { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 24px; }
 .dash-grid      { display: grid; grid-template-columns: 1fr 300px; gap: 20px; margin-bottom: 20px; }
 .dash-btm-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.chat-layout    { display: grid; grid-template-columns: 260px 1fr; gap: 24px; height: calc(100vh - 280px); }
+.chat-layout    { display: grid; grid-template-columns: 260px 1fr; gap: 24px; height: calc(100vh - 200px); min-height: 520px; align-items: start; }
 .detail-layout  { display: grid; grid-template-columns: 1fr 400px; gap: 32px; align-items: start; }
 .page-hdr-flex  { display: flex; align-items: flex-end; justify-content: space-between; }
 .search-form    { display: flex; gap: 10px; margin-bottom: 28px; flex-wrap: wrap; align-items: stretch; }
@@ -902,9 +902,9 @@ select.field { cursor: pointer; }
   .dash-btm-grid      { grid-template-columns: 1fr; }
   .detail-layout      { grid-template-columns: 1fr; }
   .detail-sticky      { position: static !important; top: auto !important; }
-  .chat-layout        { grid-template-columns: 1fr; height: auto; }
-  .chat-panel         { height: calc(100vh - 220px); min-height: 420px; }
-  .chat-area          { height: auto !important; min-height: 0 !important; }
+  .chat-layout        { grid-template-columns: 1fr; height: auto; min-height: unset; }
+  .chat-panel         { height: calc(100vh - 200px) !important; min-height: 480px; }
+  .chat-area          { min-height: 0 !important; }
   .resp-grid-credit   { grid-template-columns: 1fr; }
   .resp-grid-insurance{ grid-template-columns: 1fr; }
   .resp-grid-profil   { grid-template-columns: 1fr; }
@@ -988,8 +988,8 @@ select.field { cursor: pointer; }
     border: 1.5px solid var(--border) !important;
   }
   .chat-panel {
-    height: calc(100vh - 300px);
-    min-height: 360px;
+    height: calc(100vh - 220px) !important;
+    min-height: 400px;
   }
   .chat-bubble-user,
   .chat-bubble-ai { max-width: 90%; font-size: 13px; }
