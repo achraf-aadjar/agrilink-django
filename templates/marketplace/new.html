@@ -23,8 +23,8 @@
     <form method="post">
       {% csrf_token %}
       <input type="hidden" name="step" value="submit">
-      <input type="hidden" name="emoji" id="emoji-input" value="—">
-      <input type="hidden" name="market_price" id="market-price-input" value="0">
+      <input type="hidden" name="emoji" id="emoji-input" value="{{ market_prices.0.emoji }}">
+      <input type="hidden" name="market_price" id="market-price-input" value="{{ market_prices.0.price }}">
 
       <!-- Crop -->
       <div style="margin-bottom:32px;">
@@ -32,8 +32,8 @@
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
           {% for p in market_prices %}
           <label style="cursor:pointer;">
-            <input type="radio" name="crop" value="{{ p.crop }}" style="display:none;" onchange="selectCrop('{{ p.crop }}','{{ p.emoji }}','{{ p.price }}')">
-            <div class="crop-btn" id="crop-{{ p.crop }}" style="border:1.5px solid var(--border);border-radius:10px;padding:16px;transition:all 0.15s;">
+            <input type="radio" name="crop" value="{{ p.crop }}" style="display:none;" {% if forloop.first %}checked{% endif %} onchange="selectCrop('{{ p.crop }}','{{ p.emoji }}','{{ p.price }}')">
+            <div class="crop-btn" id="crop-{{ p.crop }}" style="border:1.5px solid {% if forloop.first %}var(--forest){% else %}var(--border){% endif %};border-radius:10px;padding:16px;transition:all 0.15s;background:{% if forloop.first %}var(--forest-bg){% else %}white{% endif %};">
               <p style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:3px;">{{ p.crop }}</p>
               <p style="font-size:12px;color:var(--muted);">{{ p.price }} FCFA / kg</p>
             </div>
@@ -65,7 +65,7 @@
           <input type="number" name="price_per_kg" class="field" id="price-field" placeholder="200" min="1" required style="padding-right:90px;">
           <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--muted);font-weight:600;">FCFA / kg</span>
         </div>
-        <p style="font-size:12px;color:var(--muted);margin-top:7px;" id="price-tip">Sélectionnez une culture pour afficher le cours du marché.</p>
+        <p style="font-size:12px;color:var(--muted);margin-top:7px;" id="price-tip">Cours actuel du marché : {{ market_prices.0.price }} FCFA / kg</p>
       </div>
 
       <!-- Region + Date -->
