@@ -249,27 +249,12 @@ body {
   height: 3px;
   border-radius: 16px 16px 0 0;
 }
-/* Large decorative circle behind icon */
-.kpi-card::after {
-  content: '';
-  position: absolute;
-  bottom: -24px; right: -24px;
-  width: 96px; height: 96px;
-  border-radius: 50%;
-  opacity: 0.06;
-  transition: opacity 0.3s;
-}
 .kpi-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
-.kpi-card:hover::after { opacity: 0.09; }
 
 .kpi-card-forest::before { background: linear-gradient(90deg, var(--forest), var(--forest-mid)); }
 .kpi-card-clay::before   { background: linear-gradient(90deg, var(--clay), var(--clay-2)); }
 .kpi-card-gold::before   { background: linear-gradient(90deg, var(--gold), var(--gold-2)); }
 .kpi-card-ink::before    { background: linear-gradient(90deg, var(--ink), var(--ink-2)); }
-.kpi-card-forest::after  { background: var(--forest); }
-.kpi-card-clay::after    { background: var(--clay); }
-.kpi-card-gold::after    { background: var(--gold); }
-.kpi-card-ink::after     { background: var(--ink); }
 
 .kpi-label {
   font-size: 11px;
@@ -294,13 +279,12 @@ body {
 .kpi-icon {
   position: absolute;
   top: 20px; right: 20px;
-  width: 38px; height: 38px;
+  width: 40px; height: 40px;
   border-radius: 10px;
   display: flex; align-items: center; justify-content: center;
-  opacity: 0.18;
-  transition: opacity 0.3s;
+  opacity: 1;
+  box-shadow: var(--shadow-xs);
 }
-.kpi-card:hover .kpi-icon { opacity: 0.24; }
 
 /* ── BUTTONS ─────────────────────────────────────────── */
 .btn {
