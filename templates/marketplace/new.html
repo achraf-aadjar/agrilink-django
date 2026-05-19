@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load agrilink_tags %}
-
 {% block title %}Nouvelle annonce{% endblock %}
 {% block nav_marketplace %}active{% endblock %}
 
@@ -9,36 +8,38 @@
 <div style="max-width:680px;margin:0 auto;">
 
   <div style="margin-bottom:24px;">
-    <a href="/marketplace/" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);text-decoration:none;font-weight:600;">← Retour au marché</a>
+    <a href="/marketplace/" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);text-decoration:none;font-weight:600;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Retour au marché
+    </a>
   </div>
 
-  <div style="margin-bottom:28px;">
-    <h1 style="font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--ink);">Publier une annonce</h1>
-    <p style="font-size:14px;color:var(--muted);margin-top:4px;">Vendez votre récolte directement aux acheteurs</p>
+  <div style="margin-bottom:32px;">
+    <h1 style="font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--ink);letter-spacing:-0.02em;">Publier une annonce</h1>
+    <p style="font-size:14px;color:var(--muted);margin-top:6px;">Mettez votre récolte en vente directement auprès des acheteurs.</p>
   </div>
 
   <div class="card-lg" style="padding:36px;">
-    <form method="post" id="new-listing-form">
+    <form method="post">
       {% csrf_token %}
       <input type="hidden" name="step" value="submit">
+      <input type="hidden" name="emoji" id="emoji-input" value="—">
+      <input type="hidden" name="market_price" id="market-price-input" value="0">
 
-      <!-- Crop selection -->
-      <div style="margin-bottom:28px;">
-        <label style="display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px;">Culture *</label>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;" id="crop-grid">
+      <!-- Crop -->
+      <div style="margin-bottom:32px;">
+        <label style="display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:14px;">Culture *</label>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
           {% for p in market_prices %}
           <label style="cursor:pointer;">
-            <input type="radio" name="crop" value="{{ p.crop }}" data-emoji="{{ p.emoji }}" style="display:none;" onchange="selectCrop('{{ p.crop }}','{{ p.emoji }}','{{ p.price }}')">
-            <div class="crop-btn" id="crop-{{ p.crop }}" style="border:2px solid var(--border);border-radius:12px;padding:14px;text-align:center;transition:all 0.15s;">
-              <div style="font-size:28px;margin-bottom:6px;">{{ p.emoji }}</div>
-              <div style="font-size:12px;font-weight:600;color:var(--ink);">{{ p.crop }}</div>
-              <div style="font-size:11px;color:var(--muted);margin-top:2px;">{{ p.price }} FCFA/kg</div>
+            <input type="radio" name="crop" value="{{ p.crop }}" style="display:none;" onchange="selectCrop('{{ p.crop }}','{{ p.emoji }}','{{ p.price }}')">
+            <div class="crop-btn" id="crop-{{ p.crop }}" style="border:1.5px solid var(--border);border-radius:10px;padding:16px;transition:all 0.15s;">
+              <p style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:3px;">{{ p.crop }}</p>
+              <p style="font-size:12px;color:var(--muted);">{{ p.price }} FCFA / kg</p>
             </div>
           </label>
           {% endfor %}
         </div>
-        <input type="hidden" name="emoji" id="emoji-input" value="🌾">
-        <input type="hidden" name="market_price" id="market-price-input" value="0">
       </div>
 
       <!-- Quantity + Quality -->
@@ -50,21 +51,21 @@
         <div>
           <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Qualité *</label>
           <select name="quality" class="field">
-            <option value="Grade A">Grade A — Premium</option>
-            <option value="Grade B">Grade B — Standard</option>
-            <option value="Standard">Standard — Ordinaire</option>
+            <option value="Grade A">Grade A — Qualité premium</option>
+            <option value="Grade B">Grade B — Qualité standard</option>
+            <option value="Standard">Standard</option>
           </select>
         </div>
       </div>
 
       <!-- Price -->
       <div style="margin-bottom:20px;">
-        <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Prix de vente (FCFA/kg) *</label>
+        <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Prix de vente (FCFA / kg) *</label>
         <div style="position:relative;">
-          <input type="number" name="price_per_kg" class="field" id="price-field" placeholder="200" min="1" required style="padding-right:80px;">
-          <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--muted);font-weight:600;">FCFA/kg</span>
+          <input type="number" name="price_per_kg" class="field" id="price-field" placeholder="200" min="1" required style="padding-right:90px;">
+          <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--muted);font-weight:600;">FCFA / kg</span>
         </div>
-        <p style="font-size:12px;color:var(--muted);margin-top:6px;" id="price-tip">Sélectionnez une culture pour voir le prix du marché.</p>
+        <p style="font-size:12px;color:var(--muted);margin-top:7px;" id="price-tip">Sélectionnez une culture pour afficher le cours du marché.</p>
       </div>
 
       <!-- Region + Date -->
@@ -89,13 +90,13 @@
       </div>
 
       <!-- Description -->
-      <div style="margin-bottom:28px;">
+      <div style="margin-bottom:32px;">
         <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Description (optionnel)</label>
-        <textarea name="description" class="field" rows="3" placeholder="Décrivez votre récolte, conditions de stockage, méthodes culturales..." style="resize:vertical;"></textarea>
+        <textarea name="description" class="field" rows="3" placeholder="Conditions de stockage, méthodes culturales, informations complémentaires..." style="resize:vertical;"></textarea>
       </div>
 
       <button type="submit" class="btn btn-forest" style="width:100%;justify-content:center;font-size:15px;padding:14px;">
-        Publier l'annonce →
+        Publier l'annonce
       </button>
     </form>
   </div>
@@ -118,7 +119,7 @@ function selectCrop(crop, emoji, marketPrice) {
   }
   document.getElementById('emoji-input').value = emoji;
   document.getElementById('market-price-input').value = marketPrice;
-  document.getElementById('price-tip').textContent = 'Prix marché actuel : ' + marketPrice + ' FCFA/kg';
+  document.getElementById('price-tip').textContent = 'Cours actuel du marché : ' + marketPrice + ' FCFA / kg';
 }
 </script>
 {% endblock %}

@@ -1,48 +1,51 @@
 {% extends "base.html" %}
 {% load agrilink_tags %}
-
 {% block title %}Crédit agricole{% endblock %}
 {% block nav_credit %}active{% endblock %}
 
 {% block content %}
 
-<!-- Header -->
-<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:32px;">
+<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:36px;">
   <div>
-    <h1 style="font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--ink);">Crédit agricole</h1>
-    <p style="font-size:14px;color:var(--muted);margin-top:4px;">Financements adaptés aux petits producteurs</p>
+    <h1 style="font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--ink);letter-spacing:-0.02em;">Crédit agricole</h1>
+    <p style="font-size:14px;color:var(--muted);margin-top:6px;">Financements adaptés aux producteurs de la zone UEMOA</p>
   </div>
-  <a href="/credit/apply/" class="btn btn-forest">Demander un crédit</a>
+  <a href="/credit/apply/" class="btn btn-forest">Faire une demande</a>
 </div>
 
-<!-- Agri-Score card -->
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px;">
+<!-- Score + Criteria -->
+<div style="display:grid;grid-template-columns:340px 1fr;gap:20px;margin-bottom:28px;">
 
-  <div class="card-lg" style="padding:32px;background:linear-gradient(135deg,var(--forest),#0d3d22);color:white;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-      <div>
-        <p style="font-size:12px;opacity:0.75;font-weight:600;margin-bottom:4px;">AGRI-SCORE</p>
-        <p style="font-family:'JetBrains Mono',monospace;font-size:3.5rem;font-weight:800;line-height:1;">{{ farmer.agri_score }}</p>
-        <p style="font-size:13px;opacity:0.8;margin-top:6px;">sur 100 points</p>
-      </div>
-      <div style="width:90px;height:90px;border-radius:50%;border:6px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:36px;">🌿</div>
+  <div style="background:var(--forest);border-radius:16px;padding:32px;">
+    <p style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:20px;">Agri-Score</p>
+    <div style="display:flex;align-items:flex-end;gap:8px;margin-bottom:8px;">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:4rem;font-weight:800;color:white;line-height:1;">{{ farmer.agri_score }}</span>
+      <span style="font-size:18px;color:rgba(255,255,255,0.5);margin-bottom:10px;">/ 100</span>
     </div>
-    <div style="background:rgba(255,255,255,0.15);border-radius:8px;padding:12px 16px;">
-      <p style="font-size:13px;font-weight:600;">Eligible à des crédits jusqu'à 300 000 FCFA</p>
+    <p style="font-size:14px;color:rgba(255,255,255,0.7);margin-bottom:28px;">Profil solide — Éligible au financement</p>
+    <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:14px 16px;">
+      <p style="font-size:13px;color:white;font-weight:600;">Montant maximal éligible</p>
+      <p style="font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:800;color:white;margin-top:4px;">300 000 FCFA</p>
     </div>
   </div>
 
-  <!-- Score criteria -->
   <div class="card" style="padding:28px;">
-    <h2 style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:var(--ink);margin-bottom:18px;">Critères du score</h2>
+    <h2 style="font-size:15px;font-weight:700;color:var(--ink);margin-bottom:22px;">Composition du score</h2>
     {% for c in score_criteria %}
-    <div style="margin-bottom:14px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-        <div style="display:flex;align-items:center;gap:8px;">
-          <span style="font-size:16px;">{{ c.icon }}</span>
+    <div style="margin-bottom:16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            {% if forloop.counter == 1 %}<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+            {% elif forloop.counter == 2 %}<polyline points="20 6 9 17 4 12"/>
+            {% elif forloop.counter == 3 %}<rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+            {% elif forloop.counter == 4 %}<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            {% else %}<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>{% endif %}
+          </svg>
           <span style="font-size:13px;color:var(--ink);font-weight:600;">{{ c.label }}</span>
+          <span style="font-size:11px;color:var(--muted);">{{ c.weight }} %</span>
         </div>
-        <span style="font-size:13px;font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--forest);">{{ c.score }}%</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:800;color:var(--forest);">{{ c.score }} %</span>
       </div>
       <div class="progress-bar">
         <div class="progress-fill" style="width:{{ c.score }}%;"></div>
@@ -56,48 +59,50 @@
 <!-- My credits -->
 {% if credits %}
 <div class="card" style="padding:28px;margin-bottom:28px;">
-  <h2 style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:var(--ink);margin-bottom:20px;">Mes crédits</h2>
-  <div style="display:flex;flex-direction:column;gap:0;">
-    {% for credit in credits %}
-    <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:{% if not forloop.last %}1px solid var(--border){% else %}none{% endif %};">
-      <div style="width:44px;height:44px;border-radius:12px;background:var(--forest-bg);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">{{ credit.purpose_emoji }}</div>
-      <div style="flex:1;">
-        <p style="font-size:14px;font-weight:700;color:var(--ink);">{{ credit.purpose }}</p>
-        <p style="font-size:12px;color:var(--muted);">{{ credit.imf_name }} · {{ credit.rate }}% · {{ credit.duration }} mois</p>
-      </div>
-      <div style="text-align:right;">
-        <p style="font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:800;color:var(--ink);">{{ credit.amount|fcfa }}</p>
-        <span class="badge badge-{% if credit.status == 'active' %}gold{% elif credit.status == 'repaid' %}forest{% else %}clay{% endif %}">
-          {% if credit.status == 'active' %}En cours{% elif credit.status == 'repaid' %}Remboursé{% else %}{{ credit.status }}{% endif %}
-        </span>
-      </div>
+  <h2 style="font-size:15px;font-weight:700;color:var(--ink);margin-bottom:20px;">Historique des demandes</h2>
+  {% for credit in credits %}
+  <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:{% if not forloop.last %}1px solid var(--border){% else %}none{% endif %};">
+    <div style="width:44px;height:44px;border-radius:10px;background:var(--cream-2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
     </div>
-    {% endfor %}
+    <div style="flex:1;">
+      <p style="font-size:14px;font-weight:700;color:var(--ink);">{{ credit.purpose }}</p>
+      <p style="font-size:12px;color:var(--muted);margin-top:2px;">{{ credit.imf_name }} &mdash; {{ credit.rate }} % &mdash; {{ credit.duration }} mois</p>
+    </div>
+    <div style="text-align:right;">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:800;color:var(--ink);">{{ credit.amount|fcfa }}</p>
+      <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;background:{% if credit.status == 'active' %}var(--gold-bg){% else %}var(--forest-bg){% endif %};color:{% if credit.status == 'active' %}var(--gold){% else %}var(--forest){% endif %};padding:3px 9px;border-radius:4px;display:inline-block;margin-top:4px;">
+        {% if credit.status == 'active' %}En cours{% elif credit.status == 'repaid' %}Remboursé{% else %}{{ credit.status }}{% endif %}
+      </span>
+    </div>
   </div>
+  {% endfor %}
 </div>
 {% endif %}
 
 <!-- IMF Partners -->
 <div>
-  <h2 style="font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;color:var(--ink);margin-bottom:20px;">Partenaires financiers</h2>
+  <h2 style="font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;color:var(--ink);letter-spacing:-0.01em;margin-bottom:20px;">Partenaires financiers</h2>
   <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;">
     {% for imf in imf_partners %}
     <div class="card" style="padding:24px;">
-      <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
-        <div style="width:48px;height:48px;border-radius:12px;background:var(--forest-bg);display:flex;align-items:center;justify-content:center;font-size:24px;">{{ imf.logo }}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
         <div>
           <p style="font-size:15px;font-weight:700;color:var(--ink);">{{ imf.name }}</p>
-          <p style="font-size:12px;color:var(--muted);">{{ imf.coverage }}</p>
+          <p style="font-size:12px;color:var(--muted);margin-top:2px;">{{ imf.coverage }}</p>
+        </div>
+        <div style="width:40px;height:40px;border-radius:8px;background:var(--cream-2);display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
-        <div style="background:var(--cream);border-radius:8px;padding:10px;">
-          <p style="font-size:11px;color:var(--muted);font-weight:600;">TAUX</p>
-          <p style="font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:800;color:var(--forest);">{{ imf.rate }}%</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+        <div style="background:var(--cream);border-radius:8px;padding:12px;">
+          <p style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Taux</p>
+          <p style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:800;color:var(--forest);">{{ imf.rate }} %</p>
         </div>
-        <div style="background:var(--cream);border-radius:8px;padding:10px;">
-          <p style="font-size:11px;color:var(--muted);font-weight:600;">MAX</p>
-          <p style="font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:800;color:var(--ink);">{{ imf.max_amount|fcfa }}</p>
+        <div style="background:var(--cream);border-radius:8px;padding:12px;">
+          <p style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Maximum</p>
+          <p style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:800;color:var(--ink);">{{ imf.max_amount|fcfa }}</p>
         </div>
       </div>
       <a href="/credit/apply/?imf={{ imf.id }}" class="btn btn-outline" style="width:100%;justify-content:center;font-size:13px;padding:9px;">

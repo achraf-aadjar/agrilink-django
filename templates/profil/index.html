@@ -1,110 +1,106 @@
 {% extends "base.html" %}
 {% load agrilink_tags %}
-
 {% block title %}Mon profil{% endblock %}
 
 {% block content %}
 
-<!-- Header -->
-<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:32px;">
-  <h1 style="font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--ink);">Mon profil</h1>
+<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:36px;">
+  <div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--ink);letter-spacing:-0.02em;">Mon profil</h1>
+    <p style="font-size:14px;color:var(--muted);margin-top:6px;">{{ farmer.phone }}</p>
+  </div>
   <a href="/logout/" class="btn btn-outline">Déconnecter</a>
 </div>
 
-<!-- Profile card -->
-<div style="display:grid;grid-template-columns:340px 1fr;gap:24px;margin-bottom:24px;">
+<div style="display:grid;grid-template-columns:300px 1fr;gap:24px;margin-bottom:24px;">
 
+  <!-- Profile card -->
   <div class="card-lg" style="padding:32px;text-align:center;">
-    <div class="avatar" style="width:80px;height:80px;font-size:32px;margin:0 auto 16px;">{{ farmer.name|slice:":1" }}</div>
-    <h2 style="font-family:'Fraunces',serif;font-size:1.5rem;font-weight:900;color:var(--ink);margin-bottom:4px;">{{ farmer.name }}</h2>
-    <p style="color:var(--muted);font-size:14px;margin-bottom:12px;">{{ farmer.phone }}</p>
+    <div class="avatar" style="width:72px;height:72px;font-size:28px;margin:0 auto 16px;">{{ farmer.name|slice:":1" }}</div>
+    <h2 style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;color:var(--ink);margin-bottom:4px;letter-spacing:-0.01em;">{{ farmer.name }}</h2>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:14px;">{{ farmer.phone }}</p>
     {% if farmer.is_verified %}
-    <span class="badge badge-forest" style="font-size:12px;padding:5px 14px;">✓ Agriculteur Vérifié</span>
+    <span style="display:inline-flex;align-items:center;gap:5px;background:var(--forest-bg);color:var(--forest);border-radius:4px;padding:4px 12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Agriculteur vérifié
+    </span>
     {% endif %}
 
-    <div style="margin-top:24px;padding-top:24px;border-top:1px solid var(--border);">
-      <div style="display:flex;justify-content:space-around;">
-        <div>
-          <p style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:800;color:var(--ink);">{{ farmer.surface }}</p>
-          <p style="font-size:11px;color:var(--muted);margin-top:2px;">hectares</p>
-        </div>
-        <div style="border-left:1px solid var(--border);"></div>
-        <div>
-          <p style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:800;color:var(--ink);">{{ farmer.total_transactions }}</p>
-          <p style="font-size:11px;color:var(--muted);margin-top:2px;">ventes</p>
-        </div>
-        <div style="border-left:1px solid var(--border);"></div>
-        <div>
-          <p style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:800;color:var(--forest);">{{ farmer.agri_score }}</p>
-          <p style="font-size:11px;color:var(--muted);margin-top:2px;">AgriScore</p>
-        </div>
+    <div style="margin-top:24px;padding-top:24px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;">
+      <div style="text-align:center;padding:0 8px;border-right:1px solid var(--border);">
+        <p style="font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:800;color:var(--ink);">{{ farmer.surface }}</p>
+        <p style="font-size:11px;color:var(--muted);margin-top:2px;">hectares</p>
+      </div>
+      <div style="text-align:center;padding:0 8px;border-right:1px solid var(--border);">
+        <p style="font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:800;color:var(--ink);">{{ farmer.total_transactions }}</p>
+        <p style="font-size:11px;color:var(--muted);margin-top:2px;">ventes</p>
+      </div>
+      <div style="text-align:center;padding:0 8px;">
+        <p style="font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:800;color:var(--forest);">{{ farmer.agri_score }}</p>
+        <p style="font-size:11px;color:var(--muted);margin-top:2px;">score</p>
       </div>
     </div>
 
     <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border);text-align:left;">
-      <p style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:10px;">CULTURES</p>
+      <p style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Cultures</p>
       <div style="display:flex;flex-wrap:wrap;gap:6px;">
         {% for crop in farmer.crops %}
-        <span class="badge badge-forest">{{ crop }}</span>
+        <span style="background:var(--forest-bg);color:var(--forest);border-radius:4px;padding:3px 10px;font-size:12px;font-weight:600;">{{ crop }}</span>
         {% endfor %}
       </div>
     </div>
 
     <div style="margin-top:16px;text-align:left;">
-      <p style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;">RÉGION</p>
-      <p style="font-size:14px;font-weight:600;color:var(--ink);">📍 {{ farmer.region }}</p>
+      <p style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Région</p>
+      <p style="font-size:14px;font-weight:600;color:var(--ink);">{{ farmer.region }}, Sénégal</p>
     </div>
   </div>
 
   <!-- Stats -->
   <div style="display:flex;flex-direction:column;gap:16px;">
 
-    <!-- Revenue stats -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
       <div class="card" style="padding:24px;">
-        <p style="font-size:12px;color:var(--muted);font-weight:600;margin-bottom:8px;">REVENU TOTAL</p>
+        <p style="font-size:11px;color:var(--muted);font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:10px;">Revenu total</p>
         <p style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:800;color:var(--ink);">{{ farmer.total_revenue|fcfa }}</p>
-        <p style="font-size:12px;color:var(--forest);margin-top:4px;">↑ +12% ce mois</p>
+        <p style="font-size:12px;color:var(--forest);font-weight:600;margin-top:6px;">+ 12 % ce mois</p>
       </div>
       <div class="card" style="padding:24px;">
-        <p style="font-size:12px;color:var(--muted);font-weight:600;margin-bottom:8px;">ÉCONOMIES RÉALISÉES</p>
+        <p style="font-size:11px;color:var(--muted);font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:10px;">Économies réalisées</p>
         <p style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:800;color:var(--clay);">{{ farmer.saved_vs_intermediaries|fcfa }}</p>
-        <p style="font-size:12px;color:var(--muted);margin-top:4px;">vs intermédiaires</p>
+        <p style="font-size:12px;color:var(--muted);font-weight:600;margin-top:6px;">vs. intermédiaires</p>
       </div>
     </div>
 
-    <!-- Revenue bars -->
     <div class="card" style="padding:24px;">
-      <p style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:16px;">Revenus mensuels 2026</p>
+      <p style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:18px;">Revenus mensuels 2026</p>
       <div style="display:flex;align-items:flex-end;gap:6px;height:80px;">
         {% for bar in revenue_bars %}
-        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;">
           <div style="flex:1;width:100%;display:flex;align-items:flex-end;">
-            <div style="width:100%;background:{% if bar.pct > 70 %}var(--forest){% elif bar.pct > 40 %}var(--clay){% else %}var(--sand){% endif %};border-radius:3px 3px 0 0;height:{{ bar.pct }}%;"></div>
+            <div style="width:100%;background:{% if bar.pct > 70 %}var(--forest){% elif bar.pct > 40 %}var(--clay){% else %}var(--cream-3){% endif %};border-radius:3px 3px 0 0;height:{{ bar.pct }}%;"></div>
           </div>
-          <span style="font-size:8px;color:var(--muted);font-weight:600;">{{ bar.month }}</span>
+          <span style="font-size:8px;color:var(--muted);font-weight:600;letter-spacing:0.04em;">{{ bar.month }}</span>
         </div>
         {% endfor %}
       </div>
     </div>
 
-    <!-- Credits summary -->
     {% if credits %}
     <div class="card" style="padding:24px;">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-        <p style="font-size:13px;font-weight:700;color:var(--ink);">Historique crédits</p>
-        <a href="/credit/" style="font-size:13px;color:var(--forest);font-weight:600;text-decoration:none;">Voir tout →</a>
+        <p style="font-size:13px;font-weight:700;color:var(--ink);">Historique des crédits</p>
+        <a href="/credit/" style="font-size:13px;color:var(--forest);font-weight:600;text-decoration:none;">Voir tout</a>
       </div>
       {% for credit in credits %}
       <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:{% if not forloop.last %}1px solid var(--border){% else %}none{% endif %};">
-        <span style="font-size:20px;">{{ credit.purpose_emoji }}</span>
         <div style="flex:1;">
           <p style="font-size:13px;font-weight:600;color:var(--ink);">{{ credit.purpose }}</p>
-          <p style="font-size:11px;color:var(--muted);">{{ credit.imf_name }}</p>
+          <p style="font-size:11px;color:var(--muted);margin-top:2px;">{{ credit.imf_name }}</p>
         </div>
         <div style="text-align:right;">
           <p style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:800;color:var(--ink);">{{ credit.amount|fcfa }}</p>
-          <span class="badge badge-{% if credit.status == 'active' %}gold{% else %}forest{% endif %}" style="font-size:10px;">
+          <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;background:{% if credit.status == 'active' %}var(--gold-bg){% else %}var(--forest-bg){% endif %};color:{% if credit.status == 'active' %}var(--gold){% else %}var(--forest){% endif %};padding:2px 8px;border-radius:4px;display:inline-block;margin-top:3px;">
             {% if credit.status == 'active' %}En cours{% else %}Remboursé{% endif %}
           </span>
         </div>
@@ -114,28 +110,32 @@
     {% endif %}
 
   </div>
-
 </div>
 
-<!-- My listings -->
+<!-- Listings -->
 {% if listings %}
 <div class="card" style="padding:28px;">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-    <h2 style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:var(--ink);">Mes annonces actives</h2>
-    <a href="/marketplace/new/" class="btn btn-forest" style="font-size:13px;padding:9px 18px;">+ Nouvelle annonce</a>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;">
+    <h2 style="font-size:15px;font-weight:700;color:var(--ink);">Mes annonces actives</h2>
+    <a href="/marketplace/new/" class="btn btn-forest" style="font-size:13px;padding:9px 18px;gap:5px;">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Nouvelle annonce
+    </a>
   </div>
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;">
     {% for listing in listings %}
-    <a href="/marketplace/{{ listing.pk }}/" style="text-decoration:none;display:block;border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:all 0.15s;" onmouseover="this.style.boxShadow='0 4px 16px rgba(26,14,8,0.1)'" onmouseout="this.style.boxShadow='none'">
+    <a href="/marketplace/{{ listing.pk }}/" style="text-decoration:none;display:block;border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:box-shadow 0.15s;" onmouseover="this.style.boxShadow='0 4px 20px rgba(26,14,8,0.09)'" onmouseout="this.style.boxShadow='none'">
       {% if listing.photo_url %}
-      <img src="{{ listing.photo_url }}" style="width:100%;height:120px;object-fit:cover;display:block;" alt="{{ listing.crop }}">
+      <img src="{{ listing.photo_url }}" style="width:100%;height:130px;object-fit:cover;display:block;" alt="{{ listing.crop }}">
       {% else %}
-      <div style="width:100%;height:120px;background:var(--cream-2);display:flex;align-items:center;justify-content:center;font-size:48px;">{{ listing.emoji }}</div>
+      <div style="width:100%;height:130px;background:var(--cream-2);display:flex;align-items:center;justify-content:center;">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--muted-2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      </div>
       {% endif %}
-      <div style="padding:14px;">
-        <p style="font-weight:700;color:var(--ink);margin-bottom:2px;">{{ listing.emoji }} {{ listing.crop }}</p>
-        <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">{{ listing.quantity }} kg · {{ listing.quality }}</p>
-        <p style="font-family:'JetBrains Mono',monospace;font-weight:800;color:var(--forest);">{{ listing.price_per_kg }} FCFA/kg</p>
+      <div style="padding:14px 16px;">
+        <p style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:2px;">{{ listing.crop }}</p>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">{{ listing.quantity }} kg &mdash; {{ listing.quality }}</p>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:800;color:var(--forest);">{{ listing.price_per_kg }} FCFA / kg</p>
       </div>
     </a>
     {% endfor %}

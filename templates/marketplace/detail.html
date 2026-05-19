@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load agrilink_tags %}
-
 {% block title %}{{ listing.crop }} — Marché{% endblock %}
 {% block nav_marketplace %}active{% endblock %}
 
@@ -8,96 +7,96 @@
 
 <div style="margin-bottom:20px;">
   <a href="/marketplace/" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);text-decoration:none;font-weight:600;">
-    ← Retour au marché
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    Retour au marché
   </a>
 </div>
 
 {% if offer_sent %}
-<!-- Success state -->
-<div style="max-width:560px;margin:60px auto;text-align:center;">
-  <div style="width:80px;height:80px;border-radius:50%;background:var(--forest-bg);display:flex;align-items:center;justify-content:center;font-size:40px;margin:0 auto 24px;">✅</div>
-  <h1 style="font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--ink);margin-bottom:12px;">Offre envoyée !</h1>
-  <p style="color:var(--muted);font-size:15px;margin-bottom:8px;">{{ quantity }} kg à {{ offer_price }} FCFA/kg</p>
-  <p style="font-family:'JetBrains Mono',monospace;font-size:1.8rem;font-weight:800;color:var(--forest);margin-bottom:24px;">Total : {{ total|fcfa }}</p>
-  <p style="color:var(--muted);font-size:14px;margin-bottom:32px;">{{ listing.farmer.name }} recevra votre offre par SMS et vous contactera sous 24h.</p>
+
+<div style="max-width:520px;margin:72px auto;text-align:center;">
+  <div style="width:64px;height:64px;border-radius:50%;background:var(--forest-bg);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--forest)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  </div>
+  <h1 style="font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--ink);margin-bottom:12px;letter-spacing:-0.02em;">Offre envoyée</h1>
+  <p style="color:var(--muted);font-size:15px;margin-bottom:6px;">{{ quantity }} kg &mdash; {{ offer_price }} FCFA / kg</p>
+  <p style="font-family:'JetBrains Mono',monospace;font-size:1.8rem;font-weight:800;color:var(--forest);margin-bottom:20px;">{{ total|fcfa }}</p>
+  <p style="color:var(--muted);font-size:14px;line-height:1.7;max-width:380px;margin:0 auto 36px;">{{ listing.farmer.name }} a été notifié par SMS et vous contactera dans les 24 heures.</p>
   <div style="display:flex;gap:12px;justify-content:center;">
-    <a href="/marketplace/" class="btn btn-outline">← Retour au marché</a>
-    <a href="/dashboard/" class="btn btn-forest">Mon tableau de bord</a>
+    <a href="/marketplace/" class="btn btn-outline">Retour au marché</a>
+    <a href="/dashboard/" class="btn btn-forest">Tableau de bord</a>
   </div>
 </div>
 
 {% else %}
 
-<div style="display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:start;">
+<div style="display:grid;grid-template-columns:1fr 400px;gap:32px;align-items:start;">
 
-  <!-- Photo + Info -->
+  <!-- Left -->
   <div>
-    <div style="border-radius:16px;overflow:hidden;margin-bottom:24px;border:1px solid var(--border);">
+    <div style="border-radius:14px;overflow:hidden;border:1px solid var(--border);margin-bottom:24px;background:var(--cream-2);">
       {% if listing.photo_url %}
-      <img src="{{ listing.photo_url }}" alt="{{ listing.crop }}" style="width:100%;height:380px;object-fit:cover;display:block;">
+      <img src="{{ listing.photo_url }}" alt="{{ listing.crop }}" style="width:100%;height:400px;object-fit:cover;display:block;">
       {% else %}
-      <div style="width:100%;height:380px;background:var(--cream-2);display:flex;align-items:center;justify-content:center;font-size:120px;">{{ listing.emoji }}</div>
+      <div style="width:100%;height:400px;display:flex;align-items:center;justify-content:center;">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--muted-2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      </div>
       {% endif %}
     </div>
 
     <div class="card" style="padding:28px;">
-      <h2 style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;color:var(--ink);margin-bottom:16px;">À propos du vendeur</h2>
-      <div style="display:flex;align-items:center;gap:14px;">
-        <div class="avatar" style="width:48px;height:48px;font-size:18px;">{{ listing.farmer.name|slice:":1" }}</div>
+      <h2 style="font-size:15px;font-weight:700;color:var(--ink);margin-bottom:18px;">À propos du vendeur</h2>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <div class="avatar" style="width:52px;height:52px;font-size:20px;flex-shrink:0;">{{ listing.farmer.name|slice:":1" }}</div>
         <div>
-          <p style="font-weight:700;color:var(--ink);">{{ listing.farmer.name }}</p>
-          <p style="font-size:13px;color:var(--muted);">{{ listing.farmer.region }} · {{ listing.farmer.surface }} ha cultivés</p>
+          <p style="font-size:15px;font-weight:700;color:var(--ink);margin-bottom:3px;">{{ listing.farmer.name }}</p>
+          <p style="font-size:13px;color:var(--muted);">{{ listing.farmer.region }} &mdash; {{ listing.farmer.surface }} ha cultivés</p>
           {% if listing.farmer.is_verified %}
-          <span class="badge badge-forest" style="margin-top:6px;display:inline-block;">✓ Agriculteur Vérifié</span>
+          <span style="display:inline-flex;align-items:center;gap:4px;margin-top:7px;background:var(--forest-bg);color:var(--forest);border-radius:4px;padding:3px 9px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Agriculteur vérifié
+          </span>
           {% endif %}
         </div>
       </div>
       {% if listing.description %}
-      <p style="font-size:14px;color:var(--muted);margin-top:16px;line-height:1.7;">{{ listing.description }}</p>
+      <p style="font-size:14px;color:var(--muted);margin-top:18px;line-height:1.75;padding-top:18px;border-top:1px solid var(--border);">{{ listing.description }}</p>
       {% endif %}
     </div>
   </div>
 
-  <!-- Offer panel -->
+  <!-- Right panel -->
   <div style="position:sticky;top:80px;">
-    <div class="card-lg" style="padding:28px;">
+    <div class="card-lg" style="padding:30px;">
 
-      <!-- Product header -->
-      <div style="margin-bottom:24px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-          <span style="font-size:40px;">{{ listing.emoji }}</span>
+      <div style="margin-bottom:22px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
           <div>
-            <h1 style="font-family:'Fraunces',serif;font-size:1.7rem;font-weight:900;color:var(--ink);">{{ listing.crop }}</h1>
-            <p style="font-size:13px;color:var(--muted);">{{ listing.region }}</p>
+            <h1 style="font-family:'Fraunces',serif;font-size:1.8rem;font-weight:900;color:var(--ink);letter-spacing:-0.02em;">{{ listing.crop }}</h1>
+            <p style="font-size:13px;color:var(--muted);margin-top:2px;">{{ listing.region }}</p>
           </div>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <span class="badge badge-{% if listing.quality == 'Grade A' %}forest{% elif listing.quality == 'Grade B' %}gold{% else %}clay{% endif %}">{{ listing.quality }}</span>
-          <span class="badge badge-blue">{{ listing.quantity }} kg disponibles</span>
+          <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;background:var(--forest-bg);color:var(--forest);padding:4px 10px;border-radius:4px;">{{ listing.quality }}</span>
+          <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;background:var(--blue-bg);color:var(--blue);padding:4px 10px;border-radius:4px;">{{ listing.quantity }} kg disponibles</span>
         </div>
       </div>
 
-      <!-- Price row -->
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:16px;background:var(--forest-bg);border-radius:12px;margin-bottom:20px;">
-        <div>
-          <div style="font-size:11px;color:var(--forest);font-weight:700;margin-bottom:4px;">PRIX AGRICULTEUR</div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:1.8rem;font-weight:800;color:var(--forest);">{{ listing.price_per_kg }}</div>
-          <div style="font-size:12px;color:var(--forest);">FCFA/kg</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px;">
+        <div style="background:var(--forest-bg);border-radius:10px;padding:16px;">
+          <p style="font-size:11px;color:var(--forest);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Prix agriculteur</p>
+          <p style="font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:800;color:var(--forest);">{{ listing.price_per_kg }}</p>
+          <p style="font-size:12px;color:var(--forest);margin-top:2px;">FCFA / kg</p>
         </div>
         {% if market %}
-        <div style="text-align:right;">
-          <div style="font-size:11px;color:var(--muted);font-weight:700;margin-bottom:4px;">PRIX MARCHÉ</div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:var(--muted);">{{ market.price }}</div>
-          <div style="font-size:12px;color:var(--forest);font-weight:700;">
-            {% if listing.price_per_kg < market.price %}
-            Économie vs marché !
-            {% endif %}
-          </div>
+        <div style="background:var(--cream);border-radius:10px;padding:16px;">
+          <p style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Prix du marché</p>
+          <p style="font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:800;color:var(--muted);">{{ market.price }}</p>
+          <p style="font-size:12px;color:var(--muted);margin-top:2px;">FCFA / kg</p>
         </div>
         {% endif %}
       </div>
 
-      <!-- Offer form -->
       <form method="post">
         {% csrf_token %}
         <div style="margin-bottom:16px;">
@@ -105,21 +104,20 @@
           <input type="number" name="quantity" class="field" value="100" min="10" max="{{ listing.quantity }}" id="qty-input" oninput="updateTotal()">
         </div>
         <div style="margin-bottom:20px;">
-          <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Prix proposé (FCFA/kg)</label>
+          <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Prix proposé (FCFA / kg)</label>
           <input type="number" name="offer_price" class="field" value="{{ listing.price_per_kg }}" min="1" id="price-input" oninput="updateTotal()">
         </div>
 
-        <!-- Total preview -->
-        <div style="background:var(--cream);border-radius:12px;padding:16px;margin-bottom:20px;">
-          <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:8px;">
-            <span style="color:var(--muted);">Sous-total estimé</span>
-            <span id="total-display" style="font-family:'JetBrains Mono',monospace;font-weight:800;color:var(--ink);">{{ listing.price_per_kg|add:0 }} FCFA</span>
+        <div style="background:var(--cream);border-radius:10px;padding:16px;margin-bottom:20px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:13px;color:var(--muted);">Total estimé</span>
+            <span id="total-display" style="font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:800;color:var(--ink);">100 FCFA</span>
           </div>
-          <p style="font-size:11px;color:var(--muted);">Paiement sécurisé à la livraison</p>
+          <p style="font-size:11px;color:var(--muted);margin-top:6px;">Règlement à la livraison</p>
         </div>
 
         <button type="submit" class="btn btn-forest" style="width:100%;justify-content:center;font-size:15px;padding:14px;">
-          Envoyer l'offre →
+          Envoyer l'offre
         </button>
       </form>
 
@@ -137,8 +135,7 @@
 function updateTotal() {
   const qty = parseInt(document.getElementById('qty-input').value) || 0;
   const price = parseInt(document.getElementById('price-input').value) || 0;
-  const total = qty * price;
-  document.getElementById('total-display').textContent = total.toLocaleString('fr-FR') + ' FCFA';
+  document.getElementById('total-display').textContent = (qty * price).toLocaleString('fr-FR') + ' FCFA';
 }
 updateTotal();
 </script>
