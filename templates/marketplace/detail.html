@@ -5,11 +5,15 @@
 
 {% block content %}
 
-<div style="margin-bottom:20px;">
-  <a href="/marketplace/" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);text-decoration:none;font-weight:600;">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-    Retour au marché
-  </a>
+<div class="page-header" style="margin-bottom:28px;">
+  <div class="page-header-content">
+    <a href="/marketplace/" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:rgba(255,255,255,0.5);text-decoration:none;margin-bottom:12px;letter-spacing:0.04em;text-transform:uppercase;">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Retour au marché
+    </a>
+    <h1 class="page-header-title">{{ listing.crop }}</h1>
+    <p class="page-header-sub">{{ listing.region }} &mdash; {{ listing.quantity }} kg &mdash; {{ listing.quality }}</p>
+  </div>
 </div>
 
 {% if offer_sent %}
