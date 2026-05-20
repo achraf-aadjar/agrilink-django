@@ -18,7 +18,7 @@
 
 <div class="wrap"><div style="max-width:680px;margin:0 auto;">
 
-  <div class="card-lg" style="padding:36px;">
+  <div class="glass-card" style="padding:36px;">
     <form method="post">
       {% csrf_token %}
       <input type="hidden" name="step" value="submit">
@@ -96,7 +96,7 @@
 function selectCrop(crop, emoji, marketPrice) {
   document.querySelectorAll('.crop-btn').forEach(btn => {
     btn.style.borderColor = 'var(--border)';
-    btn.style.background = 'white';
+    btn.style.background = 'transparent';
   });
   const btn = document.getElementById('crop-' + crop);
   if (btn) {

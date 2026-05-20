@@ -256,7 +256,7 @@
 {% if recent_offers %}
 <div class="card" style="padding:0;margin-bottom:20px;overflow:hidden;">
   <!-- Header -->
-  <div style="padding:22px 26px 18px;border-bottom:1px solid rgba(15,26,12,0.05);display:flex;align-items:center;justify-content:space-between;">
+  <div style="padding:22px 26px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
     <div style="display:flex;align-items:center;gap:12px;">
       <div style="width:36px;height:36px;border-radius:9px;background:var(--gold-bg);display:flex;align-items:center;justify-content:center;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -270,7 +270,7 @@
   </div>
   <!-- Rows -->
   {% for offer in recent_offers %}
-  <div style="display:flex;align-items:center;gap:14px;padding:14px 26px;{% if not forloop.last %}border-bottom:1px solid rgba(15,26,12,0.05);{% endif %}transition:background 0.12s;" onmouseover="this.style.background='var(--cream)'" onmouseout="this.style.background='white'">
+  <div style="display:flex;align-items:center;gap:14px;padding:14px 26px;{% if not forloop.last %}border-bottom:1px solid var(--border);{% endif %}transition:background 0.12s;" onmouseover="this.style.background='var(--cream)'" onmouseout="this.style.background='transparent'">
     <div style="width:44px;height:44px;border-radius:12px;background:var(--forest-bg);border:1px solid rgba(27,94,56,0.08);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">{{ offer.listing.emoji }}</div>
     <div style="flex:1;min-width:0;">
       <p style="font-size:14px;font-weight:700;color:var(--ink);">{{ offer.buyer_name }}</p>
@@ -305,7 +305,7 @@
 
   <!-- Cours du marché -->
   <div class="card" style="padding:0;overflow:hidden;">
-    <div style="padding:20px 24px 16px;border-bottom:1px solid rgba(15,26,12,0.05);display:flex;align-items:center;justify-content:space-between;">
+    <div style="padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
       <div style="display:flex;align-items:center;gap:10px;">
         <div style="width:32px;height:32px;border-radius:8px;background:var(--blue-bg);display:flex;align-items:center;justify-content:center;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
@@ -319,7 +319,7 @@
     </div>
     <div style="padding:0 4px;">
       {% for p in market_prices %}
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 20px;{% if not forloop.last %}border-bottom:1px solid rgba(15,26,12,0.05);{% endif %}transition:background 0.12s;" onmouseover="this.style.background='var(--cream)'" onmouseout="this.style.background='transparent'">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 20px;{% if not forloop.last %}border-bottom:1px solid var(--border);{% endif %}transition:background 0.12s;" onmouseover="this.style.background='var(--cream)'" onmouseout="this.style.background='transparent'">
         <span style="font-size:13px;font-weight:600;color:var(--ink);">{{ p.crop }}</span>
         <div style="display:flex;align-items:center;gap:12px;">
           <span style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:800;color:var(--ink);">{{ p.price }}</span>
@@ -334,7 +334,7 @@
 
   <!-- Mes annonces -->
   <div class="card" style="padding:0;overflow:hidden;">
-    <div style="padding:20px 24px 16px;border-bottom:1px solid rgba(15,26,12,0.05);display:flex;align-items:center;justify-content:space-between;">
+    <div style="padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
       <div style="display:flex;align-items:center;gap:10px;">
         <div style="width:32px;height:32px;border-radius:8px;background:var(--forest-bg);display:flex;align-items:center;justify-content:center;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--forest)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
@@ -352,7 +352,7 @@
     <div style="padding:0 4px;">
       {% if listings %}
       {% for listing in listings %}
-      <a href="/marketplace/{{ listing.pk }}/" style="display:flex;align-items:center;gap:12px;padding:12px 20px;{% if not forloop.last %}border-bottom:1px solid rgba(15,26,12,0.05);{% endif %}text-decoration:none;transition:background 0.12s;" onmouseover="this.style.background='var(--cream)'" onmouseout="this.style.background='transparent'">
+      <a href="/marketplace/{{ listing.pk }}/" style="display:flex;align-items:center;gap:12px;padding:12px 20px;{% if not forloop.last %}border-bottom:1px solid var(--border);{% endif %}text-decoration:none;transition:background 0.12s;" onmouseover="this.style.background='var(--cream)'" onmouseout="this.style.background='transparent'">
         <div style="width:42px;height:42px;border-radius:10px;background:var(--cream-2);overflow:hidden;flex-shrink:0;">
           {% if listing.photo_url %}
           <img src="{{ listing.photo_url }}" style="width:100%;height:100%;object-fit:cover;" alt="">

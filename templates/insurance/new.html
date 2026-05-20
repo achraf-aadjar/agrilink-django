@@ -35,7 +35,7 @@
 
   {% else %}
 
-  <div class="card-lg" style="padding:36px;">
+  <div class="glass-card" style="padding:36px;">
     <form method="post">
       {% csrf_token %}
       <input type="hidden" name="step" value="submit">
@@ -107,7 +107,7 @@
 function selectInsuranceCrop(emoji, name, el) {
   document.querySelectorAll('.ins-crop-btn').forEach(btn => {
     btn.style.borderColor = 'var(--border)';
-    btn.style.background = 'white';
+    btn.style.background = 'transparent';
   });
   el.style.borderColor = 'var(--forest)';
   el.style.background = 'var(--forest-bg)';

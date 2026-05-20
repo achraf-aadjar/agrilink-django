@@ -35,7 +35,7 @@
 
   {% else %}
 
-  <div class="card-lg" style="padding:36px;">
+  <div class="glass-card" style="padding:36px;">
     <form method="post">
       {% csrf_token %}
       <input type="hidden" name="step" value="submit">
@@ -155,7 +155,7 @@
 function setPurpose(emoji, label, el) {
   document.querySelectorAll('.purpose-btn').forEach(b => {
     b.style.borderColor = 'var(--border)';
-    b.style.background = 'white';
+    b.style.background = 'transparent';
   });
   el.style.borderColor = 'var(--forest)';
   el.style.background = 'var(--forest-bg)';

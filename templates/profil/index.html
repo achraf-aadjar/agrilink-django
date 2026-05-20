@@ -38,7 +38,7 @@
       </span>
       {% endif %}
 
-      <div style="margin-top:24px;padding-top:24px;border-top:1px solid rgba(15,26,12,0.05);display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;">
+      <div style="margin-top:24px;padding-top:24px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;">
         <div style="text-align:center;padding:0 8px;border-right:1px solid var(--border);">
           <p style="font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:800;color:var(--ink);">{{ farmer.surface }}</p>
           <p style="font-size:11px;color:var(--muted);margin-top:2px;">hectares</p>
@@ -53,7 +53,7 @@
         </div>
       </div>
 
-      <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(15,26,12,0.05);text-align:left;">
+      <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border);text-align:left;">
         <p style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Cultures</p>
         <div style="display:flex;flex-wrap:wrap;gap:6px;">
           {% for crop in farmer.crops %}
@@ -223,7 +223,7 @@ function toggleEditCrop(label) {
   const cb = label.querySelector('input[type=checkbox]');
   cb.checked = !cb.checked;
   label.style.borderColor = cb.checked ? 'var(--forest)' : 'var(--border)';
-  label.style.background  = cb.checked ? 'var(--forest-bg)' : 'white';
+  label.style.background  = cb.checked ? 'var(--forest-bg)' : 'transparent';
   label.style.color       = cb.checked ? 'var(--forest)' : 'var(--ink)';
 }
 // Init checkbox states on load
@@ -231,7 +231,7 @@ document.querySelectorAll('#edit-form input[type=checkbox]').forEach(cb => {
   const label = cb.closest('label');
   if (cb.checked) {
     label.style.borderColor = 'var(--forest)';
-    label.style.background  = 'var(--forest-bg)';
+    label.style.background = 'var(--forest-bg)';
     label.style.color       = 'var(--forest)';
   }
 });
