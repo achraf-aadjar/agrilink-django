@@ -23,7 +23,66 @@ REGION_COORDS = {
     'Tambacounda': (13.7707, -13.6673),
     'Fatick':      (14.3392, -16.4115),
     'Louga':       (15.6173, -16.2240),
+    # Mali
+    'Bamako':      (12.6392, -8.0029),
+    'Sikasso':     (11.3176, -5.6660),
+    'Mopti':       (14.4943, -4.1967),
+    # Burkina Faso
+    'Ouagadougou': (12.3647, -1.5332),
+    'Bobo-Dioulasso': (11.1771, -4.2979),
+    # Côte d'Ivoire
+    "Abidjan":     (5.3484,  -4.0269),
+    'Bouaké':      (7.6906,  -5.0302),
+    'Yamoussoukro':(6.8276,  -5.2893),
+    # Niger
+    'Niamey':      (13.5137,  2.1098),
+    'Zinder':      (13.8042,  8.9881),
+    # Guinée-Bissau
+    'Bissau':      (11.8636, -15.5977),
+    # Togo
+    'Lomé':        (6.1375,   1.2123),
+    # Bénin
+    'Cotonou':     (6.3654,   2.4183),
+    'Porto-Novo':  (6.4966,   2.6289),
 }
+
+# Saisons agricoles par zone climatique UEMOA
+# Zone sahélienne : 1 hivernage (Sénégal nord, Mali, Niger, Burkina Faso)
+# Zone soudanienne : hivernage + contre-saison (Sénégal sud, Mali sud, Burkina sud)
+# Zone guinéenne : 2 saisons des pluies (Côte d'Ivoire, Togo, Bénin, Guinée-Bissau)
+SEASONS_BY_REGION = {
+    # Sénégal — zone sahélienne/soudanienne
+    'Dakar':       ['Hivernage 2026 (juil–oct)', 'Contre-saison 2026–2027 (nov–fév)'],
+    'Thiès':       ['Hivernage 2026 (juil–oct)', 'Contre-saison 2026–2027 (nov–fév)'],
+    'Kaolack':     ['Hivernage 2026 (juil–oct)', 'Contre-saison 2026–2027 (nov–fév)'],
+    'Louga':       ['Hivernage 2026 (juil–sept)', 'Contre-saison 2026–2027 (oct–fév)'],
+    'Saint-Louis': ['Hivernage 2026 (juil–sept)', 'Contre-saison 2026–2027 (oct–fév)'],
+    'Fatick':      ['Hivernage 2026 (juil–oct)', 'Contre-saison 2026–2027 (nov–fév)'],
+    'Tambacounda': ['Hivernage 2026 (juin–oct)', 'Contre-saison 2026–2027 (nov–mars)'],
+    'Ziguinchor':  ['Grande saison des pluies 2026 (juin–oct)', 'Petite saison sèche 2026 (nov–jan)', 'Contre-saison 2027 (fév–mai)'],
+    # Mali
+    'Bamako':      ['Hivernage 2026 (juin–oct)', 'Saison sèche 2026–2027 (nov–mai)'],
+    'Sikasso':     ['Hivernage 2026 (mai–oct)', 'Saison sèche 2026–2027 (nov–avr)'],
+    'Mopti':       ['Hivernage 2026 (juil–sept)', 'Saison sèche 2026–2027 (oct–juin)'],
+    # Burkina Faso
+    'Ouagadougou': ['Hivernage 2026 (juin–sept)', 'Saison sèche 2026–2027 (oct–mai)'],
+    'Bobo-Dioulasso': ['Hivernage 2026 (mai–oct)', 'Saison sèche 2026–2027 (nov–avr)'],
+    # Côte d'Ivoire — zone guinéenne (2 saisons des pluies)
+    'Abidjan':     ['Grande saison des pluies 2026 (avr–juil)', 'Petite saison des pluies 2026 (sept–nov)', 'Grande saison sèche 2026–2027 (déc–mars)'],
+    'Bouaké':      ['Grande saison des pluies 2026 (avr–juil)', 'Petite saison des pluies 2026 (sept–oct)', 'Saison sèche 2026–2027 (nov–mars)'],
+    'Yamoussoukro': ['Grande saison des pluies 2026 (avr–juil)', 'Petite saison des pluies 2026 (sept–nov)', 'Grande saison sèche 2026–2027 (déc–mars)'],
+    # Niger — zone sahélienne courte
+    'Niamey':      ['Hivernage 2026 (juil–sept)', 'Saison sèche 2026–2027 (oct–juin)'],
+    'Zinder':      ['Hivernage 2026 (juil–août)', 'Saison sèche 2026–2027 (sept–juin)'],
+    # Guinée-Bissau — zone guinéenne
+    'Bissau':      ['Grande saison des pluies 2026 (juin–nov)', 'Saison sèche 2027 (déc–mai)'],
+    # Togo — zone guinéenne
+    'Lomé':        ['Grande saison des pluies 2026 (avr–juil)', 'Petite saison des pluies 2026 (sept–nov)', 'Grande saison sèche 2026–2027 (déc–mars)'],
+    # Bénin — zone guinéenne
+    'Cotonou':     ['Grande saison des pluies 2026 (avr–juil)', 'Petite saison des pluies 2026 (sept–nov)', 'Grande saison sèche 2026–2027 (déc–mars)'],
+    'Porto-Novo':  ['Grande saison des pluies 2026 (avr–juil)', 'Petite saison des pluies 2026 (sept–nov)', 'Grande saison sèche 2026–2027 (déc–mars)'],
+}
+DEFAULT_SEASONS = ['Hivernage 2026 (juil–oct)', 'Contre-saison 2026–2027 (nov–mars)']
 
 CROPS_CATALOG = [
     {'crop': 'Arachide', 'base': 385, 'emoji': '🥜'},
@@ -577,10 +636,12 @@ def insurance_new(request):
             coverage   = premium * 8,
         )
         return render(request, 'insurance/new.html', {'submitted': True, 'farmer': farmer})
+    seasons = SEASONS_BY_REGION.get(farmer.region, DEFAULT_SEASONS)
     return render(request, 'insurance/new.html', {
         'submitted':     False,
         'farmer':        farmer,
         'crops_catalog': CROPS_CATALOG,
+        'seasons':       seasons,
     })
 
 

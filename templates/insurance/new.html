@@ -66,9 +66,9 @@
       <div style="margin-bottom:20px;">
         <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Saison *</label>
         <select name="season" class="field">
-          <option value="Hivernage 2026">Hivernage 2026 (Juillet–Octobre)</option>
-          <option value="Contre-saison 2026">Contre-saison 2026 (Novembre–Février)</option>
-          <option value="Grande saison 2026">Grande saison 2026 (Mars–Juin)</option>
+          {% for saison in seasons %}
+          <option value="{{ saison }}">{{ saison }}</option>
+          {% endfor %}
         </select>
       </div>
 
