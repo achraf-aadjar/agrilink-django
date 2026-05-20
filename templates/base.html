@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,700&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/main.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
   {% block extra_head %}{% endblock %}
 </head>
 <body>
@@ -77,5 +78,8 @@
 </main>
 
 {% block extra_scripts %}{% endblock %}
+<script>
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+</script>
 </body>
 </html>

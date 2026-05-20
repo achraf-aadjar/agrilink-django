@@ -210,50 +210,53 @@ body {
 /* ── CARDS ───────────────────────────────────────────── */
 .card {
   background: white;
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.3s, transform 0.3s, border-color 0.25s;
+  border-radius: 20px;
+  box-shadow: 0 2px 12px rgba(15,26,12,0.06), 0 8px 32px rgba(15,26,12,0.04);
+  transition: box-shadow 0.3s, transform 0.3s;
 }
 .card:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 4px 24px rgba(15,26,12,0.09), 0 12px 48px rgba(15,26,12,0.06);
 }
 
 .card-lg {
   background: white;
-  border-radius: 20px;
-  border: 1px solid var(--border);
-  box-shadow: 0 2px 8px rgba(15,26,12,0.05), 0 8px 32px rgba(15,26,12,0.04);
+  border-radius: 24px;
+  box-shadow: 0 2px 12px rgba(15,26,12,0.06), 0 10px 40px rgba(15,26,12,0.05);
 }
 
 .card-lift:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
-  border-color: transparent;
 }
 
 /* ── KPI CARDS ───────────────────────────────────────── */
 .kpi-card {
-  background: white;
-  border-radius: 16px;
-  border: 1px solid var(--border);
+  border-radius: 20px;
   padding: 24px;
   position: relative;
   overflow: hidden;
   transition: transform 0.25s, box-shadow 0.25s;
+  box-shadow: 0 2px 12px rgba(15,26,12,0.05);
 }
 .kpi-card::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 3px;
-  border-radius: 16px 16px 0 0;
+  height: 4px;
+  border-radius: 20px 20px 0 0;
 }
-.kpi-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.kpi-card:hover { transform: translateY(-3px); box-shadow: 0 6px 24px rgba(15,26,12,0.10); }
 
+.kpi-card-forest { background: var(--forest-bg); }
 .kpi-card-forest::before { background: linear-gradient(90deg, var(--forest), var(--forest-mid)); }
+
+.kpi-card-clay   { background: var(--clay-bg); }
 .kpi-card-clay::before   { background: linear-gradient(90deg, var(--clay), var(--clay-2)); }
+
+.kpi-card-gold   { background: var(--gold-bg); }
 .kpi-card-gold::before   { background: linear-gradient(90deg, var(--gold), var(--gold-2)); }
+
+.kpi-card-ink    { background: var(--cream); }
 .kpi-card-ink::before    { background: linear-gradient(90deg, var(--ink), var(--ink-2)); }
 
 .kpi-label {
@@ -433,18 +436,16 @@ select.field { cursor: pointer; }
 /* ── MARKETPLACE CARD ────────────────────────────────── */
 .listing-card {
   background: white;
-  border-radius: 16px;
-  border: 1px solid var(--border);
+  border-radius: 20px;
   overflow: hidden;
-  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s, border-color 0.25s;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s;
   text-decoration: none;
   display: block;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 12px rgba(15,26,12,0.07), 0 6px 28px rgba(15,26,12,0.04);
 }
 .listing-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-lg);
-  border-color: transparent;
+  transform: translateY(-6px);
+  box-shadow: 0 8px 32px rgba(15,26,12,0.12), 0 20px 56px rgba(15,26,12,0.08);
 }
 
 .listing-photo-wrap {
@@ -515,8 +516,7 @@ select.field { cursor: pointer; }
 /* ── TICKER ──────────────────────────────────────────── */
 .market-ticker {
   background: white;
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 16px;
   padding: 14px 20px;
   display: flex;
   align-items: center;
@@ -586,7 +586,6 @@ select.field { cursor: pointer; }
   max-width: 72%;
   font-size: 14px;
   line-height: 1.65;
-  border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
 }
 
@@ -664,9 +663,8 @@ select.field { cursor: pointer; }
 }
 .empty-state-icon {
   width: 72px; height: 72px;
-  border-radius: 18px;
+  border-radius: 50%;
   background: linear-gradient(135deg, var(--cream-2), var(--cream-3));
-  border: 1px solid var(--border);
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 20px;
   box-shadow: var(--shadow-sm);
