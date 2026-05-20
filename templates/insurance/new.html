@@ -39,54 +39,19 @@
     <form method="post">
       {% csrf_token %}
       <input type="hidden" name="step" value="submit">
-      <input type="hidden" name="crop_emoji" id="crop-emoji-input" value="🥜">
-      <input type="hidden" name="crop" id="crop-name-input" value="Arachide">
+      <input type="hidden" name="crop_emoji" id="crop-emoji-input" value="{{ crops_catalog.0.emoji }}">
+      <input type="hidden" name="crop" id="crop-name-input" value="{{ crops_catalog.0.crop }}">
 
       <!-- Crop selection -->
       <div style="margin-bottom:28px;">
         <label style="display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px;">Culture à assurer *</label>
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
-
-          <div class="ins-crop-btn" onclick="selectInsuranceCrop('🥜','Arachide',this)" style="border:2px solid var(--forest);background:var(--forest-bg);border-radius:12px;padding:12px;text-align:center;transition:all 0.15s;cursor:pointer;">
-            <div style="font-size:24px;margin-bottom:4px;">🥜</div>
-            <div style="font-size:11px;font-weight:600;color:var(--ink);">Arachide</div>
+          {% for item in crops_catalog %}
+          <div class="ins-crop-btn" onclick="selectInsuranceCrop('{{ item.emoji }}','{{ item.crop }}',this)" style="border:2px solid {% if forloop.first %}var(--forest){% else %}var(--border){% endif %};background:{% if forloop.first %}var(--forest-bg){% else %}white{% endif %};border-radius:12px;padding:12px;text-align:center;transition:all 0.15s;cursor:pointer;">
+            <div style="font-size:24px;margin-bottom:4px;">{{ item.emoji }}</div>
+            <div style="font-size:11px;font-weight:600;color:var(--ink);">{{ item.crop }}</div>
           </div>
-
-          <div class="ins-crop-btn" onclick="selectInsuranceCrop('🌾','Mil',this)" style="border:2px solid var(--border);border-radius:12px;padding:12px;text-align:center;transition:all 0.15s;cursor:pointer;">
-            <div style="font-size:24px;margin-bottom:4px;">🌾</div>
-            <div style="font-size:11px;font-weight:600;color:var(--ink);">Mil</div>
-          </div>
-
-          <div class="ins-crop-btn" onclick="selectInsuranceCrop('🌽','Maïs',this)" style="border:2px solid var(--border);border-radius:12px;padding:12px;text-align:center;transition:all 0.15s;cursor:pointer;">
-            <div style="font-size:24px;margin-bottom:4px;">🌽</div>
-            <div style="font-size:11px;font-weight:600;color:var(--ink);">Maïs</div>
-          </div>
-
-          <div class="ins-crop-btn" onclick="selectInsuranceCrop('🍅','Tomate',this)" style="border:2px solid var(--border);border-radius:12px;padding:12px;text-align:center;transition:all 0.15s;cursor:pointer;">
-            <div style="font-size:24px;margin-bottom:4px;">🍅</div>
-            <div style="font-size:11px;font-weight:600;color:var(--ink);">Tomate</div>
-          </div>
-
-          <div class="ins-crop-btn" onclick="selectInsuranceCrop('🧅','Oignon',this)" style="border:2px solid var(--border);border-radius:12px;padding:12px;text-align:center;transition:all 0.15s;cursor:pointer;">
-            <div style="font-size:24px;margin-bottom:4px;">🧅</div>
-            <div style="font-size:11px;font-weight:600;color:var(--ink);">Oignon</div>
-          </div>
-
-          <div class="ins-crop-btn" onclick="selectInsuranceCrop('🥭','Mangue',this)" style="border:2px solid var(--border);border-radius:12px;padding:12px;text-align:center;transition:all 0.15s;cursor:pointer;">
-            <div style="font-size:24px;margin-bottom:4px;">🥭</div>
-            <div style="font-size:11px;font-weight:600;color:var(--ink);">Mangue</div>
-          </div>
-
-          <div class="ins-crop-btn" onclick="selectInsuranceCrop('🌱','Niébé',this)" style="border:2px solid var(--border);border-radius:12px;padding:12px;text-align:center;transition:all 0.15s;cursor:pointer;">
-            <div style="font-size:24px;margin-bottom:4px;">🌱</div>
-            <div style="font-size:11px;font-weight:600;color:var(--ink);">Niébé</div>
-          </div>
-
-          <div class="ins-crop-btn" onclick="selectInsuranceCrop('🌿','Sorgho',this)" style="border:2px solid var(--border);border-radius:12px;padding:12px;text-align:center;transition:all 0.15s;cursor:pointer;">
-            <div style="font-size:24px;margin-bottom:4px;">🌿</div>
-            <div style="font-size:11px;font-weight:600;color:var(--ink);">Sorgho</div>
-          </div>
-
+          {% endfor %}
         </div>
       </div>
 

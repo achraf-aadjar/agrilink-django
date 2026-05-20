@@ -59,11 +59,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'agrilink.wsgi.application'
 
+import dj_database_url as _dj_db
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': _dj_db.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 }
 
 AUTH_PASSWORD_VALIDATORS = []

@@ -389,6 +389,7 @@ body {
 }
 .field::placeholder { color: var(--muted-2); }
 select.field { cursor: pointer; }
+.field-label { display: block; font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
 
 /* ── SECTION LABELS ──────────────────────────────────── */
 .section-tag {

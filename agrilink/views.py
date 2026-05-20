@@ -63,6 +63,22 @@ Règles :
 - Maximum 400 mots, utilise **bold** pour les points clés"""
 
 
+# ─── Agri-Score ───────────────────────────────────────────────────────────────
+
+def recalculate_agri_score(farmer):
+    tx_score      = min(35, farmer.total_transactions * 5)
+    surface_score = min(20, round(farmer.surface * 4))
+    has_repaid    = CreditApplication.objects.filter(farmer=farmer, status='repaid').exists()
+    credit_score  = 20 if has_repaid else (10 if CreditApplication.objects.filter(farmer=farmer).exists() else 5)
+    diversity     = min(10, len(farmer.crops) * 2)
+    has_listings  = Listing.objects.filter(farmer=farmer, is_active=True).exists()
+    activity      = 10 if has_listings else 5
+    score         = min(100, tx_score + surface_score + credit_score + diversity + activity)
+    farmer.agri_score = score
+    farmer.save(update_fields=['agri_score'])
+    return score
+
+
 # ─── Auth helper ──────────────────────────────────────────────────────────────
 
 def get_current_farmer(request):
@@ -273,6 +289,7 @@ def setup(request):
             farmer.surface = surface_f
             farmer.crops   = crops
             farmer.save(update_fields=['name', 'region', 'surface', 'crops'])
+            recalculate_agri_score(farmer)
             return redirect('dashboard')
 
     return render(request, 'setup.html', {
@@ -449,6 +466,7 @@ def offer_action(request, offer_id):
         saved = round(offer.total * 0.15)
         farmer.saved_vs_intermediaries += saved
         farmer.save(update_fields=['total_revenue', 'total_transactions', 'saved_vs_intermediaries'])
+        recalculate_agri_score(farmer)
 
     elif action == 'reject' and offer.status == 'pending':
         offer.status = 'rejected'
