@@ -140,7 +140,11 @@ function addMessage(role, content) {
   col.appendChild(ts);
   wrapper.appendChild(col);
   container.appendChild(wrapper);
-  container.scrollTop = container.scrollHeight;
+  if (isUser) {
+    container.scrollTop = container.scrollHeight;
+  } else {
+    wrapper.scrollIntoView({behavior: 'smooth', block: 'start'});
+  }
 }
 
 function addTyping() {
