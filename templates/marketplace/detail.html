@@ -9,7 +9,7 @@
   <div class="page-header-content">
     <a href="/marketplace/" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:rgba(255,255,255,0.5);text-decoration:none;margin-bottom:12px;letter-spacing:0.04em;text-transform:uppercase;">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-      Retour au marché
+      <span data-i18n="detail.back">Retour au marché</span>
     </a>
     <h1 class="page-header-title">{{ listing.crop }}</h1>
     <p class="page-header-sub">{{ listing.region }} &mdash; {{ listing.quantity }} kg &mdash; {{ listing.quality }}</p>
@@ -23,13 +23,13 @@
   <div style="width:64px;height:64px;border-radius:50%;background:var(--forest-bg);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--forest)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
   </div>
-  <h1 style="font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--ink);margin-bottom:12px;letter-spacing:-0.02em;">Offre envoyée</h1>
+  <h1 style="font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--ink);margin-bottom:12px;letter-spacing:-0.02em;" data-i18n="detail.offer_sent">Offre envoyée</h1>
   <p style="color:var(--muted);font-size:15px;margin-bottom:6px;">{{ quantity }} kg &mdash; {{ offer_price }} FCFA / kg</p>
   <p style="font-family:'JetBrains Mono',monospace;font-size:1.8rem;font-weight:800;color:var(--forest);margin-bottom:20px;">{{ total|fcfa }}</p>
   <p style="color:var(--muted);font-size:14px;line-height:1.7;max-width:380px;margin:0 auto 36px;">{{ listing.farmer.name }} a été notifié par SMS et vous contactera dans les 24 heures.</p>
   <div style="display:flex;gap:12px;justify-content:center;">
-    <a href="/marketplace/" class="btn btn-outline">Retour au marché</a>
-    <a href="/dashboard/" class="btn btn-forest">Tableau de bord</a>
+    <a href="/marketplace/" class="btn btn-outline" data-i18n="detail.back">Retour au marché</a>
+    <a href="/dashboard/" class="btn btn-forest" data-i18n="btn.dashboard">Tableau de bord</a>
   </div>
 </div>
 
@@ -59,7 +59,7 @@
           {% if listing.farmer.is_verified %}
           <span style="display:inline-flex;align-items:center;gap:4px;margin-top:7px;background:var(--forest-bg);color:var(--forest);border-radius:4px;padding:3px 9px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;">
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            Agriculteur vérifié
+            <span data-i18n="pr.verified">Agriculteur vérifié</span>
           </span>
           {% endif %}
         </div>

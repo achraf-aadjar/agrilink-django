@@ -11,8 +11,8 @@
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
       Retour au marché
     </a>
-    <h1 class="page-header-title">Publier une annonce</h1>
-    <p class="page-header-sub">Mettez votre récolte en vente directement auprès des acheteurs</p>
+    <h1 class="page-header-title" data-i18n="ph.mp.title">Publier une annonce</h1>
+    <p class="page-header-sub" data-i18n="ph.mp.sub">Mettez votre récolte en vente directement auprès des acheteurs</p>
   </div>
 </div>
 
@@ -27,7 +27,7 @@
 
       <!-- Crop -->
       <div style="margin-bottom:32px;">
-        <label style="display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:14px;">Culture *</label>
+        <label style="display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:14px;" data-i18n="mp.crop_label">Culture *</label>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
           {% for p in market_prices %}
           <label style="cursor:pointer;">
@@ -44,11 +44,11 @@
       <!-- Quantity + Quality -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
         <div>
-          <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Quantité (kg) *</label>
+          <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;" data-i18n="mp.qty_label">Quantité (kg) *</label>
           <input type="number" name="quantity" class="field" placeholder="500" min="10" required>
         </div>
         <div>
-          <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Qualité *</label>
+          <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;" data-i18n="mp.quality_label">Qualité *</label>
           <select name="quality" class="field">
             <option value="Grade A">Grade A — Qualité premium</option>
             <option value="Grade B">Grade B — Qualité standard</option>
@@ -59,7 +59,7 @@
 
       <!-- Price -->
       <div style="margin-bottom:20px;">
-        <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Prix de vente (FCFA / kg) *</label>
+        <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;" data-i18n="mp.price_label">Prix de vente (FCFA / kg) *</label>
         <div style="position:relative;">
           <input type="number" name="price_per_kg" class="field" id="price-field" placeholder="200" min="1" required style="padding-right:90px;">
           <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--muted);font-weight:600;">FCFA / kg</span>
@@ -69,19 +69,19 @@
 
       <!-- Date -->
       <div style="margin-bottom:20px;">
-        <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Disponible dès le</label>
+        <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;" data-i18n="mp.date_label">Disponible dès le</label>
         <input type="date" name="available" class="field" value="{{ today }}">
         <p style="font-size:12px;color:var(--muted);margin-top:6px;">Votre annonce sera publiée dans votre région : <strong>{{ farmer.region }}</strong></p>
       </div>
 
       <!-- Description -->
       <div style="margin-bottom:32px;">
-        <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Description (optionnel)</label>
+        <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;" data-i18n="mp.desc_label">Description (optionnel)</label>
         <textarea name="description" class="field" rows="3" placeholder="Conditions de stockage, méthodes culturales, informations complémentaires..." style="resize:vertical;"></textarea>
       </div>
 
       <button type="submit" class="btn btn-forest" style="width:100%;justify-content:center;font-size:15px;padding:14px;">
-        Publier l'annonce
+        <span data-i18n="btn.publish">Publier l'annonce</span>
       </button>
     </form>
   </div>

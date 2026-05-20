@@ -34,27 +34,27 @@
       {% if farmer.is_verified %}
       <span style="display:inline-flex;align-items:center;gap:5px;background:var(--forest-bg);color:var(--forest);border-radius:4px;padding:4px 12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;">
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        Agriculteur vérifié
+        <span data-i18n="pr.verified">Agriculteur vérifié</span>
       </span>
       {% endif %}
 
       <div style="margin-top:24px;padding-top:24px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;">
         <div style="text-align:center;padding:0 8px;border-right:1px solid var(--border);">
           <p style="font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:800;color:var(--ink);">{{ farmer.surface }}</p>
-          <p style="font-size:11px;color:var(--muted);margin-top:2px;">hectares</p>
+          <p style="font-size:11px;color:var(--muted);margin-top:2px;" data-i18n="pr.hectares">hectares</p>
         </div>
         <div style="text-align:center;padding:0 8px;border-right:1px solid var(--border);">
           <p style="font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:800;color:var(--ink);">{{ farmer.total_transactions }}</p>
-          <p style="font-size:11px;color:var(--muted);margin-top:2px;">ventes</p>
+          <p style="font-size:11px;color:var(--muted);margin-top:2px;" data-i18n="pr.sales">ventes</p>
         </div>
         <div style="text-align:center;padding:0 8px;">
           <p style="font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:800;color:var(--forest);">{{ farmer.agri_score }}</p>
-          <p style="font-size:11px;color:var(--muted);margin-top:2px;">score</p>
+          <p style="font-size:11px;color:var(--muted);margin-top:2px;" data-i18n="pr.score">score</p>
         </div>
       </div>
 
       <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border);text-align:left;">
-        <p style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Cultures</p>
+        <p style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;" data-i18n="pr.crops">Cultures</p>
         <div style="display:flex;flex-wrap:wrap;gap:6px;">
           {% for crop in farmer.crops %}
           <span class="crop-chip">{{ crop }}</span>
@@ -63,27 +63,27 @@
       </div>
 
       <div style="margin-top:16px;text-align:left;">
-        <p style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Région</p>
+        <p style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;" data-i18n="pr.region">Région</p>
         <p style="font-size:14px;font-weight:600;color:var(--ink);">{{ farmer.region }}, Sénégal</p>
       </div>
 
       <button onclick="document.getElementById('edit-form').classList.toggle('open')" style="margin-top:20px;width:100%;background:var(--cream);border: none;border-radius:9px;padding:10px;font-size:13px;color:var(--ink);cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;transition:all 0.12s;" onmouseover="this.style.borderColor='var(--forest)'" onmouseout="this.style.borderColor='var(--border)'">
-        Modifier le profil
+        <span data-i18n="btn.edit_profile">Modifier le profil</span>
       </button>
     </div>
 
     <!-- Edit form (hidden by default) -->
     <div id="edit-form" class="edit-form card" style="padding:24px;">
-      <p style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:18px;">Modifier le profil</p>
+      <p style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:18px;" data-i18n="btn.edit_profile">Modifier le profil</p>
       <form method="post">
         {% csrf_token %}
         <input type="hidden" name="step" value="edit">
         <div style="margin-bottom:14px;">
-          <label class="field-label">Nom complet</label>
+          <label class="field-label" data-i18n="pr.name_label">Nom complet</label>
           <input type="text" name="name" class="field" value="{{ farmer.name }}">
         </div>
         <div style="margin-bottom:14px;">
-          <label class="field-label">Région</label>
+          <label class="field-label" data-i18n="pr.region_label">Région</label>
           <select name="region" class="field">
             {% for r in regions %}
             <option value="{{ r }}" {% if r == farmer.region %}selected{% endif %}>{{ r }}</option>
@@ -91,11 +91,11 @@
           </select>
         </div>
         <div style="margin-bottom:18px;">
-          <label class="field-label">Surface (ha)</label>
+          <label class="field-label" data-i18n="pr.surface_label">Surface (ha)</label>
           <input type="number" name="surface" class="field" value="{{ farmer.surface }}" step="0.5" min="0.1">
         </div>
         <div style="margin-bottom:20px;">
-          <label class="field-label" style="margin-bottom:10px;">Cultures</label>
+          <label class="field-label" style="margin-bottom:10px;" data-i18n="pr.crops_label">Cultures</label>
           <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;">
             {% for item in crops_catalog %}
             <label style="display:flex;align-items:center;gap:8px;padding:8px 12px;border: none;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;color:var(--ink);transition:all 0.12s;" onclick="toggleEditCrop(this)">
@@ -105,7 +105,7 @@
             {% endfor %}
           </div>
         </div>
-        <button type="submit" class="btn btn-forest" style="width:100%;justify-content:center;">Sauvegarder</button>
+        <button type="submit" class="btn btn-forest" style="width:100%;justify-content:center;"><span data-i18n="btn.save">Sauvegarder</span></button>
       </form>
     </div>
   </div>
@@ -115,19 +115,19 @@
 
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;">
       <div class="card" style="padding:24px;">
-        <p style="font-size:11px;color:var(--muted);font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:10px;">Revenu total</p>
+        <p style="font-size:11px;color:var(--muted);font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:10px;" data-i18n="pr.revenue">Revenu total</p>
         <p style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:800;color:var(--ink);">{{ total_rev|fcfa }}</p>
         <p style="font-size:12px;color:var(--forest);font-weight:600;margin-top:6px;">ventes acceptées</p>
       </div>
       <div class="card" style="padding:24px;">
-        <p style="font-size:11px;color:var(--muted);font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:10px;">Économies réalisées</p>
+        <p style="font-size:11px;color:var(--muted);font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:10px;" data-i18n="pr.savings">Économies réalisées</p>
         <p style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:800;color:var(--clay);">{{ farmer.saved_vs_intermediaries|fcfa }}</p>
         <p style="font-size:12px;color:var(--muted);font-weight:600;margin-top:6px;">vs. intermédiaires</p>
       </div>
     </div>
 
     <div class="card" style="padding:24px;">
-      <p style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:18px;">Revenus par mois (année en cours)</p>
+      <p style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:18px;" data-i18n="pr.monthly">Revenus par mois (année en cours)</p>
       <div style="display:flex;align-items:flex-end;gap:6px;height:80px;">
         {% for bar in revenue_bars %}
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;">
@@ -143,8 +143,8 @@
     {% if credits %}
     <div class="card" style="padding:24px;">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-        <p style="font-size:13px;font-weight:700;color:var(--ink);">Historique des crédits</p>
-        <a href="/credit/" style="font-size:13px;color:var(--forest);font-weight:600;text-decoration:none;">Voir tout</a>
+        <p style="font-size:13px;font-weight:700;color:var(--ink);" data-i18n="pr.credits">Historique des crédits</p>
+        <a href="/credit/" style="font-size:13px;color:var(--forest);font-weight:600;text-decoration:none;" data-i18n="pr.see_credits">Voir tout</a>
       </div>
       {% for credit in credits %}
       <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:{% if not forloop.last %}1px solid var(--border){% else %}none{% endif %};">
@@ -170,10 +170,10 @@
 {% if listings %}
 <div class="card" style="padding:28px;margin-top:24px;">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;">
-    <h2 style="font-size:15px;font-weight:700;color:var(--ink);">Mes annonces actives</h2>
+    <h2 style="font-size:15px;font-weight:700;color:var(--ink);" data-i18n="pr.listings">Mes annonces actives</h2>
     <a href="/marketplace/new/" class="btn btn-forest" style="font-size:13px;padding:9px 18px;gap:5px;">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      Nouvelle annonce
+      <span data-i18n="btn.new_listing">Nouvelle annonce</span>
     </a>
   </div>
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;">
@@ -196,7 +196,7 @@
           {% csrf_token %}
           <button type="submit" style="width:100%;background:none;border: none;border-radius:7px;padding:7px;font-size:12px;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.12s;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
-            Retirer
+            <span data-i18n="pr.delete">Retirer</span>
           </button>
         </form>
       </div>
@@ -209,8 +209,8 @@
   <div style="width:56px;height:56px;border-radius:12px;background:var(--cream-2);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
   </div>
-  <p style="color:var(--muted);font-size:14px;margin-bottom:18px;">Vous n'avez pas encore d'annonce active.</p>
-  <a href="/marketplace/new/" class="btn btn-forest">Publier ma première annonce</a>
+  <p style="color:var(--muted);font-size:14px;margin-bottom:18px;" data-i18n="pr.empty">Vous n'avez pas encore d'annonce active.</p>
+  <a href="/marketplace/new/" class="btn btn-forest" data-i18n="btn.first_listing">Publier ma première annonce</a>
 </div>
 {% endif %}
 

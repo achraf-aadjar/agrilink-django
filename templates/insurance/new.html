@@ -12,8 +12,8 @@
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
       Retour à l'assurance
     </a>
-    <h1 class="page-header-title">Souscrire une assurance</h1>
-    <p class="page-header-sub">Protection paramétrique contre les aléas climatiques</p>
+    <h1 class="page-header-title" data-i18n="ph.ins.new.title">Souscrire une assurance</h1>
+    <p class="page-header-sub" data-i18n="ph.ins.new.sub">Protection paramétrique contre les aléas climatiques</p>
   </div>
 </div>
 
@@ -44,7 +44,7 @@
 
       <!-- Crop selection -->
       <div style="margin-bottom:28px;">
-        <label style="display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px;">Culture à assurer *</label>
+        <label style="display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px;" data-i18n="ins.crop_label">Culture à assurer *</label>
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
           {% for item in crops_catalog %}
           <div class="ins-crop-btn" onclick="selectInsuranceCrop('{{ item.emoji }}','{{ item.crop }}',this)" style="border:2px solid {% if forloop.first %}var(--forest){% else %}var(--border){% endif %};background:{% if forloop.first %}var(--forest-bg){% else %}white{% endif %};border-radius:12px;padding:12px;text-align:center;transition:all 0.15s;cursor:pointer;">
@@ -57,14 +57,14 @@
 
       <!-- Surface -->
       <div style="margin-bottom:20px;">
-        <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Surface assurée (hectares) *</label>
+        <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;" data-i18n="ins.surface_label">Surface assurée (hectares) *</label>
         <input type="number" name="surface" class="field" placeholder="1.0" min="0.1" max="50" step="0.5" value="1.0" required oninput="updatePremium()">
         <p style="font-size:12px;color:var(--muted);margin-top:6px;">Prime : 12 000 FCFA/ha · Couverture : 8× la prime</p>
       </div>
 
       <!-- Season -->
       <div style="margin-bottom:20px;">
-        <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Saison *</label>
+        <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;" data-i18n="ins.season_label">Saison *</label>
         <select name="season" class="field">
           {% for saison in seasons %}
           <option value="{{ saison }}">{{ saison }}</option>
@@ -76,11 +76,11 @@
       <div style="background:var(--forest-bg);border-radius:14px;padding:24px;margin-bottom:28px;">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
           <div>
-            <p style="font-size:12px;color:var(--forest);font-weight:700;margin-bottom:6px;">PRIME ANNUELLE</p>
+            <p style="font-size:12px;color:var(--forest);font-weight:700;margin-bottom:6px;" data-i18n="ins.premium_label">PRIME ANNUELLE</p>
             <p id="premium-display" style="font-family:'JetBrains Mono',monospace;font-size:1.8rem;font-weight:800;color:var(--ink);">12 000 FCFA</p>
           </div>
           <div>
-            <p style="font-size:12px;color:var(--forest);font-weight:700;margin-bottom:6px;">COUVERTURE MAXIMALE</p>
+            <p style="font-size:12px;color:var(--forest);font-weight:700;margin-bottom:6px;" data-i18n="ins.coverage_label">COUVERTURE MAXIMALE</p>
             <p id="coverage-display" style="font-family:'JetBrains Mono',monospace;font-size:1.8rem;font-weight:800;color:var(--forest);">96 000 FCFA</p>
           </div>
         </div>
@@ -90,7 +90,7 @@
       </div>
 
       <button type="submit" class="btn btn-forest" style="width:100%;justify-content:center;font-size:15px;padding:14px;">
-        Souscrire maintenant →
+        <span data-i18n="btn.subscribe_now">Souscrire maintenant →</span>
       </button>
     </form>
   </div>

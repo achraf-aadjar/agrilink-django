@@ -19,9 +19,9 @@
 
 <div class="page-header" style="margin-bottom:24px;">
   <div class="page-header-content">
-    <p class="page-header-tag">Intelligence artificielle agronomique</p>
-    <h1 class="page-header-title">Conseiller agronomique</h1>
-    <p class="page-header-sub">Disponible 24h/24 — Spécialisé agriculture ouest-africaine</p>
+    <p class="page-header-tag" data-i18n="ph.adv.tag">Intelligence artificielle agronomique</p>
+    <h1 class="page-header-title" data-i18n="ph.adv.title">Conseiller agronomique</h1>
+    <p class="page-header-sub" data-i18n="ph.adv.sub">Disponible 24h/24 — Spécialisé agriculture ouest-africaine</p>
   </div>
 </div>
 
@@ -40,15 +40,15 @@
           <p style="font-size:14px;font-weight:700;color:var(--ink);">Conseiller IA</p>
           <div style="display:flex;align-items:center;gap:5px;margin-top:2px;">
             <div style="width:6px;height:6px;border-radius:50%;background:var(--forest);"></div>
-            <span style="font-size:11px;color:var(--forest);font-weight:600;">Disponible</span>
+            <span style="font-size:11px;color:var(--forest);font-weight:600;" data-i18n="adv.available">Disponible</span>
           </div>
         </div>
       </div>
-      <p style="font-size:12px;color:var(--muted);line-height:1.65;">Expert en agriculture sénégalaise et UEMOA. Répond en français et en wolof.</p>
+      <p style="font-size:12px;color:var(--muted);line-height:1.65;" data-i18n="adv.expert">Expert en agriculture sénégalaise et UEMOA. Répond en français et en wolof.</p>
     </div>
 
     <div class="card chat-suggestions-card" style="padding:20px;flex:1;overflow:hidden;">
-      <p class="suggestions-label" style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;">Questions fréquentes</p>
+      <p class="suggestions-label" style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;" data-i18n="adv.suggestions">Questions fréquentes</p>
       <div style="display:flex;flex-direction:column;gap:6px;" id="suggestions">
         {% for q in suggestions %}
         <button onclick="sendSuggestion(this.textContent)" class="suggestion-btn" style="text-align:left;background:var(--cream);border:none;border-radius:7px;padding:9px 12px;font-size:12px;color:var(--ink);cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;transition:all 0.12s;line-height:1.4;">{{ q }}</button>
@@ -58,7 +58,7 @@
 
     <button onclick="clearChat()" style="background:var(--cream);border:1px solid var(--border);border-radius:9px;padding:10px;font-size:13px;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;transition:all 0.12s;display:flex;align-items:center;justify-content:center;gap:7px;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-      Effacer la conversation
+      <span data-i18n="adv.clear">Effacer la conversation</span>
     </button>
 
   </div>
@@ -98,7 +98,7 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         </button>
       </div>
-      <p style="font-size:11px;color:var(--muted);margin-top:8px;">Entrée pour envoyer &mdash; Maj + Entrée pour un saut de ligne</p>
+      <p style="font-size:11px;color:var(--muted);margin-top:8px;" data-i18n="adv.hint">Entrée pour envoyer — Maj + Entrée pour un saut de ligne</p>
     </div>
 
   </div>

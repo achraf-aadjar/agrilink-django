@@ -12,8 +12,8 @@
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
       Retour au crédit
     </a>
-    <h1 class="page-header-title">Demande de crédit</h1>
-    <p class="page-header-sub">Financement agricole UEMOA — Réponse sous 24–48h</p>
+    <h1 class="page-header-title" data-i18n="ph.cr.apply.title">Demande de crédit</h1>
+    <p class="page-header-sub" data-i18n="ph.cr.apply.sub">Financement agricole UEMOA — Réponse sous 24–48h</p>
   </div>
 </div>
 
@@ -44,7 +44,7 @@
 
       <!-- Purpose -->
       <div style="margin-bottom:28px;">
-        <label style="display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px;">Objet du crédit *</label>
+        <label style="display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px;" data-i18n="cr.purpose_label">Objet du crédit *</label>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
 
           <div class="purpose-btn" onclick="setPurpose('🌱','Semences &amp; engrais',this)" style="border:2px solid var(--forest);background:var(--forest-bg);border-radius:12px;padding:14px;text-align:center;cursor:pointer;transition:all 0.15s;">
@@ -83,11 +83,11 @@
       <!-- Amount + Duration -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
         <div>
-          <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Montant souhaité (FCFA) *</label>
+          <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;" data-i18n="cr.amount_label">Montant souhaité (FCFA) *</label>
           <input type="number" name="amount" class="field" placeholder="100 000" min="10000" max="500000" step="5000" required oninput="updateSummary()">
         </div>
         <div>
-          <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;">Durée *</label>
+          <label style="display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:8px;" data-i18n="cr.duration_label">Durée *</label>
           <select name="duration" class="field" onchange="updateSummary()">
             <option value="3">3 mois</option>
             <option value="6" selected>6 mois</option>
@@ -99,7 +99,7 @@
 
       <!-- IMF choice -->
       <div style="margin-bottom:24px;">
-        <label style="display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px;">Institution financière *</label>
+        <label style="display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px;" data-i18n="cr.imf_label">Institution financière *</label>
         <div style="display:flex;flex-direction:column;gap:10px;">
           {% for imf in imf_partners %}
           <label style="cursor:pointer;">
@@ -124,10 +124,10 @@
 
       <!-- Loan summary -->
       <div style="background:var(--forest-bg);border-radius:12px;padding:20px;margin-bottom:24px;">
-        <h3 style="font-size:13px;font-weight:700;color:var(--forest);margin-bottom:12px;">Récapitulatif estimé</h3>
+        <h3 style="font-size:13px;font-weight:700;color:var(--forest);margin-bottom:12px;" data-i18n="cr.summary_title">Récapitulatif estimé</h3>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
           <div>
-            <p style="font-size:11px;color:var(--forest);font-weight:600;">Montant demandé</p>
+            <p style="font-size:11px;color:var(--forest);font-weight:600;" data-i18n="cr.summary_amount">Montant demandé</p>
             <p id="summary-amount" style="font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:800;color:var(--ink);">—</p>
           </div>
           <div>
@@ -138,7 +138,7 @@
       </div>
 
       <button type="submit" class="btn btn-forest" style="width:100%;justify-content:center;font-size:15px;padding:14px;">
-        Soumettre la demande →
+        <span data-i18n="btn.submit_credit">Soumettre la demande →</span>
       </button>
     </form>
   </div>

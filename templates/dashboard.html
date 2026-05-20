@@ -46,7 +46,7 @@
 <div class="page-header">
   <div class="page-header-content page-hdr-flex">
     <div>
-      <p class="page-header-tag">Bienvenue sur AgriLink</p>
+      <p class="page-header-tag" data-i18n="ph.dash.tag">Bienvenue sur AgriLink</p>
       <h1 class="page-header-title">{{ farmer.name }}</h1>
       <div style="display:flex;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap;">
         <span style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:rgba(255,255,255,0.6);">
@@ -67,7 +67,7 @@
     </div>
     <a href="/marketplace/new/" class="btn btn-clay" style="flex-shrink:0;">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      Nouvelle annonce
+      <span data-i18n="btn.new_listing">Nouvelle annonce</span>
     </a>
   </div>
 </div>
@@ -98,11 +98,11 @@
     <div class="kpi-icon" style="background:var(--forest-bg);">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--forest)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
     </div>
-    <p class="kpi-label">Revenu total</p>
+    <p class="kpi-label" data-i18n="dash.kpi.revenue">Revenu total</p>
     <p class="kpi-value" style="color:var(--forest);">{{ total_rev|fcfa }}</p>
     <p class="kpi-trend" style="color:var(--forest);display:flex;align-items:center;gap:4px;">
       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-      +12 % ce mois
+      <span data-i18n="dash.kpi.trend_rev">+12 % ce mois</span>
     </p>
   </div>
 
@@ -111,13 +111,13 @@
     <div class="kpi-icon" style="background:var(--clay-bg);">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--clay)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
     </div>
-    <p class="kpi-label">Agri-Score</p>
+    <p class="kpi-label" data-i18n="dash.kpi.score">Agri-Score</p>
     <p class="kpi-value" style="color:var(--clay);">{{ farmer.agri_score }}<span style="font-size:1rem;color:var(--muted-2);font-weight:500;"> /100</span></p>
     <div style="margin-top:6px;">
       <div style="height:4px;background:var(--cream-3);border-radius:2px;overflow:hidden;margin-bottom:5px;">
         <div style="height:100%;width:{{ farmer.agri_score }}%;background:linear-gradient(90deg,var(--clay),var(--clay-2));border-radius:2px;"></div>
       </div>
-      <p class="kpi-trend" style="color:var(--muted);">Profil solide</p>
+      <p class="kpi-trend" style="color:var(--muted);" data-i18n="dash.kpi.trend_score">Profil solide</p>
     </div>
   </div>
 
@@ -126,9 +126,9 @@
     <div class="kpi-icon" style="background:var(--gold-bg);">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
     </div>
-    <p class="kpi-label">Économies</p>
+    <p class="kpi-label" data-i18n="dash.kpi.savings">Économies</p>
     <p class="kpi-value" style="color:var(--gold);">{{ total_saved|fcfa }}</p>
-    <p class="kpi-trend" style="color:var(--muted);">vs. intermédiaires</p>
+    <p class="kpi-trend" style="color:var(--muted);" data-i18n="dash.kpi.trend_savings">vs. intermédiaires</p>
   </div>
 
   <!-- Transactions -->
@@ -136,9 +136,9 @@
     <div class="kpi-icon" style="background:var(--cream-2);">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
     </div>
-    <p class="kpi-label">Transactions</p>
+    <p class="kpi-label" data-i18n="dash.kpi.tx">Transactions</p>
     <p class="kpi-value">{{ total_tx }}</p>
-    <p class="kpi-trend" style="color:var(--muted);">ventes réalisées</p>
+    <p class="kpi-trend" style="color:var(--muted);" data-i18n="dash.kpi.trend_tx">ventes réalisées</p>
   </div>
 
 </div>
@@ -150,8 +150,8 @@
   <div class="card" style="padding:28px 28px 20px;">
     <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;">
       <div>
-        <p style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Performance</p>
-        <h2 style="font-size:16px;font-weight:700;color:var(--ink);">Revenus mensuels 2026</h2>
+        <p style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;" data-i18n="dash.perf">Performance</p>
+        <h2 style="font-size:16px;font-weight:700;color:var(--ink);" data-i18n="dash.monthly">Revenus mensuels 2026</h2>
       </div>
       <div style="display:flex;align-items:center;gap:12px;">
         <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);font-weight:600;">
@@ -223,27 +223,27 @@
 
     <!-- Accès rapide -->
     <div class="card" style="padding:18px;">
-      <p style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">Accès rapide</p>
+      <p style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;" data-i18n="dash.quick">Accès rapide</p>
       <div style="display:flex;flex-direction:column;gap:8px;">
         <a href="/credit/apply/" class="quick-action">
           <div style="width:28px;height:28px;border-radius:7px;background:var(--gold-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
           </div>
-          <span style="font-size:13px;font-weight:600;color:var(--ink);">Demander un crédit</span>
+          <span style="font-size:13px;font-weight:600;color:var(--ink);" data-i18n="dash.apply_credit">Demander un crédit</span>
           <svg style="margin-left:auto;opacity:0.4;" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
         <a href="/assurance/new/" class="quick-action">
           <div style="width:28px;height:28px;border-radius:7px;background:var(--forest-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--forest)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
-          <span style="font-size:13px;font-weight:600;color:var(--ink);">Souscrire une assurance</span>
+          <span style="font-size:13px;font-weight:600;color:var(--ink);" data-i18n="dash.sub_ins">Souscrire une assurance</span>
           <svg style="margin-left:auto;opacity:0.4;" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
         <a href="/conseiller/" class="quick-action">
           <div style="width:28px;height:28px;border-radius:7px;background:var(--blue-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
           </div>
-          <span style="font-size:13px;font-weight:600;color:var(--ink);">Conseiller agronomique</span>
+          <span style="font-size:13px;font-weight:600;color:var(--ink);" data-i18n="dash.advisor_link">Conseiller agronomique</span>
           <svg style="margin-left:auto;opacity:0.4;" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
       </div>
@@ -262,8 +262,8 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       </div>
       <div>
-        <p style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);">Activité en temps réel</p>
-        <h2 style="font-size:15px;font-weight:700;color:var(--ink);margin-top:1px;">Offres reçues</h2>
+        <p style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);" data-i18n="dash.offers_rt">Activité en temps réel</p>
+        <h2 style="font-size:15px;font-weight:700;color:var(--ink);margin-top:1px;" data-i18n="dash.offers_title">Offres reçues</h2>
       </div>
     </div>
     <span style="background:var(--gold-bg);color:var(--gold);border:1px solid rgba(196,138,10,0.2);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;">{{ pending_count }} en attente</span>
@@ -311,8 +311,8 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
         </div>
         <div>
-          <p style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);">En temps réel</p>
-          <h2 style="font-size:15px;font-weight:700;color:var(--ink);margin-top:1px;">Cours du marché</h2>
+          <p style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);" data-i18n="dash.market_rt">En temps réel</p>
+          <h2 style="font-size:15px;font-weight:700;color:var(--ink);margin-top:1px;" data-i18n="dash.market_title">Cours du marché</h2>
         </div>
       </div>
       <span style="font-size:11px;color:var(--muted);font-weight:700;background:var(--cream);padding:4px 10px;border-radius:6px;border:1px solid var(--border);">FCFA / kg</span>
@@ -341,7 +341,7 @@
         </div>
         <div>
           <p style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);">Mes annonces</p>
-          <h2 style="font-size:15px;font-weight:700;color:var(--ink);margin-top:1px;">Annonces actives</h2>
+          <h2 style="font-size:15px;font-weight:700;color:var(--ink);margin-top:1px;" data-i18n="dash.listings_title">Annonces actives</h2>
         </div>
       </div>
       <a href="/marketplace/" style="font-size:12px;color:var(--forest);font-weight:700;text-decoration:none;display:flex;align-items:center;gap:3px;">
@@ -383,23 +383,23 @@
 
 <!-- ── STATS PLATEFORME ──────────────────────────────── -->
 <div class="platform-stats">
-  <p style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:20px;position:relative;z-index:1;">Impact AgriLink — Zone UEMOA</p>
+  <p style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:20px;position:relative;z-index:1;" data-i18n="stats.impact">Impact AgriLink — Zone UEMOA</p>
   <div class="platform-stats-grid">
     <div class="platform-stat-item">
       <p class="platform-stat-value">{{ platform_stats.farmers }}</p>
-      <p class="platform-stat-label">Agriculteurs</p>
+      <p class="platform-stat-label" data-i18n="stats.farmers">Agriculteurs</p>
     </div>
     <div class="platform-stat-item">
       <p class="platform-stat-value">{{ platform_stats.listings }}</p>
-      <p class="platform-stat-label">Annonces actives</p>
+      <p class="platform-stat-label" data-i18n="stats.listings">Annonces actives</p>
     </div>
     <div class="platform-stat-item">
       <p class="platform-stat-value">{{ platform_stats.offers }}</p>
-      <p class="platform-stat-label">Offres échangées</p>
+      <p class="platform-stat-label" data-i18n="stats.offers">Offres échangées</p>
     </div>
     <div class="platform-stat-item">
       <p class="platform-stat-value" style="color:var(--forest-lt);">{{ platform_stats.volume|fcfa }}</p>
-      <p class="platform-stat-label">Volume traité</p>
+      <p class="platform-stat-label" data-i18n="stats.volume">Volume traité</p>
     </div>
   </div>
 </div>

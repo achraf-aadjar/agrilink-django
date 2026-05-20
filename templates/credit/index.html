@@ -8,11 +8,11 @@
 <div class="page-header">
   <div class="page-header-content" style="display:flex;align-items:flex-end;justify-content:space-between;">
     <div>
-      <p class="page-header-tag">Financement agricole</p>
-      <h1 class="page-header-title">Crédit agricole</h1>
-      <p class="page-header-sub">Financements adaptés aux producteurs de la zone UEMOA</p>
+      <p class="page-header-tag" data-i18n="ph.cr.tag">Financement agricole</p>
+      <h1 class="page-header-title" data-i18n="ph.cr.title">Crédit agricole</h1>
+      <p class="page-header-sub" data-i18n="ph.cr.sub">Financements adaptés aux producteurs de la zone UEMOA</p>
     </div>
-    <a href="/credit/apply/" class="btn btn-clay" style="flex-shrink:0;">Faire une demande</a>
+    <a href="/credit/apply/" class="btn btn-clay" style="flex-shrink:0;" data-i18n="btn.apply">Faire une demande</a>
   </div>
 </div>
 
@@ -31,16 +31,16 @@
     <div style="width:180px;height:4px;background:rgba(148,220,178,0.15);border-radius:2px;margin-bottom:10px;overflow:hidden;">
       <div style="height:100%;border-radius:2px;background:var(--forest);width:{{ farmer.agri_score }}%;transition:width 1s cubic-bezier(0.34,1.56,0.64,1);"></div>
     </div>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Profil solide — Éligible au financement</p>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;" data-i18n="cr.profile_solid">Profil solide — Éligible au financement</p>
     <div style="padding-left:14px;border-left:2px solid var(--gold);">
-      <p style="font-size:10px;color:var(--gold);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;">Montant éligible</p>
+      <p style="font-size:10px;color:var(--gold);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;" data-i18n="cr.eligible">Montant éligible</p>
       <p style="font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:800;color:var(--gold);">300 000 FCFA</p>
     </div>
   </div>
 
   <!-- Score criteria — inline list, no card -->
   <div>
-    <p style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:24px;">Composition du score</p>
+    <p style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:24px;" data-i18n="cr.score_comp">Composition du score</p>
     {% for c in score_criteria %}
     <div style="margin-bottom:20px;">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
@@ -62,7 +62,7 @@
 <!-- My credits -->
 {% if credits %}
 <div class="card" style="padding:28px;margin-bottom:28px;">
-  <h2 style="font-size:15px;font-weight:700;color:var(--ink);margin-bottom:20px;">Historique des demandes</h2>
+  <h2 style="font-size:15px;font-weight:700;color:var(--ink);margin-bottom:20px;" data-i18n="cr.history">Historique des demandes</h2>
   {% for credit in credits %}
   <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:{% if not forloop.last %}1px solid var(--border){% else %}none{% endif %};">
     <div style="width:44px;height:44px;border-radius:10px;background:var(--cream-2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
@@ -85,7 +85,7 @@
 
 <!-- IMF Partners -->
 <div>
-  <h2 style="font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;color:var(--ink);letter-spacing:-0.01em;margin-bottom:20px;">Partenaires financiers</h2>
+  <h2 style="font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;color:var(--ink);letter-spacing:-0.01em;margin-bottom:20px;" data-i18n="cr.partners">Partenaires financiers</h2>
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;">
     {% for imf in imf_partners %}
     <div class="card" style="padding:24px;">

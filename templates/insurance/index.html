@@ -8,11 +8,11 @@
 <div class="page-header">
   <div class="page-header-content" style="display:flex;align-items:flex-end;justify-content:space-between;">
     <div>
-      <p class="page-header-tag">Protection de vos récoltes</p>
-      <h1 class="page-header-title">Assurance agricole</h1>
-      <p class="page-header-sub">Protection indicielle basée sur les données météo temps réel</p>
+      <p class="page-header-tag" data-i18n="ph.ins.tag">Protection de vos récoltes</p>
+      <h1 class="page-header-title" data-i18n="ph.ins.title">Assurance agricole</h1>
+      <p class="page-header-sub" data-i18n="ph.ins.sub">Protection indicielle basée sur les données météo temps réel</p>
     </div>
-    <a href="/assurance/new/" class="btn btn-clay" style="flex-shrink:0;">Souscrire une police</a>
+    <a href="/assurance/new/" class="btn btn-clay" style="flex-shrink:0;" data-i18n="btn.subscribe_pol">Souscrire une police</a>
   </div>
 </div>
 
@@ -47,7 +47,7 @@
 
     <div class="card" style="padding:26px;">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-        <h3 style="font-size:14px;font-weight:700;color:var(--ink);">Indice de risque climatique</h3>
+        <h3 style="font-size:14px;font-weight:700;color:var(--ink);" data-i18n="ins.risk_title">Indice de risque climatique</h3>
         <span style="font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:800;color:{% if policy.risk_index < 40 %}var(--forest){% elif policy.risk_index < 70 %}var(--gold){% else %}var(--red){% endif %};">{{ policy.risk_index }} %</span>
       </div>
       <div class="progress-bar" style="height:8px;margin-bottom:10px;">
@@ -91,31 +91,31 @@
 
 <!-- How it works -->
 <div class="card" style="padding:32px;margin-top:8px;">
-  <h2 style="font-size:15px;font-weight:700;color:var(--ink);margin-bottom:28px;">Fonctionnement de l'assurance indicielle</h2>
+  <h2 style="font-size:15px;font-weight:700;color:var(--ink);margin-bottom:28px;" data-i18n="ins.how_title">Fonctionnement de l'assurance indicielle</h2>
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:24px;">
 
     <div>
       <div style="width:44px;height:44px;border-radius:10px;background:var(--forest-bg);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--forest)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
       </div>
-      <h3 style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px;">Données satellitaires</h3>
-      <p style="font-size:13px;color:var(--muted);line-height:1.7;">Suivi automatique de la pluviométrie et des indices végétatifs par satellite, sans intervention terrain.</p>
+      <h3 style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px;" data-i18n="ins.satellite_t">Données satellitaires</h3>
+      <p style="font-size:13px;color:var(--muted);line-height:1.7;" data-i18n="ins.satellite_d">Suivi automatique de la pluviométrie et des indices végétatifs par satellite, sans intervention terrain.</p>
     </div>
 
     <div>
       <div style="width:44px;height:44px;border-radius:10px;background:var(--gold-bg);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
       </div>
-      <h3 style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px;">Déclenchement automatique</h3>
-      <p style="font-size:13px;color:var(--muted);line-height:1.7;">L'indemnisation se déclenche automatiquement lorsque les indices passent sous les seuils définis au contrat.</p>
+      <h3 style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px;" data-i18n="ins.trigger_t">Déclenchement automatique</h3>
+      <p style="font-size:13px;color:var(--muted);line-height:1.7;" data-i18n="ins.trigger_d">L'indemnisation se déclenche automatiquement lorsque les indices passent sous les seuils définis au contrat.</p>
     </div>
 
     <div>
       <div style="width:44px;height:44px;border-radius:10px;background:var(--clay-bg);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--clay)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
       </div>
-      <h3 style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px;">Paiement en 48 heures</h3>
-      <p style="font-size:13px;color:var(--muted);line-height:1.7;">Le montant est versé directement sur votre mobile money. Aucune démarche administrative requise.</p>
+      <h3 style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px;" data-i18n="ins.payment_t">Paiement en 48 heures</h3>
+      <p style="font-size:13px;color:var(--muted);line-height:1.7;" data-i18n="ins.payment_d">Le montant est versé directement sur votre mobile money. Aucune démarche administrative requise.</p>
     </div>
 
   </div>

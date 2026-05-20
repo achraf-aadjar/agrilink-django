@@ -9,6 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,700&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/main.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
+  <!-- Apply theme immediately to avoid flash -->
+  <script>(function(){var t=localStorage.getItem('agrilink-theme');if(t==='light')document.documentElement.classList.add('light-theme');})();</script>
   {% block extra_head %}{% endblock %}
 </head>
 <body>
@@ -26,11 +28,11 @@
   </a>
 
   <div class="topnav-links" id="nav-links">
-    {% if farmer %}<a href="/dashboard/"  class="topnav-link {% block nav_dashboard %}{% endblock %}">Tableau de bord</a>{% endif %}
-    <a href="/marketplace/" class="topnav-link {% block nav_marketplace %}{% endblock %}">Marché</a>
-    {% if farmer %}<a href="/credit/"     class="topnav-link {% block nav_credit %}{% endblock %}">Crédit</a>{% endif %}
-    {% if farmer %}<a href="/assurance/"  class="topnav-link {% block nav_insurance %}{% endblock %}">Assurance</a>{% endif %}
-    <a href="/conseiller/"  class="topnav-link {% block nav_conseiller %}{% endblock %}">Conseiller IA</a>
+    {% if farmer %}<a href="/dashboard/"  class="topnav-link {% block nav_dashboard %}{% endblock %}" data-i18n="nav.dashboard">Tableau de bord</a>{% endif %}
+    <a href="/marketplace/" class="topnav-link {% block nav_marketplace %}{% endblock %}" data-i18n="nav.marketplace">Marché</a>
+    {% if farmer %}<a href="/credit/"     class="topnav-link {% block nav_credit %}{% endblock %}" data-i18n="nav.credit">Crédit</a>{% endif %}
+    {% if farmer %}<a href="/assurance/"  class="topnav-link {% block nav_insurance %}{% endblock %}" data-i18n="nav.insurance">Assurance</a>{% endif %}
+    <a href="/conseiller/"  class="topnav-link {% block nav_conseiller %}{% endblock %}" data-i18n="nav.advisor">Conseiller IA</a>
   </div>
 
   <div class="topnav-right">
@@ -44,10 +46,57 @@
     <a href="/profil/" style="text-decoration:none;">
       <div class="avatar">{{ farmer.name|first|upper|default:"?" }}</div>
     </a>
-    <a href="/logout/" class="btn-logout">Déconnecter</a>
+    <a href="/logout/" class="btn-logout" data-i18n="nav.logout">Déconnecter</a>
     {% else %}
-    <a href="/auth/" class="btn btn-forest" style="padding:8px 18px;font-size:13px;">Se connecter</a>
+    <a href="/auth/" class="btn btn-forest" style="padding:8px 18px;font-size:13px;" data-i18n="nav.connect">Se connecter</a>
     {% endif %}
+
+    <!-- Language selector -->
+    <div class="lang-selector" id="lang-selector">
+      <button class="lang-btn" onclick="toggleLangMenu(event)" aria-label="Changer la langue">
+        <span class="lang-flag" id="lang-flag">🇫🇷</span>
+        <span class="lang-code" id="lang-code">FR</span>
+        <svg class="lang-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="lang-menu" id="lang-menu">
+        <button class="lang-item" onclick="setLang('fr')">
+          <span class="lang-item-flag">🇫🇷</span>
+          <span class="lang-item-info"><span class="lang-item-name">Français</span><span class="lang-item-country">Tous les pays</span></span>
+        </button>
+        <button class="lang-item" onclick="setLang('wo')">
+          <span class="lang-item-flag">🇸🇳</span>
+          <span class="lang-item-info"><span class="lang-item-name">Wolof</span><span class="lang-item-country">Sénégal</span></span>
+        </button>
+        <button class="lang-item" onclick="setLang('bm')">
+          <span class="lang-item-flag">🇲🇱</span>
+          <span class="lang-item-info"><span class="lang-item-name">Bambara</span><span class="lang-item-country">Mali</span></span>
+        </button>
+        <button class="lang-item" onclick="setLang('moore')">
+          <span class="lang-item-flag">🇧🇫</span>
+          <span class="lang-item-info"><span class="lang-item-name">Mooré</span><span class="lang-item-country">Burkina Faso</span></span>
+        </button>
+        <button class="lang-item" onclick="setLang('dyu')">
+          <span class="lang-item-flag">🇨🇮</span>
+          <span class="lang-item-info"><span class="lang-item-name">Dioula</span><span class="lang-item-country">Côte d'Ivoire</span></span>
+        </button>
+        <button class="lang-item" onclick="setLang('ha')">
+          <span class="lang-item-flag">🇳🇪</span>
+          <span class="lang-item-info"><span class="lang-item-name">Hausa</span><span class="lang-item-country">Niger</span></span>
+        </button>
+        <button class="lang-item" onclick="setLang('ew')">
+          <span class="lang-item-flag">🇹🇬</span>
+          <span class="lang-item-info"><span class="lang-item-name">Ewe</span><span class="lang-item-country">Togo</span></span>
+        </button>
+        <button class="lang-item" onclick="setLang('fon')">
+          <span class="lang-item-flag">🇧🇯</span>
+          <span class="lang-item-info"><span class="lang-item-name">Fon</span><span class="lang-item-country">Bénin</span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Theme toggle -->
+    <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Changer le thème">🌙</button>
+
     <button class="nav-toggle" id="nav-toggle" aria-label="Menu" onclick="this.classList.toggle('open');document.getElementById('nav-links').classList.toggle('open')">
       <span></span><span></span><span></span>
     </button>
@@ -80,6 +129,271 @@
 {% block extra_scripts %}{% endblock %}
 <script>
   if (typeof lucide !== 'undefined') lucide.createIcons();
+
+  /* ── TRANSLATIONS ─────────────────────────────────── */
+  const LANGS = {
+    fr: {
+      flag:'🇫🇷',code:'FR',
+      'nav.dashboard':'Tableau de bord','nav.marketplace':'Marché','nav.credit':'Crédit','nav.insurance':'Assurance','nav.advisor':'Conseiller IA','nav.logout':'Déconnecter','nav.connect':'Se connecter',
+      'ph.dash.tag':'Bienvenue sur AgriLink',
+      'ph.mp.tag':'Achat & vente direct','ph.mp.title':'Marché agricole','ph.mp.sub':'Mettez votre récolte en vente directement auprès des acheteurs',
+      'ph.cr.tag':'Financement agricole','ph.cr.title':'Crédit agricole','ph.cr.sub':'Financements adaptés aux producteurs de la zone UEMOA',
+      'ph.cr.apply.title':'Demande de crédit','ph.cr.apply.sub':'Financement agricole UEMOA — Réponse sous 24–48h',
+      'ph.ins.tag':'Protection de vos récoltes','ph.ins.title':'Assurance agricole','ph.ins.sub':'Protection indicielle basée sur les données météo temps réel',
+      'ph.ins.new.title':'Souscrire une assurance','ph.ins.new.sub':'Protection paramétrique contre les aléas climatiques',
+      'ph.adv.tag':'Intelligence artificielle agronomique','ph.adv.title':'Conseiller agronomique','ph.adv.sub':'Disponible 24h/24 — Spécialisé agriculture ouest-africaine',
+      'ph.pr.title':'Mon profil',
+      'btn.new_listing':'Nouvelle annonce','btn.publish':'Publier l\'annonce','btn.apply':'Faire une demande','btn.submit_credit':'Soumettre la demande →','btn.subscribe_now':'Souscrire maintenant →','btn.subscribe_pol':'Souscrire une police','btn.save':'Sauvegarder','btn.edit_profile':'Modifier le profil','btn.back_mp':'Retour au marché','btn.back_cr':'Retour au crédit','btn.back_ins':'Retour à l\'assurance','btn.dashboard':'Tableau de bord','btn.my_credits':'← Mes crédits','btn.my_insurance':'← Mon assurance','btn.see_all':'Tout voir','btn.accept':'Accepter','btn.first_listing':'Publier ma première annonce','btn.clear_chat':'Effacer la conversation','btn.new_listing_btn':'+ Publier une annonce',
+      'dash.kpi.revenue':'Revenu total','dash.kpi.score':'Agri-Score','dash.kpi.savings':'Économies','dash.kpi.tx':'Transactions','dash.kpi.trend_rev':'+12 % ce mois','dash.kpi.trend_score':'Profil solide','dash.kpi.trend_savings':'vs. intermédiaires','dash.kpi.trend_tx':'ventes réalisées',
+      'dash.perf':'Performance','dash.monthly':'Revenus mensuels 2026','dash.quick':'Accès rapide','dash.apply_credit':'Demander un crédit','dash.sub_ins':'Souscrire une assurance','dash.advisor_link':'Conseiller agronomique','dash.credit_active':'Crédit en cours','dash.offers_rt':'Activité en temps réel','dash.offers_title':'Offres reçues','dash.market_rt':'En temps réel','dash.market_title':'Cours du marché','dash.listings_title':'Annonces actives','dash.pending_offers':'en attente',
+      'stats.impact':'Impact AgriLink — Zone UEMOA','stats.farmers':'Agriculteurs','stats.listings':'Annonces actives','stats.offers':'Offres échangées','stats.volume':'Volume traité',
+      'cr.score_comp':'Composition du score','cr.eligible':'Montant éligible','cr.profile_solid':'Profil solide — Éligible au financement','cr.history':'Historique des demandes','cr.partners':'Partenaires financiers',
+      'cr.purpose_label':'Objet du crédit *','cr.amount_label':'Montant souhaité (FCFA) *','cr.duration_label':'Durée *','cr.imf_label':'Institution financière *','cr.summary_title':'Récapitulatif estimé','cr.summary_amount':'Montant demandé','cr.summary_duration':'Durée','cr.rate':'taux annuel','cr.sent_title':'Demande envoyée !','cr.sent_sub':'Votre demande de crédit a été transmise à l\'institution financière. Réponse sous 24-48h par SMS.',
+      'ins.risk_title':'Indice de risque climatique','ins.rainfall':'Pluviométrie 30 jours','ins.threshold':'Seuil de déclenchement : 30 mm / 30 jours',
+      'ins.how_title':'Fonctionnement de l\'assurance indicielle','ins.satellite_t':'Données satellitaires','ins.satellite_d':'Suivi automatique de la pluviométrie et des indices végétatifs par satellite, sans intervention terrain.','ins.trigger_t':'Déclenchement automatique','ins.trigger_d':'L\'indemnisation se déclenche automatiquement lorsque les indices passent sous les seuils définis au contrat.','ins.payment_t':'Paiement en 48 heures','ins.payment_d':'Le montant est versé directement sur votre mobile money. Aucune démarche administrative requise.',
+      'ins.crop_label':'Culture à assurer *','ins.surface_label':'Surface assurée (hectares) *','ins.season_label':'Saison *','ins.premium_label':'PRIME ANNUELLE','ins.coverage_label':'COUVERTURE MAXIMALE','ins.trigger_text':'Déclenchement automatique si pluviométrie < 30mm/30j','ins.protect_title':'Protégez votre récolte','ins.protect_sub':'L\'assurance indicielle vous protège automatiquement contre les aléas climatiques. Aucune expertise terrain requise.','ins.active':'Police active','ins.valid':'En vigueur','ins.subscribed_title':'Assurance souscrite !','ins.subscribed_sub':'Votre couverture est active. Vous serez automatiquement indemnisé si les conditions météo dépassent les seuils.',
+      'pr.verified':'Agriculteur vérifié','pr.hectares':'hectares','pr.sales':'ventes','pr.score':'score','pr.crops':'Cultures','pr.region':'Région','pr.name_label':'Nom complet','pr.region_label':'Région','pr.surface_label':'Surface (ha)','pr.crops_label':'Cultures','pr.revenue':'Revenu total','pr.savings':'Économies réalisées','pr.monthly':'Revenus par mois (année en cours)','pr.credits':'Historique des crédits','pr.see_credits':'Voir tout','pr.listings':'Mes annonces actives','pr.empty':'Vous n\'avez pas encore d\'annonce active.','pr.delete':'Retirer',
+      'mp.crop_label':'Culture *','mp.qty_label':'Quantité (kg) *','mp.quality_label':'Qualité *','mp.price_label':'Prix de vente (FCFA / kg) *','mp.date_label':'Disponible dès le','mp.desc_label':'Description (optionnel)',
+      'adv.available':'Disponible','adv.expert':'Expert en agriculture sénégalaise et UEMOA. Répond en français et en wolof.','adv.suggestions':'Questions fréquentes','adv.placeholder':'Posez votre question...','adv.hint':'Entrée pour envoyer — Maj + Entrée pour un saut de ligne','adv.clear':'Effacer la conversation',
+      'status.active':'En cours','status.repaid':'Remboursé','status.pending':'En attente',
+      'detail.back':'Retour au marché','detail.offer_sent':'Offre envoyée',
+    },
+    wo: {
+      flag:'🇸🇳',code:'WO',
+      'nav.dashboard':'Kër gi','nav.marketplace':'Tilim bi','nav.credit':'Jëfëndikoo','nav.insurance':'Assurance','nav.advisor':'Xam-xam','nav.logout':'Dem','nav.connect':'Dugg',
+      'ph.dash.tag':'Dalal ak jamm ci AgriLink',
+      'ph.mp.tag':'Jaay ak jënd','ph.mp.title':'Tilim bu dëkk','ph.mp.sub':'Bind sa récolte ci tilim bi',
+      'ph.cr.tag':'Mbed mbëgël','ph.cr.title':'Jëfëndikoo','ph.cr.sub':'Ndimbal yu ëpp ngir yëkëntëef yi',
+      'ph.cr.apply.title':'Sëlu jëfëndikoo','ph.cr.apply.sub':'Ndimbal UEMOA — Tontu ci àddina 24–48h',
+      'ph.ins.tag':'Féddu sa récolte','ph.ins.title':'Assurance bu dëkk','ph.ins.sub':'Féddu bu dëkk yi ci météo',
+      'ph.ins.new.title':'Sëtu assurance','ph.ins.new.sub':'Féddu ci jàmm bu njëkk',
+      'ph.adv.tag':'Xam-xam bu ndaw','ph.adv.title':'Xam-xam gi','ph.adv.sub':'Am ci 24h/24 — Xam ëllëg UEMOA',
+      'ph.pr.title':'Sa waa',
+      'btn.new_listing':'Bind annonce','btn.publish':'Def kow','btn.apply':'Sëlu','btn.submit_credit':'Yónnee sëlu →','btn.subscribe_now':'Sëtu léegi →','btn.subscribe_pol':'Sëtu assurance','btn.save':'Dëllu','btn.edit_profile':'Soppi sa waa','btn.back_mp':'Dellu ci tilim','btn.back_cr':'Dellu ci jëfëndikoo','btn.back_ins':'Dellu ci assurance','btn.dashboard':'Kër gi','btn.my_credits':'← Jëfëndikoo yi','btn.my_insurance':'← Assurance bi','btn.see_all':'Xool yëpp','btn.accept':'Jeël','btn.first_listing':'Bind sa jëf bu njëkk','btn.clear_chat':'Taxaw wax yi','btn.new_listing_btn':'+ Bind kow',
+      'dash.kpi.revenue':'Xaalis bu mujj','dash.kpi.score':'Agri-Score','dash.kpi.savings':'Dëj bu mujj','dash.kpi.tx':'Jaay-jënd','dash.kpi.trend_rev':'+12% bu fan bi','dash.kpi.trend_score':'Rekk ci yendu','dash.kpi.trend_savings':'vs. ñi giggël','dash.kpi.trend_tx':'jaay yi dëkk',
+      'dash.perf':'Njaboot','dash.monthly':'Xaalis yu fan bi 2026','dash.quick':'Jël ci kanam','dash.apply_credit':'Sëlu jëfëndikoo','dash.sub_ins':'Sëtu assurance','dash.advisor_link':'Xam-xam gi','dash.credit_active':'Jëfëndikoo bi am','dash.offers_rt':'Damm bi léegi','dash.offers_title':'Njabootam yi','dash.market_rt':'Léegi','dash.market_title':'Prix yi ci tilim','dash.listings_title':'Kow yi am','dash.pending_offers':'jël kanam',
+      'stats.impact':'Xëy AgriLink — UEMOA','stats.farmers':'Yëkëntëef yi','stats.listings':'Kow yi','stats.offers':'Njabootam yi','stats.volume':'Jaay bu mujj',
+      'cr.score_comp':'Li def score bi','cr.eligible':'Xaalis mu yagg','cr.profile_solid':'Rekk ci yendu — Am jëfëndikoo','cr.history':'Wërsëg yi','cr.partners':'Xarit yu mbed',
+      'cr.purpose_label':'Li jëfëndikoo bi war *','cr.amount_label':'Xaalis bu bëgg (FCFA) *','cr.duration_label':'Yoon *','cr.imf_label':'Doom bi ay xaalis *','cr.summary_title':'Xamal bu yomb','cr.summary_amount':'Xaalis bu sëlu','cr.summary_duration':'Yoon','cr.rate':'taux bu at','cr.sent_title':'Sëlu bi dem!','cr.sent_sub':'Sëlu bi dem ci institution bi. Tontu ci 24-48h ci SMS.',
+      'ins.risk_title':'Njaboot bu jàmm','ins.rainfall':'Tóor 30 fan','ins.threshold':'Mbirum: 30 mm / 30 fan',
+      'ins.how_title':'Li assurance bi def','ins.satellite_t':'Xam-xam yi ci kanam','ins.satellite_d':'Xëy automatik yi ci tóor ak loxo-ndaw, amul ku dëkk.','ins.trigger_t':'Jël automatik','ins.trigger_d':'Ndimbal bi jël automatik bi ndawi seuils yi.','ins.payment_t':'Fay ci 48 heures','ins.payment_d':'Xaalis bi dem ci sa mobile money. Amul dokkal bu soxor.',
+      'ins.crop_label':'Lëkkël bu assure *','ins.surface_label':'Loxo-ndaw (hektar) *','ins.season_label':'Xilli *','ins.premium_label':'LIPP BU AT','ins.coverage_label':'FÉDDU BU JËF','ins.trigger_text':'Jël automatik bi tóor < 30mm/30fan','ins.protect_title':'Féddu sa récolte','ins.protect_sub':'Assurance bi féddu yëgël ci jàmm yu récolte bi. Amul xam-xam bu war.','ins.active':'Assurance bi am','ins.valid':'Amul jaxasoo','ins.subscribed_title':'Assurance sëtu!','ins.subscribed_sub':'Féddu bi am. Da nga fay automatik bi météo yi ndawi seuils.',
+      'pr.verified':'Yëkëntëef bu gëm','pr.hectares':'hektar','pr.sales':'jaay yi','pr.score':'score','pr.crops':'Lëkkël yi','pr.region':'Péyi bi','pr.name_label':'Sa turu yëpël','pr.region_label':'Péyi bi','pr.surface_label':'Loxo-ndaw (ha)','pr.crops_label':'Lëkkël yi','pr.revenue':'Xaalis bu mujj','pr.savings':'Dëj bu mujj','pr.monthly':'Xaalis yu fan bi (at bi am)','pr.credits':'Wërsëg yi','pr.see_credits':'Xool yëpp','pr.listings':'Kow yi am','pr.empty':'Amul kow ci kanam.','pr.delete':'Jox',
+      'mp.crop_label':'Lëkkël *','mp.qty_label':'Looloom (kg) *','mp.quality_label':'Njëg *','mp.price_label':'Prix yu jaay (FCFA / kg) *','mp.date_label':'Amul ci','mp.desc_label':'Xamal (du dëgg)',
+      'adv.available':'Am','adv.expert':'Xam ëllëg Senegaal ak UEMOA. Wax ci français ak wolof.','adv.suggestions':'Laaj yi àttëku','adv.placeholder':'Laaj sa laaj...','adv.hint':'Enter ngir yónnee — Maj + Enter ngir neesu','adv.clear':'Taxaw wax yi',
+      'status.active':'Am ci','status.repaid':'Fay','status.pending':'Jël kanam',
+      'detail.back':'Dellu ci tilim','detail.offer_sent':'Njabootam bi dem',
+    },
+    bm: {
+      flag:'🇲🇱',code:'BM',
+      'nav.dashboard':'Kunnafoni','nav.marketplace':'Sugu','nav.credit':'Juru bila','nav.insurance':'Lakana','nav.advisor':'Dɔnniya','nav.logout':'Bɔ','nav.connect':'Sɔrɔ',
+      'ph.dash.tag':'I ni ce AgriLink',
+      'ph.mp.tag':'San ni feere','ph.mp.title':'Sugu yɔrɔ','ph.mp.sub':'I ka harvest feere dɔrɔn',
+      'ph.cr.tag':'Sɔrɔ dɛmɛ','ph.cr.title':'Juru bila','ph.cr.sub':'Juru sènèkɛlaw bɛɛ ye',
+      'ph.cr.apply.title':'Juru ɲini','ph.cr.apply.sub':'UEMOA juru — Jaabi tile 24–48',
+      'ph.ins.tag':'I ka harvest lakana','ph.ins.title':'Lakana','ph.ins.sub':'Lakana mɔgɔkɔrɔ nin yiriwali',
+      'ph.ins.new.title':'Lakana sɛgɛn','ph.ins.new.sub':'Siramɔgɔya kɔnɔ lakana',
+      'ph.adv.tag':'Halikayelaw dɔnniya','ph.adv.title':'Dɔnniya kɛla','ph.adv.sub':'Tile 24 bɛɛ — UEMOA sènèkɛ dɔnniya',
+      'ph.pr.title':'N ka kunnafoni',
+      'btn.new_listing':'Kunnafoni kura','btn.publish':'Kow bɔ','btn.apply':'Ɲini','btn.submit_credit':'Juru ci fara →','btn.subscribe_now':'Sɛgɛn sisan →','btn.subscribe_pol':'Lakana sɛgɛn','btn.save':'Mara','btn.edit_profile':'N ka kunnafoni yɛlɛma','btn.back_mp':'Sugu kɔ','btn.back_cr':'Juru kɔ','btn.back_ins':'Lakana kɔ','btn.dashboard':'Kunnafoni yɔrɔ','btn.my_credits':'← N ka juru','btn.my_insurance':'← N ka lakana','btn.see_all':'Bɛɛ ye','btn.accept':'Sɔrɔ','btn.first_listing':'N ka kow fɔlɔ','btn.clear_chat':'Kumakan jɛni','btn.new_listing_btn':'+ Kow kura',
+      'dash.kpi.revenue':'Wari bɛɛ','dash.kpi.score':'Agri-Score','dash.kpi.savings':'Dɛsɛ','dash.kpi.tx':'Jɔnijɔni','dash.kpi.trend_rev':'+12% kalo in','dash.kpi.trend_score':'Cogoya ɲuman','dash.kpi.trend_savings':'vs. jɔnilaw','dash.kpi.trend_tx':'feere kɛra',
+      'dash.perf':'Baara ɲuman','dash.monthly':'Wari kalo bɛɛ 2026','dash.quick':'Teliya don','dash.apply_credit':'Juru ɲini','dash.sub_ins':'Lakana sɛgɛn','dash.advisor_link':'Dɔnniya kɛla','dash.credit_active':'Juru don','dash.offers_rt':'Kɛtɔ sisan','dash.offers_title':'Cɛlaw bɛ na','dash.market_rt':'Sisan','dash.market_title':'Sugu jɔli','dash.listings_title':'Kow milɔw','dash.pending_offers':'tali la',
+      'stats.impact':'AgriLink cogoya — UEMOA','stats.farmers':'Sènèkɛlaw','stats.listings':'Kow milɔw','stats.offers':'Cɛlaw','stats.volume':'Feere bɛɛ',
+      'cr.score_comp':'Score kɛcogo','cr.eligible':'Wari sɔrɔ','cr.profile_solid':'Cogoya ɲuman — Juru ye','cr.history':'Ɲiniw kɔrɔ','cr.partners':'Jɔnitɔw',
+      'cr.purpose_label':'Juru baara *','cr.amount_label':'Wari bɛɛ (FCFA) *','cr.duration_label':'Waati *','cr.imf_label':'Wari kabinɛ *','cr.summary_title':'Ɲɛfɔli','cr.summary_amount':'Wari ɲinini','cr.summary_duration':'Waati','cr.rate':'san taux','cr.sent_title':'Ɲini tɔgɔra!','cr.sent_sub':'Ɲini tɔgɔra kabinɛ la. Jaabi tile 24-48 SMS la.',
+      'ins.risk_title':'Siramɔgɔya cogoya','ins.rainfall':'Sanji tile 30','ins.threshold':'Kɛnɛya: 30 mm / tile 30',
+      'ins.how_title':'Lakana kɛcogo','ins.satellite_t':'Sankolo kunnafoni','ins.satellite_d':'Sanji ni yiriwa fɔlɔ jatebɔ, mɔgɔ ma ka taa.','ins.trigger_t':'Siri yɛrɛma','ins.trigger_d':'Lakana wari bɔ yɛrɛma ni cogoya bɛ tɛmɛ seuils kan.','ins.payment_t':'Wari san 48 tile','ins.payment_d':'Wari taara i ka mobile money la. Papier dɔn ma kan.',
+      'ins.crop_label':'Yiriwa lakana *','ins.surface_label':'Foro hekitarɛ *','ins.season_label':'Saison *','ins.premium_label':'WARI KALO','ins.coverage_label':'LAKANA FANGA','ins.trigger_text':'Siri yɛrɛma ni sanji < 30mm/tile 30','ins.protect_title':'I ka harvest lakana','ins.protect_sub':'Lakana fɛn i yɛrɛma kɔnɔ siramɔgɔya la. Mɔgɔ si ma kan.','ins.active':'Lakana don','ins.valid':'Cogoya la','ins.subscribed_title':'Lakana sɛgɛnna!','ins.subscribed_sub':'Fɛn i lakana don. I ka wari bɔ yɛrɛma ni météo bɛ tɛmɛ seuils kan.',
+      'pr.verified':'Sènèkɛla jɛlen','pr.hectares':'hekitarɛ','pr.sales':'feere','pr.score':'score','pr.crops':'Yiriwa','pr.region':'Kɛnɛ','pr.name_label':'I tɔgɔ','pr.region_label':'Kɛnɛ','pr.surface_label':'Foro (ha)','pr.crops_label':'Yiriwa','pr.revenue':'Wari bɛɛ','pr.savings':'Dɛsɛ','pr.monthly':'Wari kalo bɛɛ (san in)','pr.credits':'Juru kɔrɔw','pr.see_credits':'Bɛɛ ye','pr.listings':'N kow milɔw','pr.empty':'Kow si tɛ yen.','pr.delete':'Bɔ',
+      'mp.crop_label':'Yiriwa *','mp.qty_label':'Hakɛ (kg) *','mp.quality_label':'Ɲumannya *','mp.price_label':'Jɔli (FCFA / kg) *','mp.date_label':'Waati la','mp.desc_label':'Kɛkɔrɔ (ka to la)',
+      'adv.available':'Don','adv.expert':'Senegali ni UEMOA sènèkɛ dɔnniya. Kuma français ni bambara.','adv.suggestions':'Ɲiniw kɛrɛnkɛrɛnnen','adv.placeholder':'I ka ɲini bila...','adv.hint':'Enter ka ci fara — Maj + Enter ka sɔrɔ','adv.clear':'Kumakan jɛni',
+      'status.active':'Don','status.repaid':'Bɔra','status.pending':'Tali la',
+      'detail.back':'Sugu kɔ','detail.offer_sent':'Cɛ tɔgɔra',
+    },
+    moore: {
+      flag:'🇧🇫',code:'MO',
+      'nav.dashboard':'Yiri','nav.marketplace':'Lurum','nav.credit':'Ligd lɔɔgr','nav.insurance':'Assurance','nav.advisor':'Sεkam','nav.logout':'Yi','nav.connect':'Kẽ',
+      'ph.dash.tag':'Laafi AgriLink pʋgẽ',
+      'ph.mp.tag':'Rɩɩm yɛɛs','ph.mp.title':'Lurum','ph.mp.sub':'F sɩng f ka yɩɩl rɩɩm pʋgẽ',
+      'ph.cr.tag':'Ligd dɛm','ph.cr.title':'Ligd lɔɔgr','ph.cr.sub':'Ligd yɩɩla UEMOA rɩɩma',
+      'ph.cr.apply.title':'Ligd kõs','ph.cr.apply.sub':'UEMOA ligd — Leokr tile 24–48',
+      'ph.ins.tag':'F rɩɩm kãenga','ph.ins.title':'Assurance','ph.ins.sub':'Assurance rɩɩm zĩig météo',
+      'ph.ins.new.title':'Assurance sɛbg','ph.ins.new.sub':'Kãenga tõog zug',
+      'ph.adv.tag':'Zɩɩga-yam fanga','ph.adv.title':'Sεkam-zεba','ph.adv.sub':'Tile 24/24 — UEMOA rɩɩm yam',
+      'ph.pr.title':'M soab kunnafoni',
+      'btn.new_listing':'Kow kãenga','btn.publish':'Kow bɔɔg','btn.apply':'Kõs','btn.submit_credit':'Ligd tõog →','btn.subscribe_now':'Sɛbg dɛɛlẽ →','btn.subscribe_pol':'Assurance sɛbg','btn.save':'Kẽ','btn.edit_profile':'M soab yɛlge','btn.back_mp':'Lurum kɛnd','btn.back_cr':'Ligd kɛnd','btn.back_ins':'Assurance kɛnd','btn.dashboard':'Yiri','btn.my_credits':'← M ligd yi','btn.my_insurance':'← M assurance','btn.see_all':'Fãa yã','btn.accept':'Nams','btn.first_listing':'M kow fãa fɔ','btn.clear_chat':'Goam jɛni','btn.new_listing_btn':'+ Kow kura',
+      'dash.kpi.revenue':'Ligd fãa','dash.kpi.score':'Agri-Score','dash.kpi.savings':'Ligd cõosgo','dash.kpi.tx':'Rɩɩm yɛɛs','dash.kpi.trend_rev':'+12% dãp wẽnd','dash.kpi.trend_score':'Nɔɔre ɲunga','dash.kpi.trend_savings':'vs. kãensem','dash.kpi.trend_tx':'yɩɩs kẽnga',
+      'dash.perf':'Baas ɩloog','dash.monthly':'Ligd wĩnd 2026','dash.quick':'Pɩkas don','dash.apply_credit':'Ligd kõs','dash.sub_ins':'Assurance sɛbg','dash.advisor_link':'Sεkam-zεba','dash.credit_active':'Ligd don','dash.offers_rt':'Kɛtɔ dɛɛlẽ','dash.offers_title':'Cɛɛls bɩ na','dash.market_rt':'Dɛɛlẽ','dash.market_title':'Lurum jɔli','dash.listings_title':'Kow yɩɩs','dash.pending_offers':'taalẽ',
+      'stats.impact':'AgriLink yɩɩg — UEMOA','stats.farmers':'Rɩɩma yɩɩba','stats.listings':'Kow yɩɩs','stats.offers':'Cɛɛls','stats.volume':'Yɩɩs fãa',
+      'cr.score_comp':'Score waongo','cr.eligible':'Ligd sɔɔre','cr.profile_solid':'Nɔɔre ɲunga — Ligd ye','cr.history':'Kõsem kɔɔgo','cr.partners':'Ligd tẽnba',
+      'cr.purpose_label':'Ligd baas *','cr.amount_label':'Ligd (FCFA) *','cr.duration_label':'Waakẽ *','cr.imf_label':'Ligd kabinɛ *','cr.summary_title':'Nɔɔg ɩloog','cr.summary_amount':'Ligd kõsem','cr.summary_duration':'Waakẽ','cr.rate':'san taux','cr.sent_title':'Kõs tõgẽ!','cr.sent_sub':'Kõs tõgẽ kabinɛ. Leokr tile 24-48 SMS.',
+      'ins.risk_title':'Tõog cogoya','ins.rainfall':'Saag tile 30','ins.threshold':'Pɩɩga: 30 mm / tile 30',
+      'ins.how_title':'Assurance yɩɩg','ins.satellite_t':'Zɩɩg kunnafoni','ins.satellite_d':'Saag ni rɩɩm yɩɩg yɛrɛma.','ins.trigger_t':'Sɔɔre yɛrɛma','ins.trigger_d':'Ligd bɔɔgd yɛrɛma seuils tɛmɛ.','ins.payment_t':'Ligd tile 48','ins.payment_d':'Ligd taame mobile money zug. Papier ka wɩng.',
+      'ins.crop_label':'Rɩɩm assurance *','ins.surface_label':'Tẽng hektar *','ins.season_label':'Saasd *','ins.premium_label':'LIGD YOOB','ins.coverage_label':'KÃENGA FÃA','ins.trigger_text':'Sɔɔre yɛrɛma ni saag < 30mm/tile 30','ins.protect_title':'F rɩɩm kãenga','ins.protect_sub':'Assurance fɛnd yɛrɛma kõor tõog.','ins.active':'Assurance don','ins.valid':'Cogoya la','ins.subscribed_title':'Assurance sɛbgẽ!','ins.subscribed_sub':'F kãenga don. Ligd bɔɔgd yɛrɛma.',
+      'pr.verified':'Rɩɩm-yaab gomde','pr.hectares':'hektar','pr.sales':'yɩɩs','pr.score':'score','pr.crops':'Rɩɩm','pr.region':'Tẽng','pr.name_label':'F yʋʋr','pr.region_label':'Tẽng','pr.surface_label':'Tẽng (ha)','pr.crops_label':'Rɩɩm','pr.revenue':'Ligd fãa','pr.savings':'Ligd cõosgo','pr.monthly':'Ligd wĩnd (yoob in)','pr.credits':'Kõsem kɔɔgo','pr.see_credits':'Fãa yã','pr.listings':'M kow yɩɩs','pr.empty':'Kow ka be.','pr.delete':'Bɔɔg',
+      'mp.crop_label':'Rɩɩm *','mp.qty_label':'Hakɛ (kg) *','mp.quality_label':'Ɲumannya *','mp.price_label':'Jɔli (FCFA / kg) *','mp.date_label':'Waakẽ','mp.desc_label':'Goam (tõnd dõng)',
+      'adv.available':'Don','adv.expert':'Senegali ni UEMOA yam.','adv.suggestions':'Pɛɛle kõsem','adv.placeholder':'F pɛɛle kõs...','adv.hint':'Enter tõog — Maj + Enter kẽ','adv.clear':'Goam jɛni',
+      'status.active':'Don','status.repaid':'Bɔɔgd','status.pending':'Taalẽ',
+      'detail.back':'Lurum kɛnd','detail.offer_sent':'Cɛ tɔgẽ',
+    },
+    dyu: {
+      flag:'🇨🇮',code:'DY',
+      'nav.dashboard':'So','nav.marketplace':'Sugu','nav.credit':'Juru','nav.insurance':'Lakana','nav.advisor':'Dɔnkili','nav.logout':'Bɔ','nav.connect':'Sɔrɔ',
+      'ph.dash.tag':'Wula ka AgriLink',
+      'ph.mp.tag':'San ni feere','ph.mp.title':'Sugu yɔrɔ','ph.mp.sub':'I ka harvest feere yɔrɔ kɔnɔ',
+      'ph.cr.tag':'Wari dɛmɛ','ph.cr.title':'Juru','ph.cr.sub':'Juru sènèkɛlaw bɛɛ ye',
+      'ph.cr.apply.title':'Juru ɲini','ph.cr.apply.sub':'UEMOA — Jaabi tile 24–48',
+      'ph.ins.tag':'I ka harvest lakana','ph.ins.title':'Lakana','ph.ins.sub':'Lakana météo kɔnɔ',
+      'ph.ins.new.title':'Lakana sɛgɛn','ph.ins.new.sub':'Siramɔgɔya kɔnɔ lakana',
+      'ph.adv.tag':'Halikayelaw dɔnkili','ph.adv.title':'Dɔnkili kɛla','ph.adv.sub':'Tile 24 bɛɛ — UEMOA sènèkɛ dɔnkili',
+      'ph.pr.title':'N ka kunnafoni',
+      'btn.new_listing':'Kow kura','btn.publish':'Kow bɔ','btn.apply':'Ɲini','btn.submit_credit':'Juru tɔgɔ →','btn.subscribe_now':'Sɛgɛn sisan →','btn.subscribe_pol':'Lakana sɛgɛn','btn.save':'Mara','btn.edit_profile':'N ka kunnafoni yɛlɛma','btn.back_mp':'Sugu kɔ','btn.back_cr':'Juru kɔ','btn.back_ins':'Lakana kɔ','btn.dashboard':'So','btn.my_credits':'← N ka juru','btn.my_insurance':'← N ka lakana','btn.see_all':'Bɛɛ ye','btn.accept':'Sɔrɔ','btn.first_listing':'N ka kow fɔlɔ','btn.clear_chat':'Kumakan jɛni','btn.new_listing_btn':'+ Kow kura',
+      'dash.kpi.revenue':'Wari bɛɛ','dash.kpi.score':'Agri-Score','dash.kpi.savings':'Dɛsɛ','dash.kpi.tx':'Jɔnijɔni','dash.kpi.trend_rev':'+12% kalo in','dash.kpi.trend_score':'Cogoya ɲuman','dash.kpi.trend_savings':'vs. jɔnilaw','dash.kpi.trend_tx':'feere kɛra',
+      'dash.perf':'Baara ɲuman','dash.monthly':'Wari kalo 2026','dash.quick':'Teliya don','dash.apply_credit':'Juru ɲini','dash.sub_ins':'Lakana sɛgɛn','dash.advisor_link':'Dɔnkili kɛla','dash.credit_active':'Juru don','dash.offers_rt':'Kɛtɔ sisan','dash.offers_title':'Cɛlaw bɛ na','dash.market_rt':'Sisan','dash.market_title':'Sugu jɔli','dash.listings_title':'Kow milɔw','dash.pending_offers':'tali la',
+      'stats.impact':'AgriLink — UEMOA','stats.farmers':'Sènèkɛlaw','stats.listings':'Kow milɔw','stats.offers':'Cɛlaw','stats.volume':'Feere bɛɛ',
+      'cr.score_comp':'Score kɛcogo','cr.eligible':'Wari sɔrɔ','cr.profile_solid':'Cogoya ɲuman — Juru ye','cr.history':'Ɲiniw kɔrɔ','cr.partners':'Jɔnitɔw',
+      'cr.purpose_label':'Juru baara *','cr.amount_label':'Wari (FCFA) *','cr.duration_label':'Waati *','cr.imf_label':'Wari kabinɛ *','cr.summary_title':'Ɲɛfɔli','cr.summary_amount':'Wari ɲinini','cr.summary_duration':'Waati','cr.rate':'san taux','cr.sent_title':'Ɲini tɔgɔra!','cr.sent_sub':'Ɲini tɔgɔra. Jaabi tile 24-48 SMS la.',
+      'ins.risk_title':'Siramɔgɔya cogoya','ins.rainfall':'Sanji tile 30','ins.threshold':'Kɛnɛya: 30mm/tile 30',
+      'ins.how_title':'Lakana kɛcogo','ins.satellite_t':'Sankolo kunnafoni','ins.satellite_d':'Sanji ni yiriwa fɔlɔ jatebɔ.','ins.trigger_t':'Siri yɛrɛma','ins.trigger_d':'Lakana wari bɔ yɛrɛma.','ins.payment_t':'Wari tile 48','ins.payment_d':'Wari taara mobile money la.',
+      'ins.crop_label':'Yiriwa lakana *','ins.surface_label':'Foro hekitarɛ *','ins.season_label':'Saison *','ins.premium_label':'WARI KALO','ins.coverage_label':'LAKANA FANGA','ins.trigger_text':'Siri yɛrɛma ni sanji < 30mm','ins.protect_title':'I ka harvest lakana','ins.protect_sub':'Lakana fɛn yɛrɛma kɔnɔ siramɔgɔya.','ins.active':'Lakana don','ins.valid':'Don','ins.subscribed_title':'Lakana sɛgɛnna!','ins.subscribed_sub':'I lakana don. Wari bɔ yɛrɛma.',
+      'pr.verified':'Sènèkɛla jɛlen','pr.hectares':'hekitarɛ','pr.sales':'feere','pr.score':'score','pr.crops':'Yiriwa','pr.region':'Kɛnɛ','pr.name_label':'I tɔgɔ','pr.region_label':'Kɛnɛ','pr.surface_label':'Foro (ha)','pr.crops_label':'Yiriwa','pr.revenue':'Wari bɛɛ','pr.savings':'Dɛsɛ','pr.monthly':'Wari kalo (san in)','pr.credits':'Juru kɔrɔw','pr.see_credits':'Bɛɛ ye','pr.listings':'N kow milɔw','pr.empty':'Kow si tɛ yen.','pr.delete':'Bɔ',
+      'mp.crop_label':'Yiriwa *','mp.qty_label':'Hakɛ (kg) *','mp.quality_label':'Ɲumannya *','mp.price_label':'Jɔli (FCFA / kg) *','mp.date_label':'Waati la','mp.desc_label':'Kɛkɔrɔ (ka to la)',
+      'adv.available':'Don','adv.expert':'UEMOA sènèkɛ dɔnkili. Kuma français ni dioula.','adv.suggestions':'Ɲiniw kɛrɛnkɛrɛnnen','adv.placeholder':'I ka ɲini bila...','adv.hint':'Enter ka ci fara — Maj + Enter','adv.clear':'Kumakan jɛni',
+      'status.active':'Don','status.repaid':'Bɔra','status.pending':'Tali la',
+      'detail.back':'Sugu kɔ','detail.offer_sent':'Cɛ tɔgɔra',
+    },
+    ha: {
+      flag:'🇳🇪',code:'HA',
+      'nav.dashboard':'Gida','nav.marketplace':'Kasuwa','nav.credit':'Lamuni','nav.insurance':'Inshurens','nav.advisor':'Mai shawara','nav.logout':'Fita','nav.connect':'Shiga',
+      'ph.dash.tag':'Barka da zuwa AgriLink',
+      'ph.mp.tag':'Saye da sayarwa','ph.mp.title':'Kasuwar gonaki','ph.mp.sub':'Sayar da amfanin gonarka kai tsaye',
+      'ph.cr.tag':'Kudin taimako','ph.cr.title':'Lamunin noma','ph.cr.sub':'Lamuni ga manoma na UEMOA',
+      'ph.cr.apply.title':'Neman lamuni','ph.cr.apply.sub':'Lamunin UEMOA — Amsa cikin awanni 24–48',
+      'ph.ins.tag':'Kare amfanin gonarka','ph.ins.title':'Inshurens noma','ph.ins.sub':'Kariya ta hanyar bayanan yanayi',
+      'ph.ins.new.title':'Siyan inshurens','ph.ins.new.sub':'Kariya daga rikicin yanayi',
+      'ph.adv.tag':'Ilimin noma na AI','ph.adv.title':'Mai shawara','ph.adv.sub':'Yana nan 24/24 — Ƙwararre a noman UEMOA',
+      'ph.pr.title':'Bayanan na',
+      'btn.new_listing':'Sabon tallace','btn.publish':'Buga tallace','btn.apply':'Nemi lamuni','btn.submit_credit':'Aika neman →','btn.subscribe_now':'Yi rajista yanzu →','btn.subscribe_pol':'Siyan inshurens','btn.save':'Adana','btn.edit_profile':'Gyara bayanan na','btn.back_mp':'Koma kasuwa','btn.back_cr':'Koma lamuni','btn.back_ins':'Koma inshurens','btn.dashboard':'Gida','btn.my_credits':'← Lamunanina','btn.my_insurance':'← Inshurensna','btn.see_all':'Duba duk','btn.accept':'Karba','btn.first_listing':'Buga tallace na farko','btn.clear_chat':'Share tattaunawa','btn.new_listing_btn':'+ Sabon tallace',
+      'dash.kpi.revenue':'Kudin shiga duka','dash.kpi.score':'Agri-Score','dash.kpi.savings':'Tanadi','dash.kpi.tx':'Ma\'amaloli','dash.kpi.trend_rev':'+12% wannan wata','dash.kpi.trend_score':'Bayanan yana da kyau','dash.kpi.trend_savings':'vs. masu jira','dash.kpi.trend_tx':'sayarwar da aka yi',
+      'dash.perf':'Aiki','dash.monthly':'Kudin shiga wata 2026','dash.quick':'Hanyoyi masu sauri','dash.apply_credit':'Nemi lamuni','dash.sub_ins':'Siyan inshurens','dash.advisor_link':'Mai shawara','dash.credit_active':'Lamuni yana ci gaba','dash.offers_rt':'Ayyukan yanzu','dash.offers_title':'Tayin da aka karba','dash.market_rt':'Yanzu','dash.market_title':'Farashin kasuwa','dash.listings_title':'Tallace masu aiki','dash.pending_offers':'suna jira',
+      'stats.impact':'Tasirin AgriLink — UEMOA','stats.farmers':'Manoma','stats.listings':'Tallace masu aiki','stats.offers':'Tayin da aka yi','stats.volume':'Juyin kasuwanci',
+      'cr.score_comp':'Yadda aka lissafta score','cr.eligible':'Adadin da za a iya samu','cr.profile_solid':'Bayanan yana da kyau — An cancanta lamuni','cr.history':'Tarihin neman lamuni','cr.partners':'Abokan hada-hadar kuɗi',
+      'cr.purpose_label':'Manufar lamuni *','cr.amount_label':'Adadin da ake so (FCFA) *','cr.duration_label':'Tsawon lokaci *','cr.imf_label':'Cibiyar kudi *','cr.summary_title':'Taƙaitawar kimanin','cr.summary_amount':'Adadin da aka nema','cr.summary_duration':'Tsawon lokaci','cr.rate':'yawan shekara','cr.sent_title':'An aika neman!','cr.sent_sub':'An aika neman lamunin ga cibiyar. Amsa cikin awanni 24-48 ta SMS.',
+      'ins.risk_title':'Ma\'aunin haɗarin yanayi','ins.rainfall':'Ruwan sama kwanaki 30','ins.threshold':'Iyaka: 30 mm / kwanaki 30',
+      'ins.how_title':'Yadda inshurens ke aiki','ins.satellite_t':'Bayanan tauraro dan wuta','ins.satellite_d':'Sa ido kan ruwan sama da yanayi ta tauraro dan wuta, babu bukata ta mutum.','ins.trigger_t':'Biyan kuɗi na atomatik','ins.trigger_d':'Ana biya kai tsaye idan yanayi ya wuce iyaka.','ins.payment_t':'Kuɗi cikin awanni 48','ins.payment_d':'Ana sanya kuɗi a mobile money ɗinka. Babu takardu da ake bukata.',
+      'ins.crop_label':'Amfanin gona da za a insure *','ins.surface_label':'Fili (hekta) *','ins.season_label':'Lokaci *','ins.premium_label':'KUƊIN SHIGA NA SHEKARA','ins.coverage_label':'MAFI YAWAN KARIYA','ins.trigger_text':'Biya atomatik idan ruwan sama < 30mm/30kwana','ins.protect_title':'Kare amfanin gonarka','ins.protect_sub':'Inshurens yana karewa kai tsaye daga rikicin yanayi. Babu bukata ta ƙwararru.','ins.active':'Inshurens mai aiki','ins.valid':'Yana aiki','ins.subscribed_title':'Inshurens ya kammala!','ins.subscribed_sub':'Kariyarka tana aiki. Za a biya kai tsaye idan yanayi ya wuce iyaka.',
+      'pr.verified':'Tabbataccen manomi','pr.hectares':'hekta','pr.sales':'sayarwa','pr.score':'score','pr.crops':'Amfanin gona','pr.region':'Yanki','pr.name_label':'Sunana','pr.region_label':'Yanki','pr.surface_label':'Fili (ha)','pr.crops_label':'Amfanin gona','pr.revenue':'Kudin shiga duka','pr.savings':'Tanadi','pr.monthly':'Kudin shiga wata (wannan shekara)','pr.credits':'Tarihin lamuni','pr.see_credits':'Duba duk','pr.listings':'Tallacea na','pr.empty':'Babu tallace a yanzu.','pr.delete':'Cire',
+      'mp.crop_label':'Amfanin gona *','mp.qty_label':'Yawa (kg) *','mp.quality_label':'Inganci *','mp.price_label':'Farashi (FCFA / kg) *','mp.date_label':'Ana iya samu daga','mp.desc_label':'Bayani (zaɓi)',
+      'adv.available':'Yana nan','adv.expert':'Ƙwararren noman Senegali da UEMOA. Yana magana da faransanci da Hausa.','adv.suggestions':'Tambayoyi na kowa','adv.placeholder':'Tambaya naka...','adv.hint':'Ente don aika — Maj + Ente don sauya layi','adv.clear':'Share tattaunawa',
+      'status.active':'Yana ci gaba','status.repaid':'An biya','status.pending':'Yana jira',
+      'detail.back':'Koma kasuwa','detail.offer_sent':'An aika tayin',
+    },
+    ew: {
+      flag:'🇹🇬',code:'EW',
+      'nav.dashboard':'Ƒome','nav.marketplace':'Aha','nav.credit':'Kadzo','nav.insurance':'Sidzedze','nav.advisor':'Xexlẽla','nav.logout':'Yi','nav.connect':'Wɔ ŋu',
+      'ph.dash.tag':'Woe zɔ AgriLink me',
+      'ph.mp.tag':'Xɔ kple treatrea','ph.mp.title':'Aha ga','ph.mp.sub':'Ŋlɔ wò xɔʋe aha me',
+      'ph.cr.tag':'Ga dɔwɔwɔ','ph.cr.title':'Kadzo','ph.cr.sub':'Kadzo sènèkɛla siwo ƒe',
+      'ph.cr.apply.title':'Bia kadzo','ph.cr.apply.sub':'UEMOA kadzo — Dzo ŋu ŋkeke 24–48',
+      'ph.ins.tag':'Blibo tso agble me','ph.ins.title':'Sidzedze','ph.ins.sub':'Sidzedze nutome nyatefe ŋu',
+      'ph.ins.new.title':'Wɔ sidzedze ŋu','ph.ins.new.sub':'Blibo tso zãzã me',
+      'ph.adv.tag':'Agble sukulu AI','ph.adv.title':'Xexlẽla','ph.adv.sub':'Le 24/24 — UEMOA agble ŋkeke bɛɛ',
+      'ph.pr.title':'Ame nyenyem',
+      'btn.new_listing':'Xɔʋe yeye','btn.publish':'Ŋlɔ xɔʋe','btn.apply':'Bia','btn.submit_credit':'Xo kadzo →','btn.subscribe_now':'Wɔ ŋu ko →','btn.subscribe_pol':'Wɔ sidzedze ŋu','btn.save':'Dzra','btn.edit_profile':'Ɖo ame nyenyem ŋu','btn.back_mp':'Kɔ aha','btn.back_cr':'Kɔ kadzo','btn.back_ins':'Kɔ sidzedze','btn.dashboard':'Ƒome','btn.my_credits':'← Kaɖzowo','btn.my_insurance':'← Sidzedzem','btn.see_all':'Kpɔ bɛɛ','btn.accept':'Zã','btn.first_listing':'Ŋlɔ xɔʋe fɔfɔɔ','btn.clear_chat':'Ɖe gbegble','btn.new_listing_btn':'+ Xɔʋe yeye',
+      'dash.kpi.revenue':'Ga bubu','dash.kpi.score':'Agri-Score','dash.kpi.savings':'Ga dzra','dash.kpi.tx':'Xɔ-treatrea','dash.kpi.trend_rev':'+12% ɣleti sia','dash.kpi.trend_score':'Nyatefe nyuie','dash.kpi.trend_savings':'vs. agbeɖeɖe','dash.kpi.trend_tx':'treatrea si wɔ la',
+      'dash.perf':'Dɔwɔwɔ','dash.monthly':'Ga ɣleti 2026','dash.quick':'Hede vevie','dash.apply_credit':'Bia kadzo','dash.sub_ins':'Wɔ sidzedze ŋu','dash.advisor_link':'Xexlẽla','dash.credit_active':'Kadzo le eme','dash.offers_rt':'Dɔwɔwɔ ko','dash.offers_title':'Xɔʋe si wɔm','dash.market_rt':'Ko','dash.market_title':'Aha ƒe ehe','dash.listings_title':'Xɔʋe siwo le','dash.pending_offers':'le ŋu',
+      'stats.impact':'AgriLink — UEMOA','stats.farmers':'Agbleɖela siwo','stats.listings':'Xɔʋe siwo le','stats.offers':'Xɔʋe siwo wɔm','stats.volume':'Treatrea bubu',
+      'cr.score_comp':'Score ƒe sɔsɔ','cr.eligible':'Ga si wò atsɔ','cr.profile_solid':'Nyatefe nyuie — Kadzo le ŋu','cr.history':'Bia siwo wɔm','cr.partners':'Agbenɔla siwo',
+      'cr.purpose_label':'Kadzo ƒe nu *','cr.amount_label':'Ga si wòbia (FCFA) *','cr.duration_label':'Ŋkeke *','cr.imf_label':'Ga kabinɛ *','cr.summary_title':'Ŋkeke si be','cr.summary_amount':'Ga bia la','cr.summary_duration':'Ŋkeke','cr.rate':'ƒe taux','cr.sent_title':'Bia la yi!','cr.sent_sub':'Bia la yi kabinɛ. Dzo ŋu ŋkeke 24-48 SMS ŋu.',
+      'ins.risk_title':'Ame nyatefe kple zãzã','ins.rainfall':'Tɔtɔ ŋkeke 30','ins.threshold':'Ɖoa: 30 mm / ŋkeke 30',
+      'ins.how_title':'Sidzedze dɔwɔwɔ','ins.satellite_t':'Sankolo kunnafoni','ins.satellite_d':'Ɖo ŋku tɔtɔ kple ɣeyiɣi ŋu sankolo gbɔ.','ins.trigger_t':'Ga ɖe ko','ins.trigger_d':'Ga ɖe ko gake nyatefe yi ɖoa.','ins.payment_t':'Ga le ŋkeke 48','ins.payment_d':'Ga yi mobile money ŋu. Takpeka me ɖo kpe.',
+      'ins.crop_label':'Agble sidzedze *','ins.surface_label':'Agble hekta *','ins.season_label':'Ŋkekewo *','ins.premium_label':'GA ƑE ƝÚ','ins.coverage_label':'SIDZEDZE GA','ins.trigger_text':'Ga ɖe ko gake tɔtɔ < 30mm','ins.protect_title':'Blibo wò agble me','ins.protect_sub':'Sidzedze ɖe wò blibo ko zãzã me.','ins.active':'Sidzedze le eme','ins.valid':'Eme le','ins.subscribed_title':'Sidzedze wɔm!','ins.subscribed_sub':'Sidzedzem le eme. Ga aɖe ko gake nyatefe yi ɖoa.',
+      'pr.verified':'Agbleɖela si wɔm','pr.hectares':'hekta','pr.sales':'treatrea','pr.score':'score','pr.crops':'Agble','pr.region':'Ƒe','pr.name_label':'Ŋkoŋ','pr.region_label':'Ƒe','pr.surface_label':'Agble (ha)','pr.crops_label':'Agble','pr.revenue':'Ga bubu','pr.savings':'Ga dzra','pr.monthly':'Ga ɣleti (ƒe sia)','pr.credits':'Bia siwo wɔm','pr.see_credits':'Kpɔ bɛɛ','pr.listings':'Xɔʋe siwo le','pr.empty':'Xɔʋe me le.','pr.delete':'Ɖe ɖa',
+      'mp.crop_label':'Agble *','mp.qty_label':'Biabia (kg) *','mp.quality_label':'Ŋgɔŋlɔ *','mp.price_label':'Ehe (FCFA / kg) *','mp.date_label':'Dɔwɔwɔ dzi','mp.desc_label':'Nyataɖoɖo (moɖo)',
+      'adv.available':'Le','adv.expert':'UEMOA agble ŋkeke. Gblɔ faransagbe kple eʋegbe.','adv.suggestions':'Biabia siwo wɔ akpe','adv.placeholder':'Bia wò bia...','adv.hint':'Enter — Maj + Enter sɔsɔ','adv.clear':'Ɖe gbegble',
+      'status.active':'Le eme','status.repaid':'Wɔ la','status.pending':'Le ŋu',
+      'detail.back':'Kɔ aha','detail.offer_sent':'Xɔʋe yi',
+    },
+    fon: {
+      flag:'🇧🇯',code:'FO',
+      'nav.dashboard':'Xwégbe','nav.marketplace':'Àjáxé','nav.credit':'Àdè','nav.insurance':'Gbɛ̌dó','nav.advisor':'Wɛnjlɛ̀','nav.logout':'Yì','nav.connect':'Bló',
+      'ph.dash.tag':'Wá bo mǐ AgriLink',
+      'ph.mp.tag':'Xɔ kpo jià','ph.mp.title':'Àjáxé','ph.mp.sub':'Ŋlɔ hwɛ̌ tɔn àjáxé mɛ',
+      'ph.cr.tag':'Akwé dɔwɔ','ph.cr.title':'Àdè','ph.cr.sub':'Àdè hagbɛ̌ mɔ UEMOA',
+      'ph.cr.apply.title':'Ɖó àdè','ph.cr.apply.sub':'UEMOA — Tɛ́n ɖò 24–48h',
+      'ph.ins.tag':'Kpé hwɛ̌ tɔn','ph.ins.title':'Gbɛ̌dó','ph.ins.sub':'Gbɛ̌dó météo nyinya jí',
+      'ph.ins.new.title':'Wlí gbɛ̌dó','ph.ins.new.sub':'Kpé azɔ̌ jí',
+      'ph.adv.tag':'AI hagbɛ̌ nyinya','ph.adv.title':'Wɛnjlɛ̀','ph.adv.sub':'24/24 — UEMOA hagbɛ̌ dɔ',
+      'ph.pr.title':'Miɛ́ wɛ̌',
+      'btn.new_listing':'Hwɛ̌ yɔyɔ̌','btn.publish':'Ŋlɔ hwɛ̌','btn.apply':'Ɖó','btn.submit_credit':'Sɛ́n àdè →','btn.subscribe_now':'Wlí dìn →','btn.subscribe_pol':'Wlí gbɛ̌dó','btn.save':'Ylan','btn.edit_profile':'Sɔ́ miɛ́ wɛ̌','btn.back_mp':'Lɛ̀ àjáxé','btn.back_cr':'Lɛ̀ àdè','btn.back_ins':'Lɛ̀ gbɛ̌dó','btn.dashboard':'Xwégbe','btn.my_credits':'← Àdènyé','btn.my_insurance':'← Gbɛ̌dónyé','btn.see_all':'Mɔ bǐ','btn.accept':'Yí','btn.first_listing':'Ŋlɔ hwɛ̌ nukɔntɔn','btn.clear_chat':'Sɛ̀ xó','btn.new_listing_btn':'+ Hwɛ̌ yɔyɔ̌',
+      'dash.kpi.revenue':'Akwé bǐ','dash.kpi.score':'Agri-Score','dash.kpi.savings':'Akwé hanhan','dash.kpi.tx':'Yìgán','dash.kpi.trend_rev':'+12% vǐ elɔ','dash.kpi.trend_score':'Hǔn ɖò kpɔ́ndéwú','dash.kpi.trend_savings':'vs. mɛ ɖěvo','dash.kpi.trend_tx':'jià e bló lɛ',
+      'dash.perf':'Dɔ wɔ','dash.monthly':'Akwé sín 2026','dash.quick':'Hɛn dó ɖi','dash.apply_credit':'Ɖó àdè','dash.sub_ins':'Wlí gbɛ̌dó','dash.advisor_link':'Wɛnjlɛ̀','dash.credit_active':'Àdè ɖò dó','dash.offers_rt':'Dɔ wɔ dìn','dash.offers_title':'Hwɛ̌ e jì lɛ','dash.market_rt':'Dìn','dash.market_title':'Àjáxé jí ègbé','dash.listings_title':'Hwɛ̌ e ɖè lɛ','dash.pending_offers':'jí',
+      'stats.impact':'AgriLink — UEMOA','stats.farmers':'Hagbɛ̌ mɛtɔ lɛ','stats.listings':'Hwɛ̌ e ɖè','stats.offers':'Hwɛ̌ e bló','stats.volume':'Jià bǐ',
+      'cr.score_comp':'Score sɛ́dó','cr.eligible':'Akwé e na ɖ','cr.profile_solid':'Hǔn ɖò kpɔ́ndéwú — Àdè ye','cr.history':'Ɖó e bló lɛ','cr.partners':'Akwé zǎnmɛ lɛ',
+      'cr.purpose_label':'Àdè ɖé *','cr.amount_label':'Akwé (FCFA) *','cr.duration_label':'Blɛ̌ *','cr.imf_label':'Akwé kabinɛ *','cr.summary_title':'Kúnnuɖetɔ','cr.summary_amount':'Akwé e ɖó','cr.summary_duration':'Blɛ̌','cr.rate':'sun taux','cr.sent_title':'Ɖó e yi!','cr.sent_sub':'Ɖó e yi kabinɛ. Tɛ́n ɖò 24-48h SMS jí.',
+      'ins.risk_title':'Azɔ̌ gudo','ins.rainfall':'Jí ɖó wè e nɔ jɛ 30','ins.threshold':'Ɖó: 30 mm / 30 zǎn',
+      'ins.how_title':'Gbɛ̌dó dɔwɔ','ins.satellite_t':'Xwégbe kunnafoni','ins.satellite_d':'Jí ɖó mɔ yiriwa gbɛ̌ tɔn jí.','ins.trigger_t':'Sɛ́n yɛrɛ','ins.trigger_d':'Akwé bɔ yɛrɛma gake seuils nu.','ins.payment_t':'Akwé 48h mɛ','ins.payment_d':'Akwé yi mobile money jí.',
+      'ins.crop_label':'Gbɛ̌dó hwɛ̌ *','ins.surface_label':'Tín hekta *','ins.season_label':'Blɛ̌ *','ins.premium_label':'AKWÉ SÚN','ins.coverage_label':'GBƐDÓ BǏ','ins.trigger_text':'Sɛ́n yɛrɛ gake jí < 30mm','ins.protect_title':'Kpé hwɛ̌ tɔn','ins.protect_sub':'Gbɛ̌dó nɔ kpé yɛrɛ.','ins.active':'Gbɛ̌dó ɖò dó','ins.valid':'Ɖò dó','ins.subscribed_title':'Gbɛ̌dó wlím!','ins.subscribed_sub':'Gbɛ̌dónyé ɖò dó. Akwé na bɔ yɛrɛma.',
+      'pr.verified':'Hagbɛ̌ mɛtɔ e mɔ','pr.hectares':'hekta','pr.sales':'jià','pr.score':'score','pr.crops':'Gbɛ̌','pr.region':'Fí','pr.name_label':'Nyǐ ce','pr.region_label':'Fí','pr.surface_label':'Tín (ha)','pr.crops_label':'Gbɛ̌','pr.revenue':'Akwé bǐ','pr.savings':'Akwé hanhan','pr.monthly':'Akwé sun (e ɖò sin lɛ)','pr.credits':'Àdè e bló lɛ','pr.see_credits':'Mɔ bǐ','pr.listings':'Hwɛ̌ ɛ lɛ','pr.empty':'Hwɛ̌ me ɖè.','pr.delete':'Sɛ̀',
+      'mp.crop_label':'Gbɛ̌ *','mp.qty_label':'Ɖibla (kg) *','mp.quality_label':'Nùɖuɖu *','mp.price_label':'Ègbé (FCFA / kg) *','mp.date_label':'Ɖò sín','mp.desc_label':'Kúnnuɖetɔ (ma jló ǎ)',
+      'adv.available':'Ɖò dó','adv.expert':'UEMOA hagbɛ̌ dɔ. Ðɔ faransegbe kpo fon.','adv.suggestions':'Nùkanbyɔ e nɔ nɔ lɛ','adv.placeholder':'Kanbyɔ we...','adv.hint':'Enter — Maj + Enter','adv.clear':'Sɛ̀ xó',
+      'status.active':'Ɖò dó','status.repaid':'Bló','status.pending':'Jí',
+      'detail.back':'Lɛ̀ àjáxé','detail.offer_sent':'Hwɛ̌ yi',
+    },
+  };
+
+  function applyLang(code) {
+    const t = LANGS[code] || LANGS.fr;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key] !== undefined) el.textContent = t[key];
+    });
+    const flagEl = document.getElementById('lang-flag');
+    const codeEl = document.getElementById('lang-code');
+    if (flagEl) flagEl.textContent = t.flag;
+    if (codeEl) codeEl.textContent = t.code;
+    // Mark active item
+    document.querySelectorAll('.lang-item').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('onclick') === "setLang('" + code + "')");
+    });
+  }
+
+  function setLang(code) {
+    localStorage.setItem('agrilink-lang', code);
+    applyLang(code);
+    closeLangMenu();
+  }
+
+  function toggleLangMenu(e) {
+    e.stopPropagation();
+    document.getElementById('lang-selector').classList.toggle('open');
+  }
+
+  function closeLangMenu() {
+    document.getElementById('lang-selector').classList.remove('open');
+  }
+
+  document.addEventListener('click', function(e) {
+    if (!document.getElementById('lang-selector').contains(e.target)) closeLangMenu();
+  });
+
+  /* ── THEME ────────────────────────────────────────── */
+  function updateThemeBtn() {
+    const isLight = document.documentElement.classList.contains('light-theme');
+    const btn = document.getElementById('theme-toggle');
+    if (btn) btn.textContent = isLight ? '🌙' : '☀️';
+  }
+
+  function toggleTheme() {
+    document.documentElement.classList.toggle('light-theme');
+    const theme = document.documentElement.classList.contains('light-theme') ? 'light' : 'dark';
+    localStorage.setItem('agrilink-theme', theme);
+    updateThemeBtn();
+  }
+
+  /* ── INIT ─────────────────────────────────────────── */
+  updateThemeBtn();
+  applyLang(localStorage.getItem('agrilink-lang') || 'fr');
 </script>
 </body>
 </html>
